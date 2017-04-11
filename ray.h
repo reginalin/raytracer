@@ -9,7 +9,7 @@ public:
     vec4 origin;
     vec4 direction;
     ray(vec4 origin, vec4 direction);
-    const ray getTransformedCopy(mat4 transform);
+    //const ray getTransformedCopy(mat4 transform);
 };
 
 #endif // RAY_H
