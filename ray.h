@@ -2,6 +2,8 @@
 #define RAY_H
 
 #include "vec4.h"
+#include "ray.h"
+#include "mat4.h"
 
 class ray
 {

@@ -1,6 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
+#include "ray.h"
 
 class Camera
 {
@@ -27,6 +28,7 @@ public:
 
     Camera();
     Camera(const char *filename);
+    ray raycast(int x, int y);
 };
 
 #endif // CAMERA_H

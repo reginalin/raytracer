@@ -24,3 +24,9 @@ Camera::Camera(const char *filename) {
          << ", " << center_x << ", " << center_y << ", " << center_z
          << ", " << up_x << ", " << up_y << ", " << up_z << "\n";
 }
+
+ray Camera::raycast(int x, int y) {
+    vec4 cameraCoords = vec4(center_x, center_y, center_z, 1);
+    //Help position x and y as world coordinates
+}
+
