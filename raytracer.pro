@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     tiny_obj_loader.cpp \
     vec4.cpp \
     ray.cpp \
-<<<<<<< HEAD
+<<<<<<< HEAD \
+    scene.cpp
     intersection.cpp
 =======
     scene.cpp
@@ -47,7 +48,8 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
-<<<<<<< HEAD
+<<<<<<< HEAD \
+    scene.h
     intersection.h
 =======
     scene.h
