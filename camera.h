@@ -26,8 +26,11 @@ public:
     float up_y;
     float up_z;
 
+    int width;
+    int height;
+
     Camera();
-    Camera(const char *filename);
+    Camera(const char *filename, int width, int height);
     ray raycast(int x, int y);
 };
 

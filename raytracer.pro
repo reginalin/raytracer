@@ -17,11 +17,8 @@ SOURCES += main.cpp \
     tiny_obj_loader.cpp \
     vec4.cpp \
     ray.cpp \
-<<<<<<< HEAD
-    intersection.cpp
-=======
+    intersection.cpp \
     scene.cpp
->>>>>>> 3f354c3a70be2a8447dabbbb5bd72931adfba91d
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -47,8 +44,5 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
-<<<<<<< HEAD
-    intersection.h
-=======
+    intersection.h \
     scene.h
->>>>>>> 3f354c3a70be2a8447dabbbb5bd72931adfba91d
