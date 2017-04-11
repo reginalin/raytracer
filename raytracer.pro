@@ -17,7 +17,11 @@ SOURCES += main.cpp \
     tiny_obj_loader.cpp \
     vec4.cpp \
     ray.cpp \
+<<<<<<< HEAD
     intersection.cpp
+=======
+    scene.cpp
+>>>>>>> 3f354c3a70be2a8447dabbbb5bd72931adfba91d
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -30,7 +34,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-DISTFILES +=
+DISTFILES += \
+    cube.json \
+    all_shapes.json \
+    cornell_box.json
 
 HEADERS += \
     camera.h \
@@ -40,4 +47,8 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
+<<<<<<< HEAD
     intersection.h
+=======
+    scene.h
+>>>>>>> 3f354c3a70be2a8447dabbbb5bd72931adfba91d
