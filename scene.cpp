@@ -103,14 +103,15 @@ void Scene::parseMaterial() {
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
-        if (material.contains("texture")) {
-            texture = material["texture"].toString();
+        if (submaterials.contains("texture")) {
+            texture = submaterials["texture"].toString();
+            qDebug() << texture;
         }
-        if (material.contains("normalMap")) {
-            normalMap = material["normalMap"].toString();
+        if (submaterials.contains("normalMap")) {
+            normalMap = submaterials["normalMap"].toString();
         }
-        if (material.contains("emissive")) {
-            emissive = material["emissive"].toBool();
+        if (submaterials.contains("emissive")) {
+            emissive = submaterials["emissive"].toBool();
         }
     }
 }
