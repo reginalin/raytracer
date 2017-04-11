@@ -17,14 +17,7 @@ SOURCES += main.cpp \
     tiny_obj_loader.cpp \
     vec4.cpp \
     ray.cpp \
-<<<<<<< HEAD
     intersection.cpp \
-=======
-<<<<<<< HEAD \
-    scene.cpp
-    intersection.cpp
-=======
->>>>>>> ebcf7680ed5a6d1ed3bb2d15a3f2a869431e2d67
     scene.cpp
 
 # The following define makes your compiler emit warnings if you use
@@ -51,12 +44,5 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
-<<<<<<< HEAD
-    intersection.h \
-=======
-<<<<<<< HEAD \
-    scene.h
+    scene.h \
     intersection.h
-=======
->>>>>>> ebcf7680ed5a6d1ed3bb2d15a3f2a869431e2d67
-    scene.h
