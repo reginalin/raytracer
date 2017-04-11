@@ -16,7 +16,13 @@ SOURCES += main.cpp \
     ppm_example.cpp \
     tiny_obj_loader.cpp \
     vec4.cpp \
-    ray.cpp
+    ray.cpp \
+    sphere.cpp \
+    meshgeom.cpp \
+    squareplane.cpp \
+    triangle.cpp \
+    cube.cpp \
+    geometry.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -38,4 +44,10 @@ HEADERS += \
     ppm_example.h \
     tiny_obj_loader.h \
     vec4.h \
-    ray.h
+    ray.h \
+    meshgeom.h \
+    squareplane.h \
+    cube.h \
+    sphere.h \
+    geometry.h \
+    triangle.h
