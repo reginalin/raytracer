@@ -1,6 +1,7 @@
 #include "intersection.h"
+#include "geometry.h"
 
-Intersection::Intersection(vec4 position, vec4 normal, float t, tinyobj::shape_t *geometry){
+Intersection::Intersection(vec4 position, vec4 normal, float t, Geometry *geometry){
     this->position = position;
     this->normal = normal;
     this->t = t;
