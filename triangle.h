@@ -1,6 +1,12 @@
 #ifndef TRIANGLE_H
 #define TRIANGLE_H
 
+#include "geometry.h"
+#include "vec4.h"
+#include "mat4.h"
+#include "intersection.h"
+#include "ray.h"
+
 class Triangle : public Geometry {
 
 public:
@@ -9,14 +15,12 @@ public:
 //It does not need to store normals per vertex;
 //it may simply use its plane normal.
 
-    glm::mat4 transform;
+    vec4 P1, P2, P3;
+    mat4 transform;
 
-    Triangle(glm::mat4 transformMatrix) {
-        transform = transformMatrix;
-    }
+    Triangle(vec4 p1, vec4 p2, vec4 p3, mat4 transformMatrix);
 
-    virtual Intersection getIntersection(const ray& input) /*const*/;
+    virtual Intersection getIntersection(ray& input) /*const*/;
 
-    // just need to pass in transform matrix
 };
 #endif // TRIANGLE_H
