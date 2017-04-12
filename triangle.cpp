@@ -30,11 +30,7 @@ Intersection Triangle::getIntersection(ray& input) {
         return NULL;
     }
 
-<<<<<<< HEAD
-    vec4 temp = origin + t * dir;
-=======
     vec4 temp = orig + t * dir;
->>>>>>> dcb5767cf9defc94b1ed309f56fbb7a4fb7620ac
     vec4 point = temp * transform; // left or right multiply?
 
     vec4 normal = temp * transpose(inverted);

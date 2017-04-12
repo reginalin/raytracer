@@ -18,19 +18,14 @@ SOURCES += main.cpp \
     vec4.cpp \
     ray.cpp \
     scene.cpp \
-    intersection.cpp
-    sphere.cpp \
-    meshgeom.cpp \
-    squareplane.cpp \
-    triangle.cpp \
-    cube.cpp \
-<<<<<<< HEAD
-    geometry.cpp \
     intersection.cpp \
-    scene.cpp
-=======
-    geometry.cpp 
->>>>>>> dcb5767cf9defc94b1ed309f56fbb7a4fb7620ac
+    cube.cpp \
+    geometry.cpp \
+    meshgeom.cpp \
+    sphere.cpp \
+    squareplane.cpp \
+    triangle.cpp
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -64,10 +59,11 @@ HEADERS += \
     vec4.h \
     ray.h \
     scene.h \
-    intersection.h
+    intersection.h \
     cube.h \
     geometry.h \
     meshgeom.h \
     sphere.h \
     squareplane.h \
     triangle.h
+

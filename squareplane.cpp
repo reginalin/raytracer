@@ -21,11 +21,7 @@ Intersection SquarePlane::getIntersection(ray& input) {
 
     float t = dot(planeNormal, (planePoint - orig)) / dot(planeNormal, dir);
 
-<<<<<<< HEAD
-    vec4 temp = origin + t * dir;
-=======
     vec4 temp = objRay.origin + t * dir;
->>>>>>> dcb5767cf9defc94b1ed309f56fbb7a4fb7620ac
     vec4 point = temp * transform; // left or right multiply?
 //    vec3 point = vec3(pointTemp);
 

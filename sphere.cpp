@@ -32,11 +32,7 @@ Intersection Sphere::getIntersection(ray& input) {
         // what if both are negative
     }
 
-<<<<<<< HEAD
-    vec4 temp = origin + t0 * dir;
-=======
     vec4 temp = orig + t0 * dir;
->>>>>>> dcb5767cf9defc94b1ed309f56fbb7a4fb7620ac
     vec4 point = temp * transform; // left or right multiply?
     //vec3?
 
