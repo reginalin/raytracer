@@ -11,7 +11,9 @@ Intersection Sphere::getIntersection(ray& input) {
     ray objRay = input.getTransformedCopy(inverted);
 
     vec4 dir = objRay.direction;
-    vec4 s = objRay.origin - center;
+    vec4 orig = objRay.origin;
+    
+    vec4 s = orig - center;
     float a = dot(dir, dir);
     float b = dot(dir, s) * 2;
     float c = dot(s, s) + (center * center);
