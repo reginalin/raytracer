@@ -99,7 +99,7 @@ Intersection Cube::getIntersection(const ray& input) {
         return NULL;
     }
 
-    vec4 temp = rayObj.origin + tn * dir;
+    vec4 temp = orig + tn * dir;
     vec4 point = temp * transform; // left or right multiply?
 //    vec3 point = vec3(pointTemp);
 

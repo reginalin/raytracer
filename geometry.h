@@ -1,7 +1,6 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include "geometry.h"
 #include "ray.h"
 #include "intersection.h"
 //#include <glm/glm.hpp>

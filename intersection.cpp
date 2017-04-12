@@ -1,5 +1,4 @@
 #include "intersection.h"
-#include "geometry.h"
 
 Intersection::Intersection(vec4 position, vec4 normal, float t, Geometry *geometry){
     this->position = position;
