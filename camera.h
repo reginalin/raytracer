@@ -30,7 +30,7 @@ public:
     int height;
 
     Camera();
-    Camera(const char *filename, int width, int height);
+    Camera(float left, float right, float bottom, float top, float near, float far, float eye_x, float eye_y, float eye_z, float center_x, float center_y, float center_z, float up_x, float up_y, float up_z, int width, int height);
     ray raycast(int x, int y);
 };
 

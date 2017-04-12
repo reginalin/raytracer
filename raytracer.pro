@@ -22,7 +22,7 @@ SOURCES += main.cpp \
     squareplane.cpp \
     triangle.cpp \
     cube.cpp \
-    geometry.cpp
+    geometry.cpp \
     intersection.cpp \
     scene.cpp
 
@@ -40,7 +40,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DISTFILES += \
     cube.json \
     all_shapes.json \
-    cornell_box.json
+    cornell_box.json \
+    wahoo.obj \
+    raytracer.pro.user \
+    wahoo.ppm \
+    .gitignore \
+    camera_wahoo.txt \
+    helplog.txt \
+    wahoo.mtl
 
 HEADERS += \
     camera.h \
@@ -50,14 +57,11 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
-<<<<<<< HEAD
-    meshgeom.h \
-    squareplane.h \
     cube.h \
-    sphere.h \
     geometry.h \
-    triangle.h
-=======
+    intersection.h \
+    meshgeom.h \
     scene.h \
-    intersection.h
->>>>>>> 598e351fbbebef3b2dde6f47c050c608ce5a228f
+    sphere.h \
+    squareplane.h \
+    triangle.h
