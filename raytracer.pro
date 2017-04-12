@@ -22,9 +22,10 @@ SOURCES += main.cpp \
     squareplane.cpp \
     triangle.cpp \
     cube.cpp \
-    geometry.cpp
+    geometry.cpp \
     intersection.cpp \
     scene.cpp
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -40,7 +41,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 DISTFILES += \
     cube.json \
     all_shapes.json \
-    cornell_box.json
+    cornell_box.json \
+    raytracer.pro.user \
+    wahoo.ppm \
+    camera_wahoo.txt \
+    helplog.txt \
+    wahoo.mtl
 
 HEADERS += \
     camera.h \
@@ -50,14 +56,14 @@ HEADERS += \
     tiny_obj_loader.h \
     vec4.h \
     ray.h \
-<<<<<<< HEAD
+    cube.h \
+    geometry.h \
+    intersection.h \
     meshgeom.h \
+    scene.h \
+    sphere.h \
     squareplane.h \
     cube.h \
-    sphere.h \
-    geometry.h \
     triangle.h
-=======
-    scene.h \
-    intersection.h
->>>>>>> 598e351fbbebef3b2dde6f47c050c608ce5a228f
+
+INCLUDEPATH += $$Users/catherineyang/Documents/Sophomore Spring 2017/CIS 460/raytracer/raytracer/glm

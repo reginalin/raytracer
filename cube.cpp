@@ -2,16 +2,16 @@
 #include <math.h>
 
 
-Cube::Cube(glm::mat4 transformMatrix) {
+Cube::Cube(mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
 Intersection Cube::getIntersection(const ray& input) {
-    glm::mat4 inverted = glm::inverse(transform);
+    mat4 inverted = inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
-    glm::vec4 dir = objRay.direction;
-    glm::vec4 orig = objRay.origin;
+    vec4 dir = objRay.direction;
+    vec4 orig = objRay.origin;
     float xmin, xmax, ymin, ymax, zmin, zmax = radius;
 
     float tn = -INFINITY; // t near
@@ -21,7 +21,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // x slab
     if (dir[0] == 0) {
         if (orig[0] < xmin || orig[0] > xmax) {
-            // no intersection
+            return NULL;
         }
     }
 
@@ -47,7 +47,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // y slab
     if (dir[1] == 0) {
         if (orig[1] < ymin || orig[1] > ymax) {
-            // no intersection
+            return NULL;
         }
     }
 
@@ -73,7 +73,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // z slab
     if (dir[2] == 0) {
         if (orig[2] < zmin || orig[2] > zmax) {
-            // no intersection
+            return NULL;
         }
     }
 
@@ -95,17 +95,16 @@ Intersection Cube::getIntersection(const ray& input) {
         tf = t1z;
     }
 
-
     if (tn > tf) {
-        // no intersection
+        return NULL;
     }
 
     vec4 temp = rayObj.origin + tn * dir;
-    vec4 pointTemp = temp * transform; // left or right multiply?
-    vec3 point = vec3(pointTemp);
+    vec4 point = temp * transform; // left or right multiply?
+//    vec3 point = vec3(pointTemp);
 
-    vec4 normTemp = temp * glm::transpose(inverted);
-    vec3 normal = vec3(normTemp);
+    vec4 normal = temp * transpose(inverted);
+//    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, tn, this);
 }
