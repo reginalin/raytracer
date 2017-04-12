@@ -18,7 +18,7 @@ Scene::Scene(const char *filename) {
     QJsonDocument json = QJsonDocument::fromJson(contents.toUtf8());
     QJsonObject object = json.object();
     QJsonObject scene = object.value("scene").toObject();
-    camera = scene.value("camera").toObject();
+    QJsonObject camera = scene.value("camera").toObject();
     geometry = scene.value("geometry").toArray();
     material = scene.value("material").toArray();
 

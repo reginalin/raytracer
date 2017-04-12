@@ -13,11 +13,13 @@
 #include <mat4.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "camera.h"
 
 class Scene
 {
 private:
     QJsonObject camera;
+    Camera cam;
     QJsonArray geometry;
     QJsonArray material;
 public:
