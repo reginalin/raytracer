@@ -26,7 +26,6 @@ SOURCES += main.cpp \
     intersection.cpp \
     scene.cpp
 
-
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -42,8 +41,10 @@ DISTFILES += \
     cube.json \
     all_shapes.json \
     cornell_box.json \
+    wahoo.obj \
     raytracer.pro.user \
     wahoo.ppm \
+    .gitignore \
     camera_wahoo.txt \
     helplog.txt \
     wahoo.mtl
@@ -63,7 +64,4 @@ HEADERS += \
     scene.h \
     sphere.h \
     squareplane.h \
-    cube.h \
     triangle.h
-
-INCLUDEPATH += $$Users/catherineyang/Documents/Sophomore Spring 2017/CIS 460/raytracer/raytracer/glm

@@ -7,19 +7,23 @@ Camera::Camera() {
     left = right = bottom = top = near = far = eye_x = eye_y = eye_z = center_x = center_y = center_z = up_x = up_y = up_z = width = height = 0;
 }
 
-Camera::Camera(const char *filename, int width, int height) {
-    FILE *f = fopen(filename, "rb");
-    if(!f) {
-        std::cout << filename << std::endl;
-    }
-    fscanf(f, "%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f",
-           &left, &right,
-           &bottom, &top, &near, &far,
-           &eye_x, &eye_y, &eye_z,
-           &center_x, &center_y, &center_z,
-           &up_x, &up_y, &up_z
-           );   //Help scanning file
-    fclose(f);
+Camera::Camera(float left, float right, float bottom, float top, float near, float far, float eye_x, float eye_y, float eye_z, float center_x, float center_y, float center_z, float up_x, float up_y, float up_z, int width, int height) {
+    this->left = left;
+    this->right = right;
+    this->bottom = bottom;
+    this->top = top;
+    this->near = near;
+    this->far = far;
+    this->eye_x = eye_x;
+    this->eye_y = eye_y;
+    this->eye_z = eye_z;
+    this->center_x = center_x;
+    this->center_y = center_y;
+    this->center_z = center_z;
+    this->up_x = up_x;
+    this->up_y = up_y;
+    this->up_z = up_z;
+
     std::cout << "Stored" << left << ", " << right << ", " << bottom << ", " << top << ", " << near << ", " << far
          << ", " << eye_x << ", " << eye_y << ", " << eye_z
          << ", " << center_x << ", " << center_y << ", " << center_z
@@ -29,6 +33,8 @@ Camera::Camera(const char *filename, int width, int height) {
 }
 
 ray Camera::raycast(int x, int y) {
+    //I think I did this wrong
+
     const float PI = atan(1)*4;
     vec4 cameraCoords = vec4(center_x, center_y, center_z, 1);
     float pixNDCX = (x + 0.5)/width;
