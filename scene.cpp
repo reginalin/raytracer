@@ -43,21 +43,21 @@ void Scene::parseGeometry() {
                 float x = (float) scale.at(0).toDouble();
                 float y = (float) scale.at(1).toDouble();
                 float z = (float) scale.at(2).toDouble();
-                mat4 scale_matrix = mat4::scale(x, y, z);
+                glm::mat4 scale_matrix = glm::mat4::scale(x, y, z);
             }
             if (transform.contains("rotate")) {
                 rotate = transform["rotate"].toArray();
                 float x = (float) rotate.at(0).toDouble();
                 float y = (float) rotate.at(1).toDouble();
                 float z = (float) rotate.at(2).toDouble();
-                mat4 rot_mat = rotation(x, y, z);
+                glm::mat4 rot_mat = rotation(x, y, z);
             }
             if (transform.contains("translate")) {
                 translate = transform["translate"].toArray();
                 float x = (float) translate.at(0).toDouble();
                 float y = (float) translate.at(1).toDouble();
                 float z = (float) translate.at(2).toDouble();
-                mat4 trans_matrix = mat4::trans(x, y, z);
+                glm::mat4 trans_matrix = glm::mat4::trans(x, y, z);
             }
         }
 
@@ -66,22 +66,22 @@ void Scene::parseGeometry() {
 }
 
 //rotation martrix
-mat4 Scene::rotation(float x, float y, float z) {
-    vec4 x0 = vec4(1, 0, 0, 0);
-    vec4 x1 = vec4(0, cos(x), sin(x), 0);
-    vec4 x2 = vec4(0, -sin(x), cos(x), 0);
-    vec4 col3 = vec4(0, 0, 0, 1);
-    mat4 rx = mat4(x0, x1, x2, col3);
+glm::mat4 Scene::rotation(float x, float y, float z) {
+    glm::vec4 x0 = glm::vec4(1, 0, 0, 0);
+    glm::vec4 x1 = glm::vec4(0, cos(x), sin(x), 0);
+    glm::vec4 x2 = glm::vec4(0, -sin(x), cos(x), 0);
+    glm::vec4 col3 = glm::vec4(0, 0, 0, 1);
+    glm::mat4 rx = glm::mat4(x0, x1, x2, col3);
 
-    vec4 y0 = vec4(cos(y), 0, -sin(y), 0);
-    vec4 y1 = vec4(0, 1, 0, 0);
-    vec4 y2 = vec4(sin(y), 0, cos(y), 0);
-    mat4 ry = mat4(y0, y1, y2, col3);
+    glm::vec4 y0 = glm::vec4(cos(y), 0, -sin(y), 0);
+    glm::vec4 y1 = glm::vec4(0, 1, 0, 0);
+    glm::vec4 y2 = glm::vec4(sin(y), 0, cos(y), 0);
+    glm::mat4 ry = glm::mat4(y0, y1, y2, col3);
 
-    vec4 z0 = vec4(cos(z), sin(z), 0, 0);
-    vec4 z1 = vec4(-sin(z), cos(z), 0, 0);
-    vec4 z2 = vec4(0, 0, 1, 0);
-    mat4 rz = mat4(z0, z1, z2, col3);
+    glm::vec4 z0 = glm::vec4(cos(z), sin(z), 0, 0);
+    glm::vec4 z1 = glm::vec4(-sin(z), cos(z), 0, 0);
+    glm::vec4 z2 = glm::vec4(0, 0, 1, 0);
+    glm::mat4 rz = glm::mat4(z0, z1, z2, col3);
 
     std::cout << rx * ry * rz;
 }

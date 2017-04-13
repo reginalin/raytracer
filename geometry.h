@@ -3,7 +3,7 @@
 
 #include "ray.h"
 #include "intersection.h"
-//#include <glm/glm.hpp>
+#include "la.h"
 
 class Geometry {
 

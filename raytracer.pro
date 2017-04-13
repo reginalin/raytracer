@@ -1,4 +1,4 @@
-QT += core
+QT += core opengl
 QT -= gui
 
 CONFIG += c++11
@@ -12,10 +12,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     camera.cpp \
     components.cpp \
-    mat4.cpp \
     ppm_example.cpp \
     tiny_obj_loader.cpp \
-    vec4.cpp \
     ray.cpp \
     scene.cpp \
     intersection.cpp \
@@ -39,7 +37,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += include
+INCLUDEPATH += include/glm
 
 DISTFILES += \
     cube.json \
@@ -56,10 +54,8 @@ DISTFILES += \
 HEADERS += \
     camera.h \
     components.h \
-    mat4.h \
     ppm_example.h \
     tiny_obj_loader.h \
-    vec4.h \
     ray.h \
     scene.h \
     intersection.h \

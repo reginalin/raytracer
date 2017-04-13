@@ -6,13 +6,13 @@
 
 #define GLM_CIS461  // Don't copy this include!
 // Primary GLM library
-#    include <glm/glm.hpp>
+#    include <glm.hpp>
 // For glm::translate, glm::rotate, and glm::scale.
-#    include <glm/gtc/matrix_transform.hpp>
+#    include <gtc/matrix_transform.hpp>
 // For glm::to_string.
-#    include <glm/gtx/string_cast.hpp>
+#    include <gtx/string_cast.hpp>
 // For glm::value_ptr.
-#    include <glm/gtc/type_ptr.hpp>
+#    include <gtc/type_ptr.hpp>
 #undef GLM_CIS461
 
 #include <QMatrix4x4>
@@ -22,7 +22,7 @@ namespace la
 {
 using namespace glm;
 
-inline QMatrix4x4 to_qmat(const mat4 &m)
+inline QMatrix4x4 to_qmat(const glm::mat4 &m)
 {
     return QMatrix4x4(value_ptr(transpose(m)));
 }

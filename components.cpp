@@ -1,13 +1,13 @@
 #include "components.h"
 
-vertex::vertex(vec4 coords, vec4 normals) {
+vertex::vertex(glm::vec4 coords, glm::vec4 normals) {
     this->coords = coords;
     this->normals = normals;
     u = 0;
     v = 0;
 }
 
-vertex::vertex(vec4 coords, vec4 normals, float u, float v) {
+vertex::vertex(glm::vec4 coords, glm::vec4 normals, float u, float v) {
     this->coords = coords;
     this->normals = normals;
     this->u = u;
@@ -22,8 +22,8 @@ vertex::vertex(const vertex &toCopy) {
 }
 
 vertex::vertex() {
-    this->coords = vec4(0, 0, 0, 1);
-    this->normals = vec4(0, 0, 0, 1);
+    this->coords = glm::vec4(0, 0, 0, 1);
+    this->normals = glm::vec4(0, 0, 0, 1);
     u = 0;
     v = 0;
 }
@@ -37,7 +37,7 @@ float &vertex::operator[](unsigned int index) {
     return toReturn;
 }
 
-face::face(vertex point1, vertex point2, vertex point3, vec4 color, tinyobj::material_t mat) {
+face::face(vertex point1, vertex point2, vertex point3, glm::vec4 color, tinyobj::material_t mat) {
     index0 = point1;
     index1 = point2;
     index2 = point3;
