@@ -16,7 +16,7 @@ Intersection SquarePlane::getIntersection(ray& input) {
     glm::vec4 orig = objRay.origin;
 
     if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
-        return NULL;
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
     float t = dot(planeNormal, (planePoint - orig)) / dot(planeNormal, dir);

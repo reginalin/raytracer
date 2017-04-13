@@ -27,7 +27,7 @@ Intersection Triangle::getIntersection(ray& input) {
     float v = tuv[2];
 
     if (u < 0 || u > 1 || v < 0 || v > 1) {
-        return NULL;
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
     glm::vec4 temp = orig + t * dir;

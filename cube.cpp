@@ -21,7 +21,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // x slab
     if (dir[0] == 0) {
         if (orig[0] < xmin || orig[0] > xmax) {
-            return NULL;
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
         }
     }
 
@@ -47,7 +47,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // y slab
     if (dir[1] == 0) {
         if (orig[1] < ymin || orig[1] > ymax) {
-            return NULL;
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
         }
     }
 
@@ -73,7 +73,7 @@ Intersection Cube::getIntersection(const ray& input) {
     // z slab
     if (dir[2] == 0) {
         if (orig[2] < zmin || orig[2] > zmax) {
-            return NULL;
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
         }
     }
 
@@ -96,7 +96,7 @@ Intersection Cube::getIntersection(const ray& input) {
     }
 
     if (tn > tf) {
-        return NULL;
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
     glm::vec4 temp = orig + tn * dir;

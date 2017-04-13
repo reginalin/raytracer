@@ -20,7 +20,7 @@ Intersection Sphere::getIntersection(ray& input) {
 
     float disc = (b * b) - (4 * a * c);
     if (disc < 0) {
-        return NULL;
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
     float t0, t1;
