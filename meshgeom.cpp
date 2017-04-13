@@ -7,7 +7,7 @@ Mesh::Mesh(glm::mat4 transformMatrix) {
 }
 
 Intersection Mesh::getIntersection(ray& input) {
-    glm::mat4 inverted = inverse(transform);
+    glm::mat4 inverted = glm::inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 dir = objRay.direction;
@@ -15,10 +15,10 @@ Intersection Mesh::getIntersection(ray& input) {
 
 
 
-    glm::vec4 temp = orig + t * dir;
-    glm::vec4 point = temp * transform; // left or right multiply?
+//    glm::vec4 temp = orig + t * dir;
+//    glm::vec4 point = temp * transform; // left or right multiply?
 
-    glm::vec4 normal = temp * transpose(inverted);
+//    glm::vec4 normal = temp * transpose(inverted);
 
-    return Intersection(point, normal, t, this);
+    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
 }

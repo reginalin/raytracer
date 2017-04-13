@@ -6,13 +6,18 @@ Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-Intersection Cube::getIntersection(const ray& input) {
-    glm::mat4 inverted = inverse(transform);
+Intersection Cube::getIntersection(ray& input) {
+    glm::mat4 inverted = glm::inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
-    float xmin, xmax, ymin, ymax, zmin, zmax = radius;
+    float xmin = radius;
+    float xmax = radius;
+    float ymin = radius;
+    float ymax = radius;
+    float zmin = radius;
+    float zmax = radius;
 
     float tn = -INFINITY; // t near
     float tf = INFINITY; // t far
@@ -82,7 +87,7 @@ Intersection Cube::getIntersection(const ray& input) {
 
     if (t0z > t1z) {
         // swap
-        float temp = t0xz;
+        float temp = t0z;
         t0z = t1z;
         t1z = temp;
     }
@@ -103,7 +108,7 @@ Intersection Cube::getIntersection(const ray& input) {
     glm::vec4 point = temp * transform; // left or right multiply?
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = temp * transpose(inverted);
+    glm::vec4 normal = temp * glm::transpose(inverted);
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, tn, this);

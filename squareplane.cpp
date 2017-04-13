@@ -7,7 +7,7 @@ SquarePlane::SquarePlane(glm::mat4 transformMatrix) {
 }
 
 Intersection SquarePlane::getIntersection(ray& input) {
-    glm::mat4 inverted = inverse(transform);
+    glm::mat4 inverted = glm::inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 planePoint = glm::vec4(0, 0, 0, 0);
@@ -19,13 +19,13 @@ Intersection SquarePlane::getIntersection(ray& input) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
-    float t = dot(planeNormal, (planePoint - orig)) / dot(planeNormal, dir);
+    float t = glm::dot(planeNormal, (planePoint - orig)) / glm::dot(planeNormal, dir);
 
     glm::vec4 temp = objRay.origin + t * dir;
     glm::vec4 point = temp * transform; // left or right multiply?
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = temp * transpose(inverted);
+    glm::vec4 normal = temp * glm::transpose(inverted);
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, t, this);

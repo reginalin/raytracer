@@ -9,8 +9,15 @@ Triangle::Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transform
     transform = transformMatrix;
 }
 
+glm::vec4 crossVec4(glm::vec4 _v1, glm::vec4 _v2){
+    glm::vec3 vec1 = glm::vec3(_v1[0], _v1[1], _v1[2]);
+    glm::vec3 vec2 = glm::vec3(_v2[0], _v2[1], _v2[2]);
+    glm::vec3 res = glm::cross(vec1, vec2);
+    return glm::vec4(res[0], res[1], res[2], 1);
+}
+
 Intersection Triangle::getIntersection(ray& input) {
-    glm::mat4 inverted = inverse(transform);
+    glm::mat4 inverted = glm::inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 dir = objRay.direction;
@@ -20,7 +27,7 @@ Intersection Triangle::getIntersection(ray& input) {
     glm::vec4 E2 = P3 - P1;
     glm::vec4 T = orig - P1;
 
-    glm::vec4 tuv = (1 / cross(dir, E1)) * glm::vec4(dot(cross(T, E1), E2), dot(cross(dir, E2), T), dot(cross(dir, E1), T), 1);
+    glm::vec4 tuv = (1 / glm::dot(crossVec4(dir, E1), E2)) * glm::vec4(glm::dot(crossVec4(T, E1), E2), glm::dot(crossVec4(dir, E2), T), glm::dot(crossVec4(dir, E1), T), 1.0);
 
     float t = tuv[0];
     float u = tuv[1];
@@ -33,7 +40,7 @@ Intersection Triangle::getIntersection(ray& input) {
     glm::vec4 temp = orig + t * dir;
     glm::vec4 point = temp * transform; // left or right multiply?
 
-    glm::vec4 normal = temp * transpose(inverted);
+    glm::vec4 normal = temp * glm::transpose(inverted);
 
     return Intersection(point, normal, t, this);
 }

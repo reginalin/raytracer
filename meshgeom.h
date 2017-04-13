@@ -10,9 +10,9 @@ class Mesh : public Geometry {
 public:
 //The Mesh class encapsulate and OBJ file.
 
-    glm::glm::mat4 transform;
+    glm::mat4 transform;
 
-    Mesh(glm::glm::mat4 transformMatrix);
+    Mesh(glm::mat4 transformMatrix);
 
     virtual Intersection getIntersection(ray& input) /*const*/;
 

@@ -2,7 +2,9 @@
 #define INTERSECTION_H
 
 #include "tiny_obj_loader.h"
-#include "geometry.h"
+#include "la.h"
+
+class Geometry;
 
 class Intersection
 {

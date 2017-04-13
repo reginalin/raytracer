@@ -43,7 +43,7 @@ void Scene::parseGeometry() {
                 float x = (float) scale.at(0).toDouble();
                 float y = (float) scale.at(1).toDouble();
                 float z = (float) scale.at(2).toDouble();
-                glm::mat4 scale_matrix = glm::mat4::scale(x, y, z);
+                glm::mat4 scale_matrix = scale(x, y, z);
             }
             if (transform.contains("rotate")) {
                 rotate = transform["rotate"].toArray();
