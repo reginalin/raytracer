@@ -20,7 +20,7 @@ public:
 
     Triangle(vec4 p1, vec4 p2, vec4 p3, mat4 transformMatrix);
 
-    virtual Intersection getIntersection(ray& input) /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 
 };
 #endif // TRIANGLE_H

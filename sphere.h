@@ -16,7 +16,7 @@ public:
 
     Sphere(mat4 transformMatrix);
 
-    Intersection getIntersection(ray& input) /*const*/;
+    Intersection getIntersection(Ray& input) /*const*/;
 };
 
 #endif

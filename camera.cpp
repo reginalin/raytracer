@@ -32,7 +32,7 @@ Camera::Camera(float left, float right, float bottom, float top, float near, flo
     this->height = height;
 }
 
-ray Camera::raycast(int x, int y) {
+Ray Camera::raycast(int x, int y) {
     //I think I did this wrong
 
     const float PI = atan(1)*4;
@@ -70,6 +70,6 @@ ray Camera::raycast(int x, int y) {
     vec4 pixWorldCoords = pixCameraCoords * transformation;
 
     vec4 rayDir = (pixWorldCoords - pixCameraCoords).normalize();
-    return ray(cameraCoords, rayDir);
+    return Ray(cameraCoords, rayDir);
 }
 

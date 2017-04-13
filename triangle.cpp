@@ -9,9 +9,9 @@ Triangle::Triangle(vec4 p1, vec4 p2, vec4 p3, mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-Intersection Triangle::getIntersection(ray& input) {
+Intersection Triangle::getIntersection(Ray& input) {
     mat4 inverted = inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
+    Ray objRay = input.getTransformedCopy(inverted);
 
     vec4 dir = objRay.direction;
     vec4 orig = objRay.origin;

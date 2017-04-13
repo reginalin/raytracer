@@ -5,13 +5,13 @@
 #include "ray.h"
 #include "mat4.h"
 
-class ray
+class Ray
 {
 public:
     vec4 origin;
     vec4 direction;
-    ray(vec4 origin, vec4 direction);
-    const ray getTransformedCopy(mat4 transform);
+    Ray(vec4 origin, vec4 direction);
+    const Ray getTransformedCopy(mat4 transform);
 };
 
 #endif // RAY_H

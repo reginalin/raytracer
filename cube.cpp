@@ -6,9 +6,9 @@ Cube::Cube(mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-Intersection Cube::getIntersection(const ray& input) {
+Intersection Cube::getIntersection(const Ray& input) {
     mat4 inverted = inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
+    Ray objRay = input.getTransformedCopy(inverted);
 
     vec4 dir = objRay.direction;
     vec4 orig = objRay.origin;

@@ -6,9 +6,9 @@ Sphere::Sphere(mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-Intersection Sphere::getIntersection(ray& input) {
+Intersection Sphere::getIntersection(Ray& input) {
     mat4 inverted = inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
+    Ray objRay = input.getTransformedCopy(inverted);
 
     vec4 dir = objRay.direction;
     vec4 orig = objRay.origin;

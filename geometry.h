@@ -12,7 +12,7 @@ public:
 
     // if you cast a ray, will you hit - intersect function
     // Intersection = the Intersection class
-    virtual Intersection getIntersection(ray& input) /*= 0*/ /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*= 0*/ /*const*/;
 };
 
 

@@ -6,9 +6,9 @@ SquarePlane::SquarePlane(mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-Intersection SquarePlane::getIntersection(ray& input) {
+Intersection SquarePlane::getIntersection(Ray& input) {
     mat4 inverted = inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
+    Ray objRay = input.getTransformedCopy(inverted);
 
     vec4 planePoint = vec4(0, 0, 0, 0);
     vec4 planeNormal = vec4(0, 0, 1, 1);
