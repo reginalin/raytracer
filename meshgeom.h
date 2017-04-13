@@ -14,7 +14,7 @@ public:
 
     Mesh(glm::mat4 transformMatrix);
 
-    virtual Intersection getIntersection(ray& input) /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 
 };
 

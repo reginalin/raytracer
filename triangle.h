@@ -18,7 +18,7 @@ public:
 
     Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transformMatrix);
 
-    virtual Intersection getIntersection(ray& input) /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 
 };
 #endif // TRIANGLE_H

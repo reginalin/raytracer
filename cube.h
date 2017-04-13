@@ -15,7 +15,7 @@ public:
 
     Cube(glm::mat4 transformMatrix);
 
-    virtual Intersection getIntersection(ray& input) /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 
     // just need to pass in transform matrix
 };

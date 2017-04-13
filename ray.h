@@ -4,13 +4,13 @@
 #include "ray.h"
 #include "la.h"
 
-class ray
+class Ray
 {
 public:
     glm::vec4 origin;
     glm::vec4 direction;
-    ray(glm::vec4 origin, glm::vec4 direction);
-    const ray getTransformedCopy(glm::mat4 transform);
+    Ray(glm::vec4 origin, glm::vec4 direction);
+    const Ray getTransformedCopy(glm::mat4 transform);
 };
 
 #endif // RAY_H

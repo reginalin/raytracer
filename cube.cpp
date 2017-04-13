@@ -6,9 +6,20 @@ Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
+<<<<<<< HEAD
 Intersection Cube::getIntersection(ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
+=======
+<<<<<<< HEAD
+Intersection Cube::getIntersection(const Ray& input) {
+    mat4 inverted = inverse(transform);
+    Ray objRay = input.getTransformedCopy(inverted);
+=======
+Intersection Cube::getIntersection(const ray& input) {
+    glm::mat4 inverted = inverse(transform);
+>>>>>>> 11db3696eae68f0f97c9cf61e6d6ee6d9957e929
     ray objRay = input.getTransformedCopy(inverted);
+>>>>>>> 5c8438b443bc29b5c1c696407a547bbcd97081c7
 
     glm::vec4 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;

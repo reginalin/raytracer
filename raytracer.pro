@@ -15,14 +15,15 @@ SOURCES += main.cpp \
     ppm_example.cpp \
     tiny_obj_loader.cpp \
     ray.cpp \
-    sphere.cpp \
-    meshgeom.cpp \
-    squareplane.cpp \
-    triangle.cpp \
+    scene.cpp \
+    intersection.cpp \
     cube.cpp \
     geometry.cpp \
-    intersection.cpp \
-    scene.cpp
+    meshgeom.cpp \
+    sphere.cpp \
+    squareplane.cpp \
+    triangle.cpp
+
 
 
 # The following define makes your compiler emit warnings if you use
@@ -56,11 +57,11 @@ HEADERS += \
     ppm_example.h \
     tiny_obj_loader.h \
     ray.h \
+    scene.h \
+    intersection.h \
     cube.h \
     geometry.h \
-    intersection.h \
     meshgeom.h \
-    scene.h \
     sphere.h \
     squareplane.h \
     triangle.h \

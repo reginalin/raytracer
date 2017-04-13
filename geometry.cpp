@@ -2,7 +2,7 @@
 #include <math.h>
 
 Geometry::Geometry() {
-    Intersection getIntersection(ray& input);
+    Intersection getIntersection(Ray& input);
 }
 
 

@@ -39,7 +39,7 @@ glm::vec4 crossVec4(glm::vec4 _v1, glm::vec4 _v2){
     return glm::vec4(res[0], res[1], res[2], 1);
 }
 
-ray Camera::raycast(int x, int y) {
+Ray Camera::raycast(int x, int y) {
     //I think I did this wrong
 
     const float PI = atan(1)*4;
@@ -77,7 +77,7 @@ ray Camera::raycast(int x, int y) {
     glm::vec4 pixWorldCoords = pixCameraCoords * transformation;
 
     glm::vec4 rayDir = glm::normalize(pixWorldCoords - pixCameraCoords);
-    return ray(cameraCoords, rayDir);
+    return Ray(cameraCoords, rayDir);
 }
 
 
