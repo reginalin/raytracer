@@ -6,15 +6,11 @@ Mesh::Mesh(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-<<<<<<< HEAD
+
 Intersection Mesh::getIntersection(Ray& input) {
-    mat4 inverted = inverse(transform);
-    Ray objRay = input.getTransformedCopy(inverted);
-=======
-Intersection Mesh::getIntersection(ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
->>>>>>> 5c8438b443bc29b5c1c696407a547bbcd97081c7
+    Ray objRay = input.getTransformedCopy(inverted);
+
 
     glm::vec4 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;

@@ -6,15 +6,10 @@ SquarePlane::SquarePlane(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
-<<<<<<< HEAD
+
 Intersection SquarePlane::getIntersection(Ray& input) {
-    mat4 inverted = inverse(transform);
-    Ray objRay = input.getTransformedCopy(inverted);
-=======
-Intersection SquarePlane::getIntersection(ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
->>>>>>> 5c8438b443bc29b5c1c696407a547bbcd97081c7
+    Ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 planePoint = glm::vec4(0, 0, 0, 0);
     glm::vec4 planeNormal = glm::vec4(0, 0, 1, 1);

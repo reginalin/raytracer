@@ -17,17 +17,10 @@ glm::vec4 crossVec4(glm::vec4 _v1, glm::vec4 _v2){
     return glm::vec4(res[0], res[1], res[2], 1);
 }
 
-=======
-<<<<<<< HEAD
+
 Intersection Triangle::getIntersection(Ray& input) {
-    mat4 inverted = inverse(transform);
-    Ray objRay = input.getTransformedCopy(inverted);
-=======
->>>>>>> 11db3696eae68f0f97c9cf61e6d6ee6d9957e929
-Intersection Triangle::getIntersection(ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
-    ray objRay = input.getTransformedCopy(inverted);
->>>>>>> 5c8438b443bc29b5c1c696407a547bbcd97081c7
+    Ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
