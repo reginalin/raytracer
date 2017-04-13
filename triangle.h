@@ -2,8 +2,6 @@
 #define TRIANGLE_H
 
 #include "geometry.h"
-#include "vec4.h"
-#include "mat4.h"
 #include "intersection.h"
 #include "ray.h"
 
@@ -15,10 +13,10 @@ public:
 //It does not need to store normals per vertex;
 //it may simply use its plane normal.
 
-    vec4 P1, P2, P3;
-    mat4 transform;
+    glm::vec4 P1, P2, P3;
+    glm::mat4 transform;
 
-    Triangle(vec4 p1, vec4 p2, vec4 p3, mat4 transformMatrix);
+    Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transformMatrix);
 
     virtual Intersection getIntersection(ray& input) /*const*/;
 

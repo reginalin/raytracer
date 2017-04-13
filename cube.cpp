@@ -2,16 +2,16 @@
 #include <math.h>
 
 
-Cube::Cube(mat4 transformMatrix) {
+Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
 Intersection Cube::getIntersection(const ray& input) {
-    mat4 inverted = inverse(transform);
+    glm::mat4 inverted = inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
-    vec4 dir = objRay.direction;
-    vec4 orig = objRay.origin;
+    glm::vec4 dir = objRay.direction;
+    glm::vec4 orig = objRay.origin;
     float xmin, xmax, ymin, ymax, zmin, zmax = radius;
 
     float tn = -INFINITY; // t near
@@ -99,11 +99,11 @@ Intersection Cube::getIntersection(const ray& input) {
         return NULL;
     }
 
-    vec4 temp = orig + tn * dir;
-    vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 temp = orig + tn * dir;
+    glm::vec4 point = temp * transform; // left or right multiply?
 //    vec3 point = vec3(pointTemp);
 
-    vec4 normal = temp * transpose(inverted);
+    glm::vec4 normal = temp * transpose(inverted);
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, tn, this);

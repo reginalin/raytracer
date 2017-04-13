@@ -2,21 +2,21 @@
 #include <math.h>
 
 
-Sphere::Sphere(mat4 transformMatrix) {
+Sphere::Sphere(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
 
 Intersection Sphere::getIntersection(ray& input) {
-    mat4 inverted = inverse(transform);
+    glm::mat4 inverted = glm::inverse(transform);
     ray objRay = input.getTransformedCopy(inverted);
 
-    vec4 dir = objRay.direction;
-    vec4 orig = objRay.origin;
+    glm::vec4 dir = objRay.direction;
+    glm::vec4 orig = objRay.origin;
     
-    vec4 s = orig - center;
-    float a = dot(dir, dir);
-    float b = dot(dir, s) * 2;
-    float c = dot(s, s) + (center * center);
+    glm::vec4 s = orig - center;
+    float a = glm::dot(dir, dir);
+    float b = glm::dot(dir, s) * 2;
+    float c = glm::dot(s, s) + (radius * radius);
 
     float disc = (b * b) - (4 * a * c);
     if (disc < 0) {
@@ -32,11 +32,11 @@ Intersection Sphere::getIntersection(ray& input) {
         // what if both are negative
     }
 
-    vec4 temp = orig + t0 * dir;
-    vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 temp = orig + t0 * dir;
+    glm::vec4 point = temp * transform; // left or right multiply?
     //vec3?
 
-    vec4 normal = temp * inverted.transpose();
+    glm::vec4 normal = temp * glm::transpose(inverted);
 
     return Intersection(point, normal, t0, this);
 }

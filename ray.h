@@ -1,17 +1,16 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "vec4.h"
 #include "ray.h"
-#include "mat4.h"
+#include "la.h"
 
 class ray
 {
 public:
-    vec4 origin;
-    vec4 direction;
-    ray(vec4 origin, vec4 direction);
-    const ray getTransformedCopy(mat4 transform);
+    glm::vec4 origin;
+    glm::vec4 direction;
+    ray(glm::vec4 origin, glm::vec4 direction);
+    const ray getTransformedCopy(glm::mat4 transform);
 };
 
 #endif // RAY_H

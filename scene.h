@@ -10,7 +10,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QJsonObject>
-#include <mat4.h>
+#include "la.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "camera.h"
@@ -29,7 +29,7 @@ public:
     void parseCamera();
     void parseMaterial();
 
-    mat4 rotation(float x, float y, float z);
+    glm::mat4 rotation(float x, float y, float z);
 };
 
 #endif // SCENE_H

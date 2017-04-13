@@ -32,11 +32,18 @@ Camera::Camera(float left, float right, float bottom, float top, float near, flo
     this->height = height;
 }
 
+glm::vec4 crossVec4(glm::vec4 _v1, glm::vec4 _v2){
+    glm::vec3 vec1 = glm::vec3(_v1[0], _v1[1], _v1[2]);
+    glm::vec3 vec2 = glm::vec3(_v2[0], _v2[1], _v2[2]);
+    glm::vec3 res = glm::cross(vec1, vec2);
+    return glm::vec4(res[0], res[1], res[2], 1);
+}
+
 ray Camera::raycast(int x, int y) {
     //I think I did this wrong
 
     const float PI = atan(1)*4;
-    vec4 cameraCoords = vec4(center_x, center_y, center_z, 1);
+    glm::vec4 cameraCoords = glm::vec4(center_x, center_y, center_z, 1);
     float pixNDCX = (x + 0.5)/width;
     float pixNDCY = (y + 0.5)/height;
     float pixScreenX = 2 * pixNDCX - 1;
@@ -44,32 +51,33 @@ ray Camera::raycast(int x, int y) {
     float aspectRatio = width/(float)height;
     float pixCameraX = (2 * pixScreenX - 1) * aspectRatio * tan(PI/4);
     float pixCameraY = (1 - 2 * pixScreenY) * tan(PI/4);
-    vec4 pixCameraCoords = vec4(pixCameraX, pixCameraY, -1, 1);
+    glm::vec4 pixCameraCoords = glm::vec4(pixCameraX, pixCameraY, -1, 1);
 
-    mat4 translation = mat4(
-                vec4(1, 0, 0, 0),
-                vec4(0, 1, 0, 0),
-                vec4(0, 0, 1, 0),
-                vec4(-eye_x, -eye_y, -eye_z, 1)
+    glm::mat4 translation = glm::mat4(
+                glm::vec4(1, 0, 0, 0),
+                glm::vec4(0, 1, 0, 0),
+                glm::vec4(0, 0, 1, 0),
+                glm::vec4(-eye_x, -eye_y, -eye_z, 1)
                 );
-    vec4 center = vec4(center_x, center_y, center_z, 0);
-    vec4 eye = vec4(eye_x, eye_y, eye_z, 0);
-    vec4 zAxis = (center - eye);
-    vec4 yAxis = vec4(up_x, up_y, up_z, 0);
-    zAxis.norm();
-    yAxis.norm();
-    vec4 xAxis = cross(zAxis, yAxis);
-    xAxis.norm();
-    mat4 rotation = mat4(
-                vec4(xAxis[0], yAxis[0], zAxis[0], 0),
-                vec4(xAxis[1], yAxis[1], zAxis[1], 0),
-                vec4(xAxis[2], yAxis[2], zAxis[2], 0),
-                vec4(0, 0, 0, 1)
+    glm::vec4 center = glm::vec4(center_x, center_y, center_z, 0);
+    glm::vec4 eye = glm::vec4(eye_x, eye_y, eye_z, 0);
+    glm::vec4 zAxis = (center - eye);
+    glm::vec4 yAxis = glm::vec4(up_x, up_y, up_z, 0);
+    glm::normalize(zAxis);
+    glm::normalize(yAxis);
+    glm::vec4 xAxis = crossVec4(zAxis, yAxis);
+    glm::normalize(xAxis);
+    glm::mat4 rotation = glm::mat4(
+                glm::vec4(xAxis[0], yAxis[0], zAxis[0], 0),
+                glm::vec4(xAxis[1], yAxis[1], zAxis[1], 0),
+                glm::vec4(xAxis[2], yAxis[2], zAxis[2], 0),
+                glm::vec4(0, 0, 0, 1)
                 );
-    mat4 transformation = rotation * translation;
-    vec4 pixWorldCoords = pixCameraCoords * transformation;
+    glm::mat4 transformation = rotation * translation;
+    glm::vec4 pixWorldCoords = pixCameraCoords * transformation;
 
-    vec4 rayDir = (pixWorldCoords - pixCameraCoords).normalize();
+    glm::vec4 rayDir = glm::normalize(pixWorldCoords - pixCameraCoords);
     return ray(cameraCoords, rayDir);
 }
+
 
