@@ -1,4 +1,5 @@
 #include "scene.h"
+using namespace glm;
 
 Scene::Scene() { }
 
@@ -34,6 +35,9 @@ void Scene::parseGeometry() {
         QJsonValue material = geo_obj["material"];
         QJsonValue type = geo_obj["type"];
         QJsonValue name = geo_obj["name"];
+        glm::mat4 trans_matrix;
+        glm::mat4 scale_matrix;
+        glm::mat4 rot_matrix;
 
         //these are optional
         if (geo_obj.contains("transform")) {
@@ -43,21 +47,24 @@ void Scene::parseGeometry() {
                 float x = (float) scale.at(0).toDouble();
                 float y = (float) scale.at(1).toDouble();
                 float z = (float) scale.at(2).toDouble();
-                glm::mat4 scale_matrix = scale(x, y, z);
+                glm::vec3 scalars = glm::vec3(x, y, z);
+                glm::scale(scale_matrix, scalars);
             }
             if (transform.contains("rotate")) {
                 rotate = transform["rotate"].toArray();
                 float x = (float) rotate.at(0).toDouble();
                 float y = (float) rotate.at(1).toDouble();
                 float z = (float) rotate.at(2).toDouble();
-                glm::mat4 rot_mat = rotation(x, y, z);
+
+                //glm::mat4 rot_mat = rotation(x, y, z);
             }
             if (transform.contains("translate")) {
                 translate = transform["translate"].toArray();
                 float x = (float) translate.at(0).toDouble();
                 float y = (float) translate.at(1).toDouble();
                 float z = (float) translate.at(2).toDouble();
-                glm::mat4 trans_matrix = glm::mat4::trans(x, y, z);
+                glm::vec3 scalars = glm::vec3(x, y, z);
+                glm::translate(trans_matrix, scalars);
             }
         }
 
@@ -83,7 +90,7 @@ glm::mat4 Scene::rotation(float x, float y, float z) {
     glm::vec4 z2 = glm::vec4(0, 0, 1, 0);
     glm::mat4 rz = glm::mat4(z0, z1, z2, col3);
 
-    std::cout << rx * ry * rz;
+//    std::cout << rx * ry * rz;
 }
 
 void Scene::parseCamera() {
