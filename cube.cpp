@@ -10,7 +10,7 @@ Intersection Cube::getIntersection(Ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
-    glm::vec4 dir = objRay.direction;
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
     float xmin = radius;
     float xmax = radius;
@@ -104,7 +104,7 @@ Intersection Cube::getIntersection(Ray& input) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
-    glm::vec4 temp = orig + tn * dir;
+    glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
     glm::vec4 point = transform * temp;
 //    vec3 point = vec3(pointTemp);
 

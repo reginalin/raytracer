@@ -15,7 +15,7 @@ Intersection Mesh::getIntersection(Ray& input) {
     Ray objRay = input.getTransformedCopy(inverted);
 
 
-    glm::vec4 dir = objRay.direction;
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
 
 
@@ -29,16 +29,16 @@ Intersection Mesh::getIntersection(Ray& input) {
 }
 
 struct face {
-    vec4 vertex1;
-    vec4 vertex2;
-    vec4 vertex3;
+    glm::vec4 vertex1;
+    glm::vec4 vertex2;
+    glm::vec4 vertex3;
 };
 
 
 float l, r, t, b, n, f, eye_x, eye_y, eye_z, center_x, center_y, center_z, up_x, up_y, up_z;
 
-vector<tinyobj::shape_t> shapes;
-vector<tinyobj::material_t> materials;
+std::vector<tinyobj::shape_t> shapes;
+std::vector<tinyobj::material_t> materials;
 
 
 int width;
@@ -48,16 +48,16 @@ char* colorOption;
 bool isColorOption;
 
 void readCam(char* camText);
-mat4 orientMat();
+glm::mat4 orientMat();
 void rasterizeTriangles();
 void colorPixel(int pixel, int numTri);
 
 
 img_t *img;
-vector<vec4> normVecs;
-vector<face> faceVecs;
-vector<float> indices;
-vector<vec4> transNormVecs;
+std::vector<glm::vec4> normVecs;
+std::vector<face> faceVecs;
+std::vector<float> indices;
+std::vector<glm::vec4> transNormVecs;
 
 int main(int argc, char *argv[]) {
 
@@ -72,7 +72,7 @@ int main(int argc, char *argv[]) {
         isColorOption = true;
     }
 
-    cout<< tinyobj::LoadObj(shapes, materials, inputFile);
+    //std::cout<< tinyobj::LoadObj(shapes, materials, inputFile);
 
     readCam(cameraText);
 
@@ -92,11 +92,11 @@ void readCam(char *camText) {
 }
 
 mat4 orientMat() {
-    vec4 up = vec4(up_x, up_y, up_z, 0).normalize();
+    std::vec4 up = vec4(up_x, up_y, up_z, 0).normalize();
 
-    vec4 f = vec4(center_x - eye_x, center_y - eye_y, center_z - eye_z, 0).normalize();
-    vec4 r = cross(f, up).normalize();
-    vec4 u = cross(f, r).normalize();
+    std::vec4 f = vec4(center_x - eye_x, center_y - eye_y, center_z - eye_z, 0).normalize();
+    std::vec4 r = cross(f, up).normalize();
+    std::vec4 u = cross(f, r).normalize();
 
     mat4 orientation = mat4(vec4(r[0], u[0], f[0], 0),
                             vec4(r[1], u[1], f[1], 0),
