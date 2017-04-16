@@ -8,13 +8,13 @@ class Camera
 public:
     glm::vec4 target;
     glm::vec4 eye;
-    glm::vec4 worldUp;
+    glm::vec3 worldUp;
     float fov;
     int width;
     int height;
 
     Camera();
-    Camera(glm::vec4 target, glm::vec4 eye, glm::vec4 worldUp, float fov, int width, int height);
+    Camera(glm::vec4 target, glm::vec4 eye, glm::vec3 worldUp, float fov, int width, int height);
     Ray raycast(int x, int y);
 };
 

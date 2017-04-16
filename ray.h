@@ -8,8 +8,8 @@ class Ray
 {
 public:
     glm::vec4 origin;
-    glm::vec4 direction;
-    Ray(glm::vec4 origin, glm::vec4 direction);
+    glm::vec3 direction;
+    Ray(glm::vec4 origin, glm::vec3 direction);
     const Ray getTransformedCopy(glm::mat4 transform);
 };
 
