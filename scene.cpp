@@ -72,7 +72,7 @@ void Scene::parseGeometry() {
     }
 }
 
-//rotation martrix
+//rotation matrix
 glm::mat4 Scene::rotation(float x, float y, float z) {
     glm::vec4 x0 = glm::vec4(1, 0, 0, 0);
     glm::vec4 x1 = glm::vec4(0, cos(x), sin(x), 0);
@@ -95,11 +95,15 @@ glm::mat4 Scene::rotation(float x, float y, float z) {
 
 void Scene::parseCamera() {
     QJsonArray target = camera["target"].toArray();
+    glm::vec4 target_vec = glm::vec4(target[0], target[1], target[2], 0);
     QJsonArray eye = camera["eye"].toArray();
+    glm::vec4 eye_vec = glm::vec4(eye[0], eye[1], eye[2], 0);
     QJsonArray worldUp = camera["worldUp"].toArray();
-    int fov = camera["fov"].toInt();
+    glm::vec4 up_vec = glm::vec4(worldUp[0], worldUp[1], worldUp[2], 0);
+    float fov = (float) camera["fov"].toDouble();
     int width = camera["width"].toInt();
     int height = camera["height"].toInt();
+    cam = new Camera(target_vec, eye_vec, up_vec, fov, width, height);
 }
 
 void Scene::parseMaterial() {
