@@ -124,5 +124,8 @@ void Scene::parseMaterial() {
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
         }
+        if (submaterials.contains("reflective")) {
+            reflective = submaterials["reflective"].toBool();
+        }
     }
 }
