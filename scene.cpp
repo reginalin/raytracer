@@ -61,17 +61,17 @@ void Scene::parseGeometry() {
                 float z = (float) rotate.at(2).toDouble();
                 if (x != 0) {
                     glm::mat4 rot;
-                    glm::rotate(rot, x, 1.0, 0.0, 0.0);
+                    glm::rotate(rot, x, glm::vec3(1, 0, 0));
                     rot_mats.push_back(rot);
                 }
                 if (y != 0) {
                     glm::mat4 rot;
-                    glm::rotate(rot, y, 0.0, 1.0, 0.0);
+                    glm::rotate(rot, y, glm::vec3(0, 1, 0));
                     rot_mats.push_back(rot);
                 }
                 if (z != 0) {
                     glm::mat4 rot;
-                    glm::rotate(rot, z, 0.0, 0.0, 1.0);
+                    glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
 
