@@ -16,6 +16,7 @@
 #include "camera.h"
 #include <geometry.h>
 #include <material.h>
+#include <map>
 
 class Scene
 {
@@ -26,7 +27,7 @@ public:
     Camera cam;
 
     std::vector<Geometry> geo_objs;
-    std::map<std::string, Material> material_types;
+    std::map<const char*, Material> material_types;
 
     Scene();
     Scene(const char *filename);

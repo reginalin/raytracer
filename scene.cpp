@@ -39,29 +39,29 @@ void Scene::parseGeometry() {
         Geometry object;
         QJsonArray scale, rotate, translate;
         QJsonObject geo_obj = v.toObject();
-        const char *material = geo_obj["material"].toString();
-        const char *type = geo_obj["type"].toString();
-        const char *name = geo_obj["name"].toString();
+        const char *material = geo_obj["material"].toString().toStdString().c_str();
+        const char *type = geo_obj["type"].toString().toStdString().c_str();
+        const char *name = geo_obj["name"].toString().toStdString().c_str();
         glm::mat4 trans_matrix;
         glm::mat4 scale_matrix;
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
 
-        //these are optional
+        //these are optiona
         if (geo_obj.contains("transform")) {
             QJsonObject transform = geo_obj["transform"].toObject();
             if (transform.contains("scale")) {
                 scale = transform["scale"].toArray();
-                float x = (float) scale.at(0).toDouble();
-                float y = (float) scale.at(1).toDouble();
-                float z = (float) scale.at(2).toDouble();
+                float x = scale.at(0).toDouble();
+                float y = scale.at(1).toDouble();
+                float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 glm::scale(scale_matrix, scalars);
             }
             if (transform.contains("rotate")) {
                 rotate = transform["rotate"].toArray();
-                float x = (float) rotate.at(0).toDouble();
-                float y = (float) rotate.at(1).toDouble();
-                float z = (float) rotate.at(2).toDouble();
+                float x = rotate.at(0).toDouble();
+                float y = rotate.at(1).toDouble();
+                float z = rotate.at(2).toDouble();
                 if (x != 0) {
                     glm::mat4 rot;
                     glm::rotate(rot, x, glm::vec3(1, 0, 0));
@@ -89,24 +89,24 @@ void Scene::parseGeometry() {
             }
         }
         glm::mat4 transform;
-        glm::mat4 rot = rot_mats.pop_back();
-        transform = scale_matrix * rot;
-        while (!rot_mats.empty()) {
-            rot = rot_mats.pop_back();
-            transform = transform * rot;
-        }
-        transform = transform * trans_matrix;
+//        glm::mat4 rot = rot_mats.pop_back();
+//        transform = scale_matrix * rot;
+//        while (!rot_mats.empty()) {
+//            rot = rot_mats.pop_back();
+//            transform = transform * rot;
+//        }
+//        transform = transform * trans_matrix;
 
-        //create geometry object
-        if (type.compare("sphere") == 0) {
-            obj = new Sphere(transform);
-        } else if (type.compare("cube") == 0) {
-            obj = new Cube(transform);
-        } else if (type.compare("square") == 0) {
-            obj = new SquarePlane(transform);
-        } else if (type.compare("obj") == 0) {
-            obj = new Mesh(transform);
-        }
+//        //create geometry object
+//        if (type.compare("sphere") == 0) {
+//            obj = new Sphere(transform);
+//        } else if (type.compare("cube") == 0) {
+//            obj = new Cube(transform);
+//        } else if (type.compare("square") == 0) {
+//            obj = new SquarePlane(transform);
+//        } else if (type.compare("obj") == 0) {
+//            obj = new Mesh(transform);
+//        }
 
     geo_objs.push_back(object);
     }
@@ -118,32 +118,32 @@ void Scene::parseCamera() {
     QJsonArray eye = camera["eye"].toArray();
     glm::vec4 eye_vec = glm::vec4(eye[0], eye[1], eye[2], 0);
     QJsonArray worldUp = camera["worldUp"].toArray();
-    glm::vec4 up_vec = glm::vec4(worldUp[0], worldUp[1], worldUp[2], 0);
+    glm::vec3 up_vec = glm::vec3(worldUp[0], worldUp[1], worldUp[2]);
     float fov = (float) camera["fov"].toDouble();
     int width = camera["width"].toInt();
     int height = camera["height"].toInt();
-    cam = new Camera(target_vec, eye_vec, up_vec, fov, width, height);
+    cam = Camera(target_vec, eye_vec, up_vec, fov, width, height);
 }
 
 void Scene::parseMaterial() {
     foreach (const QJsonValue & v, material) {
         Material mat = Material();
         QString texture, normalMap;
-        bool emissive;
+        bool emissive, reflective;
         QJsonObject submaterials = v.toObject();
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
-        mat.type = type;
-        mat.name = name;
-        mat.baseColor = baseColor;
+        mat.type = type.toStdString().c_str();
+        mat.name = name.toStdString().c_str();
+        mat.baseColor = baseColor.toStdString().c_str();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
-            mat.texture = texture;
+            mat.texture = texture.toStdString().c_str();
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
-            mat.normalMap = normalMap;
+            mat.normalMap = normalMap.toStdString().c_str();
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
@@ -153,6 +153,7 @@ void Scene::parseMaterial() {
             reflective = submaterials["reflective"].toBool();
             mat.reflective = reflective;
         }
-        material_types.insert( std::pair<std::string, Material>(name, mat));
+
+        material_types.insert( std::pair<const char*, Material>(mat.name, mat) );
     }
 }
