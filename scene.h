@@ -14,15 +14,20 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "camera.h"
+#include <geometry.h>
+#include <material.h>
 
 class Scene
 {
-private:
+public:
     QJsonObject camera;
-    Camera cam;
     QJsonArray geometry;
     QJsonArray material;
-public:
+    Camera cam;
+
+    std::vector<Geometry> geo_objs;
+    std::map<std::string, Material> material_types;
+
     Scene();
     Scene(const char *filename);
     void parseGeometry();

@@ -7,12 +7,13 @@ class Material
 public:
     Material();
 
-    String type;
-    String normalMap;
-    String baseColor;
+    const char *type;
+    const char *name;
+    const char *normalMap;
+    const char *baseColor;
     bool emissive;
     bool reflective;
-    String texture;
+    const char *texture;
 
 };
 

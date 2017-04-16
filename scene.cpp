@@ -108,24 +108,32 @@ void Scene::parseCamera() {
 
 void Scene::parseMaterial() {
     foreach (const QJsonValue & v, material) {
+        Material mat = Material();
         QString texture, normalMap;
         bool emissive;
         QJsonObject submaterials = v.toObject();
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
+        mat.type = type;
+        mat.name = name;
+        mat.baseColor = baseColor;
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
-            qDebug() << texture;
+            mat.texture = texture;
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
+            mat.normalMap = normalMap;
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
+            mat.emissive = emissive;
         }
         if (submaterials.contains("reflective")) {
             reflective = submaterials["reflective"].toBool();
+            mat.reflective = reflective;
         }
+        material_types.insert( std::pair<std::string, Material>(name, mat));
     }
 }
