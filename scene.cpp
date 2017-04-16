@@ -1,6 +1,10 @@
 #include "scene.h"
 using namespace glm;
 
+//changes: probably need to change constructors of geometry subclasses
+// b/c we need to store more information
+//right now we create geometry objects but all they contain is just the transform
+
 Scene::Scene() { }
 
 Scene::Scene(const char *filename) {
@@ -26,6 +30,8 @@ Scene::Scene(const char *filename) {
     parseCamera();
     parseMaterial();
     parseGeometry();
+
+    std::cout << this->geometry.size();
 }
 
 void Scene::parseGeometry() {
@@ -36,9 +42,6 @@ void Scene::parseGeometry() {
         const char *material = geo_obj["material"].toString();
         const char *type = geo_obj["type"].toString();
         const char *name = geo_obj["name"].toString();
-//        QJsonValue material = geo_obj["material"];
-//        QJsonValue type = geo_obj["type"];
-//        QJsonValue name = geo_obj["name"];
         glm::mat4 trans_matrix;
         glm::mat4 scale_matrix;
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
@@ -107,27 +110,6 @@ void Scene::parseGeometry() {
 
     geo_objs.push_back(object);
     }
-}
-
-//rotation matrix
-glm::mat4 Scene::rotation(float x, float y, float z) {
-    glm::vec4 x0 = glm::vec4(1, 0, 0, 0);
-    glm::vec4 x1 = glm::vec4(0, cos(x), sin(x), 0);
-    glm::vec4 x2 = glm::vec4(0, -sin(x), cos(x), 0);
-    glm::vec4 col3 = glm::vec4(0, 0, 0, 1);
-    glm::mat4 rx = glm::mat4(x0, x1, x2, col3);
-
-    glm::vec4 y0 = glm::vec4(cos(y), 0, -sin(y), 0);
-    glm::vec4 y1 = glm::vec4(0, 1, 0, 0);
-    glm::vec4 y2 = glm::vec4(sin(y), 0, cos(y), 0);
-    glm::mat4 ry = glm::mat4(y0, y1, y2, col3);
-
-    glm::vec4 z0 = glm::vec4(cos(z), sin(z), 0, 0);
-    glm::vec4 z1 = glm::vec4(-sin(z), cos(z), 0, 0);
-    glm::vec4 z2 = glm::vec4(0, 0, 1, 0);
-    glm::mat4 rz = glm::mat4(z0, z1, z2, col3);
-
-//    std::cout << rx * ry * rz;
 }
 
 void Scene::parseCamera() {
