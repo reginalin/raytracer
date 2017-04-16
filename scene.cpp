@@ -81,9 +81,9 @@ void Scene::parseGeometry() {
             }
             if (transform.contains("translate")) {
                 translate = transform["translate"].toArray();
-                float x = (float) translate.at(0).toDouble();
-                float y = (float) translate.at(1).toDouble();
-                float z = (float) translate.at(2).toDouble();
+                float x = translate.at(0).toDouble();
+                float y = translate.at(1).toDouble();
+                float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 glm::translate(trans_matrix, scalars);
             }
@@ -114,12 +114,12 @@ void Scene::parseGeometry() {
 
 void Scene::parseCamera() {
     QJsonArray target = camera["target"].toArray();
-    glm::vec4 target_vec = glm::vec4(target[0], target[1], target[2], 0);
+    glm::vec4 target_vec = glm::vec4(target[0].toDouble(), target[1].toDouble(), target[2].toDouble(), 0);
     QJsonArray eye = camera["eye"].toArray();
-    glm::vec4 eye_vec = glm::vec4(eye[0], eye[1], eye[2], 0);
+    glm::vec4 eye_vec = glm::vec4(eye[0].toDouble(), eye[1].toDouble(), eye[2].toDouble(), 0);
     QJsonArray worldUp = camera["worldUp"].toArray();
-    glm::vec3 up_vec = glm::vec3(worldUp[0], worldUp[1], worldUp[2]);
-    float fov = (float) camera["fov"].toDouble();
+    glm::vec3 up_vec = glm::vec3(worldUp[0].toDouble(), worldUp[1].toDouble(), worldUp[2].toDouble());
+    float fov = camera["fov"].toDouble();
     int width = camera["width"].toInt();
     int height = camera["height"].toInt();
     cam = Camera(target_vec, eye_vec, up_vec, fov, width, height);
