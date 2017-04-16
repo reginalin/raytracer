@@ -6,31 +6,15 @@
 class Camera
 {
 public:
-    float left;
-    float right;
-    float top;
-    float bottom;
-
-    float near;
-    float far;
-
-    float eye_x;
-    float eye_y;
-    float eye_z;
-
-    float center_x;
-    float center_y;
-    float center_z;
-
-    float up_x;
-    float up_y;
-    float up_z;
-
+    glm::vec4 target;
+    glm::vec4 eye;
+    glm::vec4 worldUp;
+    float fov;
     int width;
     int height;
 
     Camera();
-    Camera(float left, float right, float bottom, float top, float near, float far, float eye_x, float eye_y, float eye_z, float center_x, float center_y, float center_z, float up_x, float up_y, float up_z, int width, int height);
+    Camera(glm::vec4 target, glm::vec4 eye, glm::vec4 worldUp, float fov, int width, int height);
     Ray raycast(int x, int y);
 };
 

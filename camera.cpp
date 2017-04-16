@@ -4,30 +4,15 @@
 #include <math.h>
 
 Camera::Camera() {
-    left = right = bottom = top = near = far = eye_x = eye_y = eye_z = center_x = center_y = center_z = up_x = up_y = up_z = width = height = 0;
+    target = eye = worldUp = glm::vec4(0, 0, 0, 1);
+    fov = width = height = 0;
 }
 
-Camera::Camera(float left, float right, float bottom, float top, float near, float far, float eye_x, float eye_y, float eye_z, float center_x, float center_y, float center_z, float up_x, float up_y, float up_z, int width, int height) {
-    this->left = left;
-    this->right = right;
-    this->bottom = bottom;
-    this->top = top;
-    this->near = near;
-    this->far = far;
-    this->eye_x = eye_x;
-    this->eye_y = eye_y;
-    this->eye_z = eye_z;
-    this->center_x = center_x;
-    this->center_y = center_y;
-    this->center_z = center_z;
-    this->up_x = up_x;
-    this->up_y = up_y;
-    this->up_z = up_z;
-
-    std::cout << "Stored" << left << ", " << right << ", " << bottom << ", " << top << ", " << near << ", " << far
-         << ", " << eye_x << ", " << eye_y << ", " << eye_z
-         << ", " << center_x << ", " << center_y << ", " << center_z
-         << ", " << up_x << ", " << up_y << ", " << up_z << "\n";
+Camera::Camera(glm::vec4 target, glm::vec4 eye, glm::vec4 worldUp, float fov, int width, int height) {
+    this->target = target;
+    this->eye = eye;
+    this->worldUp = worldUp;
+    this->fov = fov;
     this->width = width;
     this->height = height;
 }

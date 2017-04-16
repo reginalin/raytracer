@@ -10,6 +10,14 @@ void traceEachPix(img_t *img, Scene scene, Camera *cam) {
         int x = i / img->w;
         int y = i % img->w;
         Ray ray = cam->raycast(x, y);
+        QList<Intersection> intersections = QList<Intersection>();
+        QJsonArray *geometryArray = &scene.geometry;
+        for (int i = 0; i < geometryArray->size(); i++) {
+            Geometry *geometry = geometryArray->at(i).;
+            Intersection intersection = geometry->getIntersection(ray);
+            if (intersection != NULL) intersections.append(intersection);
+        }
+        if (!intersections.empty()) img->data[i] = pixel_struct(255, 255, 255);
     }
 }
 
