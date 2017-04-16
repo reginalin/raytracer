@@ -64,8 +64,8 @@ Ray Camera::raycast(int x, int y) {
                 glm::vec4(xAxis[2], yAxis[2], zAxis[2], 0),
                 glm::vec4(0, 0, 0, 1)
                 );
-    glm::mat4 viewMat = rotation * translation;
-    glm::mat4 transformMat = projectionMat * viewMat;
+    viewMat = rotation * translation;
+    transformMat = projectionMat * viewMat;
     glm::vec4 pixWorldCoords = glm::inverse(transformMat) * pixNDCCoords;
     glm::vec3 rayDir = glm::vec3(glm::normalize(pixWorldCoords - eye));
     return Ray(eye, rayDir);
