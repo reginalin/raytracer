@@ -23,21 +23,25 @@ Scene::Scene(const char *filename) {
     geometry = scene.value("geometry").toArray();
     material = scene.value("material").toArray();
 
-    parseGeometry();
     parseCamera();
     parseMaterial();
+    parseGeometry();
 }
 
 void Scene::parseGeometry() {
     foreach (const QJsonValue & v, geometry) {
+        Geometry object;
         QJsonArray scale, rotate, translate;
         QJsonObject geo_obj = v.toObject();
-        QJsonValue material = geo_obj["material"];
-        QJsonValue type = geo_obj["type"];
-        QJsonValue name = geo_obj["name"];
+        const char *material = geo_obj["material"].toString();
+        const char *type = geo_obj["type"].toString();
+        const char *name = geo_obj["name"].toString();
+//        QJsonValue material = geo_obj["material"];
+//        QJsonValue type = geo_obj["type"];
+//        QJsonValue name = geo_obj["name"];
         glm::mat4 trans_matrix;
         glm::mat4 scale_matrix;
-        glm::mat4 rot_matrix;
+        std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
 
         //these are optional
         if (geo_obj.contains("transform")) {
@@ -55,8 +59,22 @@ void Scene::parseGeometry() {
                 float x = (float) rotate.at(0).toDouble();
                 float y = (float) rotate.at(1).toDouble();
                 float z = (float) rotate.at(2).toDouble();
+                if (x != 0) {
+                    glm::mat4 rot;
+                    glm::rotate(rot, x, 1.0, 0.0, 0.0);
+                    rot_mats.push_back(rot);
+                }
+                if (y != 0) {
+                    glm::mat4 rot;
+                    glm::rotate(rot, y, 0.0, 1.0, 0.0);
+                    rot_mats.push_back(rot);
+                }
+                if (z != 0) {
+                    glm::mat4 rot;
+                    glm::rotate(rot, z, 0.0, 0.0, 1.0);
+                    rot_mats.push_back(rot);
+                }
 
-                //glm::mat4 rot_mat = rotation(x, y, z);
             }
             if (transform.contains("translate")) {
                 translate = transform["translate"].toArray();
@@ -67,8 +85,27 @@ void Scene::parseGeometry() {
                 glm::translate(trans_matrix, scalars);
             }
         }
+        glm::mat4 transform;
+        glm::mat4 rot = rot_mats.pop_back();
+        transform = scale_matrix * rot;
+        while (!rot_mats.empty()) {
+            rot = rot_mats.pop_back();
+            transform = transform * rot;
+        }
+        transform = transform * trans_matrix;
 
         //create geometry object
+        if (type.compare("sphere") == 0) {
+            obj = new Sphere(transform);
+        } else if (type.compare("cube") == 0) {
+            obj = new Cube(transform);
+        } else if (type.compare("square") == 0) {
+            obj = new SquarePlane(transform);
+        } else if (type.compare("obj") == 0) {
+            obj = new Mesh(transform);
+        }
+
+    geo_objs.push_back(object);
     }
 }
 
