@@ -17,17 +17,16 @@
 
 class Scene
 {
-private:
-    QJsonObject camera;
-    Camera cam;
-    QJsonArray geometry;
-    QJsonArray material;
 public:
     Scene();
     Scene(const char *filename);
     void parseGeometry();
     void parseCamera();
     void parseMaterial();
+    QJsonObject camera;
+    Camera cam;
+    QJsonArray geometry;
+    QJsonArray material;
 
     glm::mat4 rotation(float x, float y, float z);
 };
