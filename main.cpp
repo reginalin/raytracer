@@ -11,13 +11,22 @@ void traceEachPix(img_t *img, Scene scene, Camera *cam) {
         int y = i % img->w;
         Ray ray = cam->raycast(x, y);
         QList<Intersection> intersections = QList<Intersection>();
-        QJsonArray *geometryArray = &scene.geometry;
+        std::vector<Geometry> *geometryArray = &scene.geo_objs;
         for (int i = 0; i < geometryArray->size(); i++) {
-            Geometry *geometry = geometryArray->at(i);
+            Geometry *geometry = &geometryArray->at(i);
             Intersection intersection = geometry->getIntersection(ray);
-            if (!(intersection == NULL)) intersections.append(intersection);
+            if (intersection.t != -1) intersections.append(intersection);
         }
-        if (!intersections.empty()) img->data[i] = pixel_struct(255, 255, 255);
+        if (!intersections.empty()) {
+            img->data[i].r = 255;
+            img->data[i].g = 255;
+            img->data[i].b = 255;
+        }
+        else {
+            img->data[i].r = 0;
+            img->data[i].g = 0;
+            img->data[i].b = 0;
+        }
     }
 }
 
