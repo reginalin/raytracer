@@ -5,6 +5,21 @@
 Triangle current;
 float currT;
 
+struct face {
+    glm::vec4 vertex1;
+    glm::vec4 vertex2;
+    glm::vec4 vertex3;
+};
+
+
+std::vector<tinyobj::shape_t> shapes;
+std::vector<tinyobj::material_t> materials;
+
+std::vector<glm::vec4> normVecs;
+std::vector<face> faceVecs;
+std::vector<float> indices;
+std::vector<glm::vec4> transNormVecs;
+
 Mesh::Mesh(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
@@ -17,121 +32,6 @@ Intersection Mesh::getIntersection(Ray& input) {
 
     glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
-
-
-
-//    glm::vec4 temp = orig + t * dir;
-//    glm::vec4 point = temp * transform; // left or right multiply?
-
-//    glm::vec4 normal = temp * transpose(inverted);
-
-    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
-}
-
-struct face {
-    glm::vec4 vertex1;
-    glm::vec4 vertex2;
-    glm::vec4 vertex3;
-};
-
-
-float l, r, t, b, n, f, eye_x, eye_y, eye_z, center_x, center_y, center_z, up_x, up_y, up_z;
-
-std::vector<tinyobj::shape_t> shapes;
-std::vector<tinyobj::material_t> materials;
-
-
-int width;
-int height;
-char* outputPpm;
-char* colorOption;
-bool isColorOption;
-
-void readCam(char* camText);
-glm::mat4 orientMat();
-void rasterizeTriangles();
-void colorPixel(int pixel, int numTri);
-
-
-img_t *img;
-std::vector<glm::vec4> normVecs;
-std::vector<face> faceVecs;
-std::vector<float> indices;
-std::vector<glm::vec4> transNormVecs;
-
-int main(int argc, char *argv[]) {
-
-    char* inputFile = argv[1];
-    char* cameraText = argv[2];
-    width = atoi(argv[3]);
-    height = atoi(argv[4]);
-    outputPpm = argv[5];
-
-    if (argc == 7) {
-        colorOption = argv[6];
-        isColorOption = true;
-    }
-
-    //std::cout<< tinyobj::LoadObj(shapes, materials, inputFile);
-
-    readCam(cameraText);
-
-    img = new_img(width, height);
-
-    rasterizeTriangles();
-
-    return 0;
-}
-
-void readCam(char *camText) {
-    FILE *camFile = fopen(camText, "r");
-    fscanf(camFile, "%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f",
-           &l, &r, &t, &b, &n, &f, &eye_x, &eye_y, &eye_z, &center_x, &center_y, &center_z, &up_x, &up_y, &up_z);
-    fclose(camFile);
-
-}
-
-mat4 orientMat() {
-    std::vec4 up = vec4(up_x, up_y, up_z, 0).normalize();
-
-    std::vec4 f = vec4(center_x - eye_x, center_y - eye_y, center_z - eye_z, 0).normalize();
-    std::vec4 r = cross(f, up).normalize();
-    std::vec4 u = cross(f, r).normalize();
-
-    mat4 orientation = mat4(vec4(r[0], u[0], f[0], 0),
-                            vec4(r[1], u[1], f[1], 0),
-                            vec4(r[2], u[2], f[2], 0),
-                            vec4(0, 0, 0, 1));
-    return orientation;
-}
-
-mat4 viewMat() {
-    mat4 translation = mat4(vec4(1, 0, 0, 0),
-                            vec4(0, 1, 0, 0),
-                            vec4(0, 0, 1, 0),
-                            vec4(-eye_x, -eye_y, -eye_z, 1));
-    return orientMat() * translation;
-}
-
-
-mat4 projMat() {
-    mat4 frustum = mat4(vec4((2*n)/(r-l), 0, 0, 0),
-                        vec4(0, (2*n)/(t-b), 0, 0),
-                        vec4((r+l)/(r-l), (t+b)/(t-b), f/(f-n), 1),
-                        vec4(0, 0, (-f*n)/(f-n), 0));
-
-    return frustum;
-}
-
-void rasterizeTriangles() {
-
-    float zBuffs[width * height];
-
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            zBuffs[width * i + j] = 2;
-        }
-    }
 
     // positions: vector of vertex coordinates
     vector<float> positions;
@@ -221,23 +121,15 @@ void rasterizeTriangles() {
         float w3 = third[3];
         faceVecs[i].vertex3 = vec4(x3, y3, z3, w3);
 
-
-        // triangles that are not visible
-        if (z1 < 0 && z2 < 0 && z3 < 0) {
-            continue;
-        } else if (z1 > 1 && z2 > 1 && z2 > 1) {
-            continue;
-        }
-
-        // compute 2D bounding box
-        int minX = floor(std::min({x1, x2, x3}));
-        int maxX = ceil(std::max({x1, x2, x3}));
-
-        int minY = floor(std::min({y1, y2, y3}));
-        int maxY = ceil(std::max({y1, y2, y3}));
-
-        if (maxX < 0 || minX > width || maxY < 0 || minY > height) {
-            continue;
-        }
     }
+
+//    glm::vec4 temp = orig + t * dir;
+//    glm::vec4 point = temp * transform; // left or right multiply?
+
+//    glm::vec4 normal = temp * transpose(inverted);
+
+    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
 }
+
+
+
