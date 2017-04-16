@@ -4,7 +4,8 @@
 #include <math.h>
 
 Camera::Camera() {
-    target = eye = worldUp = glm::vec4(0, 0, 0, 1);
+    target = eye = glm::vec4(0, 0, 0, 1);
+    worldUp = glm::vec3(0, 0, 0);
     fov = width = height = 0;
 }
 
@@ -41,7 +42,8 @@ Ray Camera::raycast(int x, int y) {
                 glm::vec4((1 / aspectRatio * std::tan(fov/2)), 0, 0, 0),
                 glm::vec4(0, (1 / std::tan(fov/2)), 0, 0),
                 glm::vec4(0, 0, (far / (far - near)), 1),
-                glm::vec4(0, 0, ((-far * near) / (far - near), 0));
+                glm::vec4(0, 0, (-far * near) / (far - near), 0)
+                );
 
     glm::mat4 translation = glm::mat4(
                 glm::vec4(1, 0, 0, 0),
