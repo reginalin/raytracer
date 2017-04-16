@@ -105,10 +105,10 @@ Intersection Cube::getIntersection(Ray& input) {
     }
 
     glm::vec4 temp = orig + tn * dir;
-    glm::vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 point = transform * temp;
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = temp * glm::transpose(inverted);
+    glm::vec4 normal = glm::transpose(inverted) * temp;
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, tn, this);

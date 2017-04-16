@@ -34,10 +34,10 @@ Intersection Sphere::getIntersection(Ray& input) {
     }
 
     glm::vec4 temp = orig + t0 * dir;
-    glm::vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 point = transform * temp;
     //vec3?
 
-    glm::vec4 normal = temp * glm::transpose(inverted);
+    glm::vec4 normal = glm::transpose(inverted) * temp;
 
     return Intersection(point, normal, t0, this);
 }

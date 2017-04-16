@@ -23,10 +23,10 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     float t = glm::dot(planeNormal, (planePoint - orig)) / glm::dot(planeNormal, dir);
 
     glm::vec4 temp = objRay.origin + t * dir;
-    glm::vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 point = transform * temp;
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = temp * glm::transpose(inverted);
+    glm::vec4 normal = glm::transpose(inverted) * temp;
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, t, this);

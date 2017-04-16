@@ -39,9 +39,9 @@ Intersection Triangle::getIntersection(Ray& input) {
     }
 
     glm::vec4 temp = orig + t * dir;
-    glm::vec4 point = temp * transform; // left or right multiply?
+    glm::vec4 point = transform * temp;
 
-    glm::vec4 normal = temp * glm::transpose(inverted);
+    glm::vec4 normal = glm::transpose(inverted) * temp;
 
     return Intersection(point, normal, t, this);
 }
