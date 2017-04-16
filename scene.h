@@ -14,19 +14,25 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "camera.h"
+#include <geometry.h>
+#include <material.h>
 
 class Scene
 {
 public:
+    QJsonObject camera;
+    QJsonArray geometry;
+    QJsonArray material;
+    Camera cam;
+
+    std::vector<Geometry> geo_objs;
+    std::map<std::string, Material> material_types;
+
     Scene();
     Scene(const char *filename);
     void parseGeometry();
     void parseCamera();
     void parseMaterial();
-    QJsonObject camera;
-    Camera cam;
-    QJsonArray geometry;
-    QJsonArray material;
 
     glm::mat4 rotation(float x, float y, float z);
 };

@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     meshgeom.cpp \
     sphere.cpp \
     squareplane.cpp \
-    triangle.cpp
+    triangle.cpp \
+    material.cpp
 
 
 
@@ -65,4 +66,5 @@ HEADERS += \
     sphere.h \
     squareplane.h \
     triangle.h \
-    la.h
+    la.h \
+    material.h
