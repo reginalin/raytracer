@@ -68,6 +68,7 @@ void Scene::parseGeometry() {
                     rot_mats.push_back(rot);
                 }
                 if (y != 0) {
+                    std::cout << "y";
                     glm::mat4 rot;
                     glm::rotate(rot, y, glm::vec3(0, 1, 0));
                     rot_mats.push_back(rot);
