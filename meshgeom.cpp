@@ -20,10 +20,10 @@ std::vector<face> faceVecs;
 std::vector<float> indices;
 std::vector<glm::vec4> transNormVecs;
 
-Mesh::Mesh(glm::mat4 transformMatrix) {
+Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile) {
     transform = transformMatrix;
+    tinyobj::LoadObj(shapes, materials, inputFile);
 }
-
 
 Intersection Mesh::getIntersection(Ray& input) {
     glm::mat4 inverted = glm::inverse(transform);

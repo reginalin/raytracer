@@ -12,7 +12,7 @@ public:
 
     glm::mat4 transform;
 
-    Mesh(glm::mat4 transformMatrix);
+    Mesh(glm::mat4 transformMatrix, char* inputFile);
 
     virtual Intersection getIntersection(Ray& input) /*const*/;
 
