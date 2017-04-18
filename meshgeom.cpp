@@ -1,9 +1,11 @@
 #include "meshgeom.h"
 #include "triangle.h"
+#include "camera.h"
 #include <math.h>
 
 //Triangle current;
 //float currT;
+float currT;
 
 struct face {
     glm::vec4 vertex1;
@@ -24,18 +26,11 @@ Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
     transform = transformMatrix;
     tinyobj::LoadObj(shapes, materials, inputFile);
     this->cam = cam;
-}
-
-Intersection Mesh::getIntersection(Ray& input) {
-    glm::mat4 inverted = glm::inverse(transform);
-    Ray objRay = input.getTransformedCopy(inverted);
-
-
-    glm::vec3 dir = objRay.direction;
-    glm::vec4 orig = objRay.origin;
 
     // positions: vector of vertex coordinates
     std::vector<float> positions = std::vector<float>();
+
+    // positions: vector of vertex coordinates
     for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
         for (int j = 0; j < static_cast<int>(shapes[i].mesh.positions.size()); j++) {
             positions.push_back(shapes[i].mesh.positions[j]);
@@ -51,7 +46,6 @@ Intersection Mesh::getIntersection(Ray& input) {
 
     // normals; vector of normal coordinates
     std::vector<float> normals = std::vector<float>();
-
     for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
         for (int j = 0; j < static_cast<int>(shapes[i].mesh.normals.size()); j++) {
             normals.push_back(shapes[i].mesh.normals[j]);
@@ -121,7 +115,29 @@ Intersection Mesh::getIntersection(Ray& input) {
         float z3 = third[2];
         float w3 = third[3];
         faceVecs[i].vertex3 = glm::vec4(x3, y3, z3, w3);
+    }
+}
 
+Intersection Mesh::getIntersection(Ray& input) {
+    glm::mat4 inverted = glm::inverse(transform);
+    Ray objRay = input.getTransformedCopy(inverted);
+
+
+    glm::vec3 dir = objRay.direction;
+    glm::vec4 orig = objRay.origin;
+
+    // initializing it as the first one
+    Triangle closest = Triangle(faceVecs[1].vertex1, faceVecs[1].vertex2, faceVecs[1].vertex3, transform);
+    float currT;
+
+    for (int i = 0; i < static_cast<int>(faceVecs.size()); i++) {
+        Triangle current = Triangle(faceVecs[i].vertex1, faceVecs[i].vertex2, faceVecs[i].vertex3, transform);
+        triangles.push_back(current);
+        float t = current.getIntersection(input).t;
+        if (t < currT && t > 0) {
+            currT = t;
+            closest = current;
+        }
     }
 
 //    glm::vec4 temp = orig + t * dir;
@@ -129,7 +145,7 @@ Intersection Mesh::getIntersection(Ray& input) {
 
 //    glm::vec4 normal = temp * transpose(inverted);
 
-    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
+    return closest.getIntersection(input);
 }
 
 

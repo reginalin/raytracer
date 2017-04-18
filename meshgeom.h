@@ -5,6 +5,8 @@
 #include "intersection.h"
 #include "ray.h"
 #include "camera.h"
+#include "stdio.h"
+#include "triangle.h"
 
 class Mesh : public Geometry {
 
@@ -13,6 +15,7 @@ public:
 
     glm::mat4 transform;
     Camera cam;
+    std::vector<Triangle> triangles;
 
     Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam);
 

@@ -11,7 +11,7 @@ Intersection Sphere::getIntersection(Ray& input) {
     Ray objRay = input.getTransformedCopy(inverted);
 
 
-    glm::vec3 dir = objRay.direction;
+    glm::vec3 dir = glm::vec3(objRay.direction[0], objRay.direction[1], objRay.direction[2]); // vec3 to vec4
     glm::vec4 orig = objRay.origin;
     
     glm::vec3 s = glm::vec3(orig - center);
