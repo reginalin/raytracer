@@ -13,14 +13,15 @@ Intersection SquarePlane::getIntersection(Ray& input) {
 
     glm::vec4 planePoint = glm::vec4(0, 0, 0, 0);
     glm::vec4 planeNormal = glm::vec4(0, 0, 1, 1);
-    glm::vec4 dir = objRay.direction;
+//    glm::vec4 dir = glm::vec4(objRay.direction[0], objRay.direction[1], objRay.direction[2], 1);
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
 
     if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
     }
 
-    float t = glm::dot(planeNormal, (planePoint - orig)) / glm::dot(planeNormal, dir);
+    float t = glm::dot(planeNormal, (planePoint - orig)) / glm::dot(planeNormal, glm::vec4(dir[0], dir[1], dir[2], 1));
 
     glm::vec4 temp = objRay.origin + t * dir;
     glm::vec4 point = transform * temp;

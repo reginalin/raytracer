@@ -21,7 +21,7 @@ Intersection Triangle::getIntersection(Ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
-    glm::vec4 dir = objRay.direction;
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
 
     glm::vec4 E1 = P2 - P1;

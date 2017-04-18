@@ -38,7 +38,7 @@ Ray Camera::raycast(int x, int y) {
     glm::vec4 pixNDCCoords = glm::vec4(pixNDCX, pixNDCY, 1, 1);
     pixNDCCoords *= far;
     float aspectRatio = width/height;
-    glm::mat4 projectionMat = glm::mat4(
+    projectionMat = glm::mat4(
                 glm::vec4((1 / aspectRatio * std::tan(fov/2)), 0, 0, 0),
                 glm::vec4(0, (1 / std::tan(fov/2)), 0, 0),
                 glm::vec4(0, 0, (far / (far - near)), 1),
@@ -58,7 +58,7 @@ Ray Camera::raycast(int x, int y) {
     glm::vec3 xAxis = glm::cross(zAxis, yAxis);
     glm::normalize(xAxis);
     yAxis = glm::cross(xAxis, zAxis);
-    glm::mat4 rotation = glm::mat4(
+    rotation = glm::mat4(
                 glm::vec4(xAxis[0], yAxis[0], zAxis[0], 0),
                 glm::vec4(xAxis[1], yAxis[1], zAxis[1], 0),
                 glm::vec4(xAxis[2], yAxis[2], zAxis[2], 0),
