@@ -37,44 +37,44 @@ Intersection Sphere::getIntersection(Ray& input) {
     glm::vec4 point = transform * temp;
     //vec3?
 
-    normal = glm::transpose(inverted) * temp;
+//    glm::vec4 normal = glm::transpose(inverted) * temp;
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
     return Intersection(point, normal, t0, this);
 }
 
-std::vector<float> getUV() {
-    std::vector<float> uv = std::vector<float>();
+//std::vector<float> getUV() {
+//    std::vector<float> uv = std::vector<float>();
 
-    glm::vec4 norm = Sphere::normal;
-    glm::normalize(norm);
+//    glm::vec4 norm = Sphere::normal;
+//    glm::normalize(norm);
 
-    float psi = atan2f(norm[2], norm[0]);
-    if (psi < 0) {
-        psi += 2 * M_PI;
-    }
+//    float psi = atan2f(norm[2], norm[0]);
+//    if (psi < 0) {
+//        psi += 2 * M_PI;
+//    }
 
-    float theta = acos(norm[1]);
+//    float theta = acos(norm[1]);
 
-    float u = 1 - (psi / (2 * M_PI));
-    float v = 1 - (theta / M_PI);
+//    float u = 1 - (psi / (2 * M_PI));
+//    float v = 1 - (theta / M_PI);
 
-    uv.push_back(u);
-    uv.push_back(v);
+//    uv.push_back(u);
+//    uv.push_back(v);
 
-    return uv;
-//    int nx = width of texture
-//    int ny;
+//    return uv;
+////    int nx = width of texture
+////    int ny;
 
-//    float u1 = u * nx - floor(u * nx);
-//    float v1 = v * ny - floor(v * ny);
+////    float u1 = u * nx - floor(u * nx);
+////    float v1 = v * ny - floor(v * ny);
 
-//    int i = (int)floor(u * nx);
-//    int j = (int)floor(v * ny);
+////    int i = (int)floor(u * nx);
+////    int j = (int)floor(v * ny);
 
-//    (1 - u1) * (1 - v1)
+////    (1 - u1) * (1 - v1)
 
 
 
-}
+//}
 

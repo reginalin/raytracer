@@ -13,10 +13,10 @@ public:
 //It does not need to store normals per vertex;
 //it may simply use its plane normal.
 
-    static glm::vec4 P1, P2, P3;
+    glm::vec4 P1, P2, P3;
     glm::mat4 transform;
-    static glm::vec4 normal;
-    static glm::vec4 point;
+//    static glm::vec4 normal;
+//    static glm::vec4 point;
 
     Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transformMatrix);
 
