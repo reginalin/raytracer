@@ -37,6 +37,8 @@ int main(int argc, char *argv[])
     Camera *cam = new Camera();  //TODO: Camera currently loads in all parameters at 0. Make camera read in json.
     img_t *img = new_img(256, 256);
     traceEachPix(img, scene, cam);
+    write_ppm(img, "output.ppm");
+    destroy_img(&img);
     //return a.exec();
 
 }

@@ -12,21 +12,21 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     Ray objRay = input.getTransformedCopy(inverted);
 
     glm::vec4 planePoint = glm::vec4(0, 0, 0, 0);
-    glm::vec4 planeNormal = glm::vec4(0, 0, 1, 1);
-    glm::vec4 dir = objRay.direction;
+    glm::vec3 planeNormal = glm::vec3(0, 0, 1);
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
 
     if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
     }
 
-    float t = glm::dot(planeNormal, (planePoint - orig)) / glm::dot(planeNormal, dir);
+    float t = glm::dot(planeNormal, glm::vec3(planePoint - orig)) / glm::dot(planeNormal, dir);
 
-    glm::vec4 temp = objRay.origin + t * dir;
+    glm::vec4 temp = objRay.origin + glm::vec4(t * dir, 0);
     glm::vec4 point = transform * temp;
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = glm::transpose(inverted) * temp;
+    glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 //    vec3 normal = vec3(normTemp);
 
     return Intersection(point, normal, t, this);

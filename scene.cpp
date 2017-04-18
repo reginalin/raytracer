@@ -135,16 +135,16 @@ void Scene::parseMaterial() {
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
-        mat.type = type.toStdString().c_str();
-        mat.name = name.toStdString().c_str();
-        mat.baseColor = baseColor.toStdString().c_str();
+        mat.type = type.toStdString();
+        mat.name = name.toStdString();
+        mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
-            mat.texture = texture.toStdString().c_str();
+            mat.texture = texture.toStdString();
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
-            mat.normalMap = normalMap.toStdString().c_str();
+            mat.normalMap = normalMap.toStdString();
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
@@ -155,6 +155,6 @@ void Scene::parseMaterial() {
             mat.reflective = reflective;
         }
 
-        material_types.insert( std::pair<const char*, Material>(mat.name, mat) );
+        material_types.insert(std::pair<std::string, Material>(mat.name, mat));
     }
 }

@@ -10,7 +10,7 @@ public:
     glm::vec4 eye;
     glm::vec3 worldUp;
     glm::mat4 viewMat;
-    glm::mat4 transformMat;
+    glm::mat4 projectionMat;
     float fov;
     int width;
     int height;
