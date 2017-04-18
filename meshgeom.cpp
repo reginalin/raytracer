@@ -125,14 +125,16 @@ Intersection Mesh::getIntersection(Ray& input) {
     glm::vec4 orig = objRay.origin;
 
     // initializing it as the first one
-    Triangle current = Triangle(faceVecs[1].vertex1, faceVecs[1].vertex2, faceVecs[1].vertex3, transform);
+    Triangle closest = Triangle(faceVecs[1].vertex1, faceVecs[1].vertex2, faceVecs[1].vertex3, transform);
     float currT;
 
     for (int i = 0; i < static_cast<int>(faceVecs.size()); i++) {
         Triangle current = Triangle(faceVecs[i].vertex1, faceVecs[i].vertex2, faceVecs[i].vertex3, transform);
+        triangles.push_back(current);
         float t = current.getIntersection(input).t;
         if (t < currT && t > 0) {
             currT = t;
+            closest = current;
         }
     }
 
@@ -141,7 +143,8 @@ Intersection Mesh::getIntersection(Ray& input) {
 
 //    glm::vec4 normal = temp * transpose(inverted);
 
-    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+    return closest.getIntersection(input);
+
 }
 
 
