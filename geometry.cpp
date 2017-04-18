@@ -2,7 +2,9 @@
 #include <math.h>
 
 Geometry::Geometry() {
-    Intersection getIntersection(Ray& input);
 }
 
+Intersection Geometry::getIntersection(Ray& input) {
+    return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
+}
 

@@ -11,17 +11,17 @@ Intersection Sphere::getIntersection(Ray& input) {
     Ray objRay = input.getTransformedCopy(inverted);
 
 
-    glm::vec4 dir = glm::vec4(objRay.direction[0], objRay.direction[1], objRay.direction[2], 1); // vec3 to vec4
+    glm::vec3 dir = glm::vec3(objRay.direction[0], objRay.direction[1], objRay.direction[2]); // vec3 to vec4
     glm::vec4 orig = objRay.origin;
     
-    glm::vec4 s = orig - center;
+    glm::vec3 s = glm::vec3(orig - center);
     float a = glm::dot(dir, dir);
     float b = glm::dot(dir, s) * 2;
     float c = glm::dot(s, s) + (radius * radius);
 
     float disc = (b * b) - (4 * a * c);
     if (disc < 0) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
     }
 
     float t0, t1;
@@ -33,11 +33,12 @@ Intersection Sphere::getIntersection(Ray& input) {
         // what if both are negative
     }
 
-    glm::vec4 temp = orig + t0 * dir;
+    glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
     glm::vec4 point = transform * temp;
     //vec3?
 
     normal = glm::transpose(inverted) * temp;
+    glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
     return Intersection(point, normal, t0, this);
 }
