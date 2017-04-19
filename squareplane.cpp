@@ -23,10 +23,15 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     float t = glm::dot(planeNormal, glm::vec3(planePoint - orig)) / glm::dot(planeNormal, dir);
     glm::vec4 temp = objRay.origin + glm::vec4(t * dir, 0);
     glm::vec4 point = transform * temp;
-//    vec3 point = vec3(pointTemp);
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
-//    vec3 normal = vec3(normTemp);
 
-    return Intersection(point, normal, glm::vec2(0, 0), t, this);
+    // texture mapping- change span of [-0.5, 0.5] to [0.0, 1.0]
+    float u = temp[0] + 0.5;
+    float v = temp[1] + 0.5;
+
+    // normal mapping
+
+
+    return Intersection(point, normal, glm::vec2(u, v), t, this);
 }
