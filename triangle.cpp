@@ -43,39 +43,39 @@ Intersection Triangle::getIntersection(Ray& input) {
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
-    return Intersection(point, normal, glm::vec2(0, 0), t, this);
+    // calculate u, v
+    float x1 = Triangle::P1[0];
+    float y1 = Triangle::P1[1];
+    float x2 = Triangle::P1[0];
+    float y2 = Triangle::P1[1];
+    float x3 = Triangle::P1[0];
+    float y3 = Triangle::P1[1];
+
+    float s = 0.5 * glm::cross(glm::vec3(x1, y1, 0) - glm::vec3(x2, y2, 0), glm::vec3(x3, y3, 0) - glm::vec3(x2, y2, 0)).length();
+    float s1 = 0.5 * glm::cross(glm::vec3(point[0], point[1], 0) - glm::vec3(x2, y2, 0), glm::vec3(point[0], point[1], 0) - glm::vec3(x3, y3, 0)).length();
+    float s2 = 0.5 * glm::cross(glm::vec3(point[0], point[1], 0) - glm::vec3(x3, y3, 0), glm::vec3(point[0], point[1], 0) - glm::vec3(x1, y1, 0)).length();
+    float s3 = 0.5 * glm::cross(glm::vec3(point[0], point[1], 0) - glm::vec3(x1, y1, 0), glm::vec3(point[0], point[1], 0) - glm::vec3(x2, y2, 0)).length();
+
+    float w1 = s1 / s;
+    float w2 = s2 / s;
+    float w3 = s3 / s;
+
+    float u1 = x1 * w1 + x2 * w2 + x3 * w3;
+    float v1 = y1 * y1 + y2 * w2 + y3 * w3;
+
+    // normal mapping
+    glm::vec3 tangent = ((y3 - y1) * (glm::vec3(P2 - P1)) - (y2 - y1) * (glm::vec3(P3 - P1))) / ((y3 - y1) * (x2 - x1) - (y2 - y1) * (x3 - x1));
+
+    glm::vec3 bitangent = (glm::vec3(P3 - P1) - (x3 - x1) * tangent) / (y3 - y1);
+
+    // should anything be normalized??
+    glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
+                                 glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),
+                                 glm::vec4(normal[0], normal[1], normal[2], 0),
+                                 glm::vec4(0, 0, 0, 1));
+
+    glm::vec3 newNormal = glm::vec3(glm::vec4(normal, 0) * matrix);
+
+    return Intersection(point, newNormal, glm::vec2(u1, v1), t, this);
 }
 
-//std::vector<float> getUV() {
-//    std::vector<float> uv = std::vector<float>();
-
-////    glm::vec4 norm = Triangle::normal;
-////    glm::normalize(norm);
-
-//    float x1 = Triangle::P1[0];
-//    float y1 = Triangle::P1[1];
-//    float x2 = Triangle::P1[0];
-//    float y2 = Triangle::P1[1];
-//    float x3 = Triangle::P1[0];
-//    float y3 = Triangle::P1[1];
-
-//    glm::vec4 p = Triangle::point;
-
-//    float s = 0.5 * glm::cross(glm::vec3(x1, y1, 0) - glm::vec3(x2, y2, 0), glm::vec3(x3, y3, 0) - glm::vec3(x2, y2, 0)).length();
-//    float s1 = 0.5 * glm::cross(glm::vec3(p[0], p[1], 0) - glm::vec3(x2, y2, 0), glm::vec3(p[0], p[1], 0) - glm::vec3(x3, y3, 0)).length();
-//    float s2 = 0.5 * glm::cross(glm::vec3(p[0], p[1], 0) - glm::vec3(x3, y3, 0), glm::vec3(p[0], p[1], 0) - glm::vec3(x1, y1, 0)).length();
-//    float s3 = 0.5 * glm::cross(glm::vec3(p[0], p[1], 0) - glm::vec3(x1, y1, 0), glm::vec3(p[0], p[1], 0) - glm::vec3(x2, y2, 0)).length();
-
-//    float w1 = s1 / s;
-//    float w2 = s2 / s;
-//    float w3 = s3 / s;
-
-//    float u = x1 * w1 + x2 * w2 + x3 * w3;
-//    float v = y1 * y1 + y2 * w2 + y3 * w3;
-
-//    uv.push_back(u);
-//    uv.push_back(v);
-
-//    return uv;
-
-//}
