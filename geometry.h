@@ -17,6 +17,6 @@ public:
     virtual Intersection getIntersection(Ray& input) /*= 0*/ /*const*/;
 
 
-
+};
 #endif // GEOMETRY_H
 
