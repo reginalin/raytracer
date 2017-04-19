@@ -26,7 +26,7 @@ Intersection Cube::getIntersection(Ray& input) {
     // x slab
     if (dir[0] == 0) {
         if (orig[0] < xmin || orig[0] > xmax) {
-            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
 
@@ -52,7 +52,7 @@ Intersection Cube::getIntersection(Ray& input) {
     // y slab
     if (dir[1] == 0) {
         if (orig[1] < ymin || orig[1] > ymax) {
-            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
 
@@ -78,7 +78,7 @@ Intersection Cube::getIntersection(Ray& input) {
     // z slab
     if (dir[2] == 0) {
         if (orig[2] < zmin || orig[2] > zmax) {
-            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+            return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
 
@@ -101,15 +101,15 @@ Intersection Cube::getIntersection(Ray& input) {
     }
 
     if (tn > tf) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec4(0, 0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
     glm::vec4 point = transform * temp;
 //    vec3 point = vec3(pointTemp);
 
-    glm::vec4 normal = glm::transpose(inverted) * temp;
+    glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 //    vec3 normal = vec3(normTemp);
 
-    return Intersection(point, normal, tn, this);
+    return Intersection(point, normal, glm::vec2(0, 0), tn, this);
 }

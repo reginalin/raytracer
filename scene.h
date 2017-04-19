@@ -27,7 +27,7 @@ public:
     Camera cam;
 
     std::vector<Geometry> geo_objs;
-    std::map<const char*, Material> material_types;
+    std::map<std::string, Material> material_types;
 
     Scene();
     Scene(const char *filename);
