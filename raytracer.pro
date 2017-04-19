@@ -50,7 +50,8 @@ DISTFILES += \
     .gitignore \
     camera_wahoo.txt \
     helplog.txt \
-    wahoo.mtl
+    wahoo.mtl \
+    text_nor_maps/154.JPG
 
 HEADERS += \
     camera.h \

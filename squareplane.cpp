@@ -26,7 +26,7 @@ Intersection SquarePlane::getIntersection(Ray& input) {
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
-    // texture mapping- change span of [-0.5, 0.5] to [0.0, 1.0]
+    // texture mapping- change span from [-0.5, 0.5] to [0.0, 1.0]
     float u = temp[0] + 0.5;
     float v = temp[1] + 0.5;
 

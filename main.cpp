@@ -30,6 +30,11 @@ void traceEachPix(img_t *img, Scene scene, Camera *cam) {
     }
 }
 
+void loadJpg() {
+//    QImage textureJpg
+//            tex_nor_maps/154.jpg
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);

@@ -106,10 +106,14 @@ Intersection Cube::getIntersection(Ray& input) {
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
     glm::vec4 point = transform * temp;
-//    vec3 point = vec3(pointTemp);
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
-//    vec3 normal = vec3(normTemp);
 
-    return Intersection(point, normal, glm::vec2(0, 0), tn, this);
+    // texture mapping
+    float u = temp[0] + 0.5;
+    float v = temp[1] + 0.5;
+
+    // normal mapping
+
+    return Intersection(point, normal, glm::vec2(u, v), tn, this);
 }
