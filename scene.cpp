@@ -58,6 +58,7 @@ void Scene::parseGeometry() {
                 glm::scale(scale_matrix, scalars);
             }
             if (transform.contains("rotate")) {
+                std::cout << "rotate";
                 rotate = transform["rotate"].toArray();
                 float x = rotate.at(0).toDouble();
                 float y = rotate.at(1).toDouble();
@@ -90,16 +91,16 @@ void Scene::parseGeometry() {
             }
         }
         glm::mat4 transform;
-//        glm::mat4 rot = rot_mats.pop_back();
-//        transform = scale_matrix * rot;
-//        while (!rot_mats.empty()) {
-//            rot = rot_mats.pop_back();
-//            transform = transform * rot;
-//        }
-//        transform = transform * trans_matrix;
+        glm::mat4 rot = rot_mats.front();
+        transform = scale_matrix * rot;
+        while (!rot_mats.empty()) {
+            rot = rot_mats.front();
+            transform = transform * rot;
+        }
+        transform = transform * trans_matrix;
 
-//        //create geometry object
-//        if (type.compare("sphere") == 0) {
+        //create geometry object
+//        if (("sphere").compare(type) == 0) {
 //            obj = new Sphere(transform);
 //        } else if (type.compare("cube") == 0) {
 //            obj = new Cube(transform);

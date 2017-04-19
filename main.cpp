@@ -12,7 +12,7 @@ void traceEachPix(img_t *img, Scene scene, Camera *cam) {
         Ray ray = cam->raycast(x, y);
         QList<Intersection> intersections = QList<Intersection>();
         std::vector<Geometry> *geometryArray = &scene.geo_objs;
-        for (int i = 0; i < geometryArray->size(); i++) {
+        for (int i = 0; i < (int) geometryArray->size(); i++) {
             Geometry *geometry = &geometryArray->at(i);
             Intersection intersection = geometry->getIntersection(ray);
             if (intersection.t != -1) intersections.append(intersection);

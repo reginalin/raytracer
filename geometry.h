@@ -15,10 +15,8 @@ public:
 
     Geometry();
     virtual Intersection getIntersection(Ray& input) /*= 0*/ /*const*/;
-//    virtual std::vector<float> getUV();
+
+
 };
-
-
-
 #endif // GEOMETRY_H
 
