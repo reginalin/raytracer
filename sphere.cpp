@@ -21,7 +21,7 @@ Intersection Sphere::getIntersection(Ray& input) {
 
     float disc = (b * b) - (4 * a * c);
     if (disc < 0) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
     float t0, t1;
@@ -35,46 +35,40 @@ Intersection Sphere::getIntersection(Ray& input) {
 
     glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
     glm::vec4 point = transform * temp;
-    //vec3?
 
-//    glm::vec4 normal = glm::transpose(inverted) * temp;
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
-    return Intersection(point, normal, t0, this);
+    // calculate u, v
+    glm::vec3 norm = normal;
+    glm::normalize(norm);
+
+    float psi = atan2f(norm[2], norm[0]);
+    if (psi < 0) {
+        psi += 2 * M_PI;
+    }
+
+    float theta = acos(norm[1]);
+
+    float u = 1 - (psi / (2 * M_PI));
+    float v = 1 - (theta / M_PI);
+
+    glm::vec2 uv = glm::vec2(u, v);
+
+    // normal mapping
+    glm::vec3 tangent = glm::cross(normal, glm::vec3(0, 1, 0));
+    glm::normalize(tangent);
+
+    glm::vec3 bitangent = glm::cross(normal, tangent);
+    glm::normalize(tangent); // should this be normalized?
+
+    glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
+                                 glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),
+                                 glm::vec4(normal[0], normal[1], normal[2], 0),
+                                 glm::vec4(0, 0, 0, 1));
+
+    glm::vec3 newNormal = glm::vec3(glm::vec4(normal, 0) * matrix);
+
+    return Intersection(point, newNormal, uv, t0, this);
 }
 
-//std::vector<float> getUV() {
-//    std::vector<float> uv = std::vector<float>();
-
-//    glm::vec4 norm = Sphere::normal;
-//    glm::normalize(norm);
-
-//    float psi = atan2f(norm[2], norm[0]);
-//    if (psi < 0) {
-//        psi += 2 * M_PI;
-//    }
-
-//    float theta = acos(norm[1]);
-
-//    float u = 1 - (psi / (2 * M_PI));
-//    float v = 1 - (theta / M_PI);
-
-//    uv.push_back(u);
-//    uv.push_back(v);
-
-//    return uv;
-////    int nx = width of texture
-////    int ny;
-
-////    float u1 = u * nx - floor(u * nx);
-////    float v1 = v * ny - floor(v * ny);
-
-////    int i = (int)floor(u * nx);
-////    int j = (int)floor(v * ny);
-
-////    (1 - u1) * (1 - v1)
-
-
-
-//}
 

@@ -11,9 +11,10 @@ class Intersection
 public:
     glm::vec4 position;
     glm::vec3 normal;
+    glm::vec2 uv;
     float t;
     Geometry *geometry;
-    Intersection(glm::vec4 position, glm::vec3 normal, float t, Geometry *geometry);
+    Intersection(glm::vec4 position, glm::vec3 normal, glm::vec2 uv, float t, Geometry *geometry);
 };
 
 #endif // INTERSECTION_H

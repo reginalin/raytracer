@@ -35,7 +35,7 @@ Intersection Triangle::getIntersection(Ray& input) {
     float v = tuv[2];
 
     if (u < 0 || u > 1 || v < 0 || v > 1) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
     glm::vec4 temp = orig + glm::vec4(t * dir, 0);
@@ -43,7 +43,7 @@ Intersection Triangle::getIntersection(Ray& input) {
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
-    return Intersection(point, normal, t, this);
+    return Intersection(point, normal, glm::vec2(0, 0), t, this);
 }
 
 //std::vector<float> getUV() {

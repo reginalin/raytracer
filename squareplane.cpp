@@ -17,7 +17,7 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     glm::vec4 orig = objRay.origin;
 
     if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), -1, this);
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
     float t = glm::dot(planeNormal, glm::vec3(planePoint - orig)) / glm::dot(planeNormal, dir);
@@ -28,5 +28,5 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 //    vec3 normal = vec3(normTemp);
 
-    return Intersection(point, normal, t, this);
+    return Intersection(point, normal, glm::vec2(0, 0), t, this);
 }
