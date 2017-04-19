@@ -8,6 +8,7 @@ using namespace glm;
 Scene::Scene() { }
 
 Scene::Scene(const char *filename) {
+    this->geo_objs = std::vector<Geometry>();
     QString contents;
     QString fn;
     fn.sprintf("%s", filename);
@@ -36,7 +37,7 @@ Scene::Scene(const char *filename) {
 
 void Scene::parseGeometry() {
     foreach (const QJsonValue & v, geometry) {
-        Geometry object;
+        Geometry *object;
         QJsonArray scale, rotate, translate;
         QJsonObject geo_obj = v.toObject();
         const char *material = geo_obj["material"].toString().toStdString().c_str();
@@ -100,17 +101,21 @@ void Scene::parseGeometry() {
         transform = transform * trans_matrix;
 
         //create geometry object
-//        if (("sphere").compare(type) == 0) {
-//            obj = new Sphere(transform);
-//        } else if (type.compare("cube") == 0) {
-//            obj = new Cube(transform);
-//        } else if (type.compare("square") == 0) {
-//            obj = new SquarePlane(transform);
-//        } else if (type.compare("obj") == 0) {
-//            obj = new Mesh(transform);
-//        }
 
-    geo_objs.push_back(object);
+        if (strcmp(type, "sphere") == 0) {
+            object = new Sphere(transform);
+            this->geo_objs.push_back(*object);
+        } else if (strcmp(type, "cube") == 0) {
+            object = new Cube(transform);
+            this->geo_objs.push_back(*object);
+        } else if (strcmp(type, "square") == 0) {
+            object = new SquarePlane(transform);
+            this->geo_objs.push_back(*object);
+        } else if (strcmp(type, "obj") == 0) {
+            //Mesh *object = new Mesh(transform);
+            //geo_objs.push_back(object);
+        }
+
     }
 }
 

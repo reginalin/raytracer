@@ -15,6 +15,10 @@
 #include <math.h>
 #include "camera.h"
 #include <geometry.h>
+#include <sphere.h>
+#include <cube.h>
+#include <squareplane.h>
+#include <meshgeom.h>
 #include <material.h>
 #include <map>
 
