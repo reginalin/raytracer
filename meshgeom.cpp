@@ -63,6 +63,14 @@ Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
         transNormVecs.push_back(update);
     }
 
+    // texcoords: vector of u and vs
+    std::vector<float> texcoords = std::vector<float>();
+    for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
+        for (int j = 0; j < static_cast<int>(shapes[i].mesh.texcoords.size()); j++) {
+
+        }
+    }
+
     // indices: vector of vertex indices that specify vertices of triangles
     for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
         for (int j = 0; j < static_cast<int>(shapes[i].mesh.indices.size()); j++) {
