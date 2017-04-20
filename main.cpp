@@ -1,4 +1,7 @@
 #include <QCoreApplication>
+
+#include <QImage>
+#include <QString>
 #include "scene.h"
 
 #include "ppm_example.h"
@@ -38,8 +41,23 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 }
 
 void loadJpg() {
-//    QImage textureJpg
-//            tex_nor_maps/154.jpg
+    QImage *textureJpg = new QImage;
+    QString file = "../../../../tex_nor_maps/154.jpg"; // or other file depending on json
+    textureJpg->load(file);
+
+    //    int nx = width of texture jpg
+    //    int ny = height;
+
+    // for each intersection
+    //    float u1 = u * nx - floor(u * nx);
+    //    float v1 = v * ny - floor(v * ny);
+
+    //    indices for the pixel the intersection is mapped to
+    //    int i = (int)floor(u * nx);
+    //    int j = (int)floor(v * ny);
+
+    //    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
+    //    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
 }
 
 int main(int argc, char *argv[])
