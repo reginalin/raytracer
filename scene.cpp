@@ -91,25 +91,29 @@ void Scene::parseGeometry() {
                 glm::translate(trans_matrix, scalars);
             }
         }
-        glm::mat4 transform;
-        glm::mat4 rot = rot_mats.front();
-        transform = scale_matrix * rot;
-        while (!rot_mats.empty()) {
-            rot = rot_mats.front();
-            transform = transform * rot;
+        glm::mat4 transform_mat;
+        if (rot_mats.size() > 0) {
+            glm::mat4 rot = rot_mats.front();
+            transform_mat = scale_matrix * rot;
+            while (!rot_mats.empty()) {
+                rot = rot_mats.front();
+                transform_mat = transform_mat * rot;
+            }
+        } else {
+            transform_mat = scale_matrix;
         }
-        transform = transform * trans_matrix;
+        transform_mat = transform_mat * trans_matrix;
 
         //create geometry object
 
         if (strcmp(type, "sphere") == 0) {
-            object = new Sphere(transform);
+            object = new Sphere(transform_mat);
             this->geo_objs.push_back(*object);
         } else if (strcmp(type, "cube") == 0) {
-            object = new Cube(transform);
+            object = new Cube(transform_mat);
             this->geo_objs.push_back(*object);
         } else if (strcmp(type, "square") == 0) {
-            object = new SquarePlane(transform);
+            object = new SquarePlane(transform_mat);
             this->geo_objs.push_back(*object);
         } else if (strcmp(type, "obj") == 0) {
             //Mesh *object = new Mesh(transform);
