@@ -13,14 +13,22 @@ struct face {
     glm::vec4 vertex3;
 };
 
+struct uvCoors {
+    glm::vec2 vertex1;
+    glm::vec2 vertex2;
+    glm::vec2 vertex3;
+};
+
 
 std::vector<tinyobj::shape_t> shapes;
 std::vector<tinyobj::material_t> materials;
 
-std::vector<glm::vec4> normVecs;
+//std::vector<glm::vec4> normVecs;
 std::vector<face> faceVecs;
 std::vector<float> indices;
-std::vector<glm::vec4> transNormVecs;
+//std::vector<glm::vec4> transNormVecs;
+std::vector<glm::vec2> uv;
+std::vector<uvCoors> uvVecs;
 
 Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
     transform = transformMatrix;
@@ -44,31 +52,37 @@ Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
         posVecs.push_back(here);
     }
 
-    // normals; vector of normal coordinates
-    std::vector<float> normals = std::vector<float>();
-    for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
-        for (int j = 0; j < static_cast<int>(shapes[i].mesh.normals.size()); j++) {
-            normals.push_back(shapes[i].mesh.normals[j]);
-        }
-    }
+//    // normals; vector of normal coordinates
+//    std::vector<float> normals = std::vector<float>();
+//    for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
+//        for (int j = 0; j < static_cast<int>(shapes[i].mesh.normals.size()); j++) {
+//            normals.push_back(shapes[i].mesh.normals[j]);
+//        }
+//    }
 
-    // vector of vec4s, with w coordinate of 0
-    for (int i = 0; i < static_cast<int>(normals.size()); i+=3) {
-        glm::vec4 here = glm::vec4(normals[i], normals[i+1], normals[i+2], 0);
-        normVecs.push_back(here);
-    }
+//    // vector of vec4s, with w coordinate of 0
+//    for (int i = 0; i < static_cast<int>(normals.size()); i+=3) {
+//        glm::vec4 here = glm::vec4(normals[i], normals[i+1], normals[i+2], 0);
+//        normVecs.push_back(here);
+//    }
 
-    for (int i = 0; i < static_cast<int>(normVecs.size()); i++) {
-        glm::vec4 update = cam.viewMat * normVecs[i];
-        transNormVecs.push_back(update);
-    }
+//    for (int i = 0; i < static_cast<int>(normVecs.size()); i++) {
+//        glm::vec4 update = cam.viewMat * normVecs[i];
+//        transNormVecs.push_back(update);
+//    }
 
     // texcoords: vector of u and vs
     std::vector<float> texcoords = std::vector<float>();
     for (int i = 0; i < static_cast<int>(shapes.size()); i++) {
         for (int j = 0; j < static_cast<int>(shapes[i].mesh.texcoords.size()); j++) {
-
+            texcoords.push_back(shapes[i].mesh.texcoords[j]);
         }
+    }
+
+    // vector of vec2s for u and v
+    for (int i = 0; i < static_cast<int>(texcoords.size()); i+=2) {
+        glm::vec2 here = glm::vec2(texcoords[i], texcoords[i+1]);
+        uv.push_back(here);
     }
 
     // indices: vector of vertex indices that specify vertices of triangles
@@ -85,6 +99,15 @@ Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
         here.vertex2 = posVecs[indices[i+1]];
         here.vertex3 = posVecs[indices[i+2]];
         faceVecs.push_back(here);
+    }
+
+    // vector of uvCoors
+    for (int i = 0; i < static_cast<int>(indices.size()); i+=3) {
+        uvCoors here;
+        here.vertex1 = uv[indices[i]];
+        here.vertex2 = uv[indices[i+1]];
+        here.vertex3 = uv[indices[i+2]];
+        uvVecs.push_back(here);
     }
 
     for (int i = 0; i < static_cast<int>(faceVecs.size()); i++) {
@@ -135,11 +158,19 @@ Intersection Mesh::getIntersection(Ray& input) {
     glm::vec4 orig = objRay.origin;
 
     // initializing it as the first one
-    Triangle closest = Triangle(faceVecs[1].vertex1, faceVecs[1].vertex2, faceVecs[1].vertex3, transform);
+    std::vector<glm::vec2> vertexUV;
+    vertexUV[0] = uvVecs[0].vertex1;
+    vertexUV[1] = uvVecs[0].vertex2;
+    vertexUV[2] = uvVecs[0].vertex3;
+
+    Triangle closest = Triangle(faceVecs[0].vertex1, faceVecs[0].vertex2, faceVecs[0].vertex3, vertexUV, transform);
     float currT;
 
     for (int i = 0; i < static_cast<int>(faceVecs.size()); i++) {
-        Triangle current = Triangle(faceVecs[i].vertex1, faceVecs[i].vertex2, faceVecs[i].vertex3, transform);
+        vertexUV[0] = uvVecs[i].vertex1;
+        vertexUV[1] = uvVecs[i].vertex2;
+        vertexUV[2] = uvVecs[i].vertex3;
+        Triangle current = Triangle(faceVecs[i].vertex1, faceVecs[i].vertex2, faceVecs[i].vertex3, vertexUV, transform);
         triangles.push_back(current);
         float t = current.getIntersection(input).t;
         if (t < currT && t > 0) {

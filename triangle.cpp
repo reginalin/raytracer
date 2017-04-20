@@ -2,10 +2,11 @@
 #include <math.h>
 
 
-Triangle::Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transformMatrix) {
+Triangle::Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> uv, glm::mat4 transformMatrix) {
     P1 = p1;
     P2 = p2;
     P3 = p3;
+    UV = uv;
     transform = transformMatrix;
 }
 
@@ -60,13 +61,14 @@ Intersection Triangle::getIntersection(Ray& input) {
     float w2 = s2 / s;
     float w3 = s3 / s;
 
-    float u1 = x1 * w1 + x2 * w2 + x3 * w3;
-    float v1 = y1 * y1 + y2 * w2 + y3 * w3;
+    float u1 = UV[0][0] * w1 + UV[1][0] * w2 + UV[2][0] * w3;
+    float v1 = UV[0][1] * y1 + UV[1][1] * w2 + UV[2][1] * w3;
 
     // normal mapping
-    glm::vec3 tangent = ((y3 - y1) * (glm::vec3(P2 - P1)) - (y2 - y1) * (glm::vec3(P3 - P1))) / ((y3 - y1) * (x2 - x1) - (y2 - y1) * (x3 - x1));
+    glm::vec3 tangent = ((UV[2][1] - UV[0][1]) * (glm::vec3(P2 - P1)) - (UV[1][1] - UV[0][1]) * (glm::vec3(P3 - P1)))
+                        / ((UV[2][1] - UV[0][1]) * (UV[1][0] - UV[0][0]) - (UV[1][1] - UV[0][1]) * (UV[2][0] - UV[0][0]));
 
-    glm::vec3 bitangent = (glm::vec3(P3 - P1) - (x3 - x1) * tangent) / (y3 - y1);
+    glm::vec3 bitangent = (glm::vec3(P3 - P1) - (UV[2][0] - UV[0][0]) * tangent) / (UV[2][1] - UV[0][1]);
 
     // should anything be normalized??
     glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),

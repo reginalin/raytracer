@@ -15,8 +15,9 @@ public:
 
     glm::vec4 P1, P2, P3;
     glm::mat4 transform;
+    std::vector<glm::vec2> UV;
 
-    Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, glm::mat4 transformMatrix);
+    Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> UV, glm::mat4 transformMatrix);
 
     virtual Intersection getIntersection(Ray& input) /*const*/;
 
