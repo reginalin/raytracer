@@ -1,6 +1,7 @@
 #include "sphere.h"
 #include <math.h>
 
+const float PI = 3.14159265358979323846264338327950288419716939937510582;
 
 Sphere::Sphere(glm::mat4 transformMatrix) {
     transform = transformMatrix;
@@ -44,13 +45,13 @@ Intersection Sphere::getIntersection(Ray& input) {
 
     float psi = atan2f(norm[2], norm[0]);
     if (psi < 0) {
-        psi += 2 * M_PI;
+        psi += 2 * PI;
     }
 
     float theta = acos(norm[1]);
 
-    float u = 1 - (psi / (2 * M_PI));
-    float v = 1 - (theta / M_PI);
+    float u = 1 - (psi / (2 * PI));
+    float v = 1 - (theta / PI);
 
     glm::vec2 uv = glm::vec2(u, v);
 
