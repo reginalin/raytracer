@@ -2,10 +2,13 @@
 #define COLOR_H
 
 
-class color
+class Color
 {
 public:
-    color();
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    Color(unsigned char r, unsigned char g, unsigned char b);
 };
 
 #endif // COLOR_H

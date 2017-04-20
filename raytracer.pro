@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     sphere.cpp \
     squareplane.cpp \
     triangle.cpp \
-    material.cpp
+    material.cpp \
+    color.cpp
 
 
 
@@ -68,4 +69,5 @@ HEADERS += \
     squareplane.h \
     triangle.h \
     la.h \
-    material.h
+    material.h \
+    color.h
