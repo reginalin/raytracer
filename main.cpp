@@ -44,6 +44,6 @@ int main(int argc, char *argv[])
     traceEachPix(img, scene, cam);
     write_ppm(img, "output.ppm");
     destroy_img(&img);
-    //return a.exec();
+    return a.exec();
 
 }
