@@ -21,6 +21,7 @@
 #include <meshgeom.h>
 #include <material.h>
 #include <map>
+#include <stdio.h>
 
 class Scene
 {

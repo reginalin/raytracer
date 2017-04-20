@@ -8,6 +8,7 @@ using namespace glm;
 Scene::Scene() { }
 
 Scene::Scene(const char *filename) {
+    std::cout << "in scene" << std::endl;
     this->geo_objs = std::vector<Geometry>();
     QString contents;
     QString fn;
@@ -31,8 +32,6 @@ Scene::Scene(const char *filename) {
     parseCamera();
     parseMaterial();
     parseGeometry();
-
-    std::cout << this->geometry.size();
 }
 
 void Scene::parseGeometry() {
@@ -57,6 +56,7 @@ void Scene::parseGeometry() {
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 glm::scale(scale_matrix, scalars);
+                std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
                 std::cout << "rotate";
@@ -70,7 +70,7 @@ void Scene::parseGeometry() {
                     rot_mats.push_back(rot);
                 }
                 if (y != 0) {
-                    std::cout << "y";
+                    std::cout << " y ";
                     glm::mat4 rot;
                     glm::rotate(rot, y, glm::vec3(0, 1, 0));
                     rot_mats.push_back(rot);
@@ -80,6 +80,7 @@ void Scene::parseGeometry() {
                     glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
+                std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
@@ -89,6 +90,7 @@ void Scene::parseGeometry() {
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 glm::translate(trans_matrix, scalars);
+                std::cout << "translate is here" << std::endl;
             }
         }
         glm::mat4 transform_mat;
@@ -98,29 +100,35 @@ void Scene::parseGeometry() {
             while (!rot_mats.empty()) {
                 rot = rot_mats.front();
                 transform_mat = transform_mat * rot;
+                rot_mats.erase(rot_mats.begin());
             }
         } else {
             transform_mat = scale_matrix;
         }
         transform_mat = transform_mat * trans_matrix;
+        std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
 
         if (strcmp(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
             this->geo_objs.push_back(*object);
+            std::cout << "sphere added" << std::endl;
         } else if (strcmp(type, "cube") == 0) {
             object = new Cube(transform_mat);
             this->geo_objs.push_back(*object);
+            std::cout << "cube added" << std::endl;
         } else if (strcmp(type, "square") == 0) {
             object = new SquarePlane(transform_mat);
             this->geo_objs.push_back(*object);
+            std::cout << "square added" << std::endl;
         } else if (strcmp(type, "obj") == 0) {
             //Mesh *object = new Mesh(transform);
             //geo_objs.push_back(object);
         }
-
+        std::cout << "object made" << std::endl;
     }
+    std::cout << "objects made" << std::endl;
 }
 
 void Scene::parseCamera() {
@@ -134,6 +142,7 @@ void Scene::parseCamera() {
     int width = camera["width"].toInt();
     int height = camera["height"].toInt();
     cam = Camera(target_vec, eye_vec, up_vec, fov, width, height);
+    std::cout << "Loaded camera";
 }
 
 void Scene::parseMaterial() {
@@ -167,4 +176,5 @@ void Scene::parseMaterial() {
 
         material_types.insert(std::pair<std::string, Material>(mat.name, mat));
     }
+    std::cout << "Loaded material" << std::endl;
 }

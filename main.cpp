@@ -25,6 +25,9 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
 
 void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
     for (int i = 0; i < img->h * img->w; i++) {
+        if (i % 20 == 0) {
+            std::cout << i;
+        }
         int x = i / img->w;
         int y = i % img->w;
         Color color = traceAPix(x, y, img, scene, cam);
@@ -42,6 +45,7 @@ void loadJpg() {
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+    std::cout << "parsing scene";
     Scene scene = Scene("all_shapes.json");
     Camera *cam = &scene.cam;
     img_t *img = new_img(256, 256);
