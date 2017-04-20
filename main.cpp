@@ -39,7 +39,6 @@ void loadJpg() {
     QString file = "../../../../tex_nor_maps/154.jpg"; // or other file depending on json
     textureJpg->load(file);
 
-//            tex_nor_maps/154.jpg
     //    int nx = width of texture jpg
     //    int ny = height;
 
