@@ -1,7 +1,6 @@
 #include "cube.h"
 #include <math.h>
-
-
+#include <iostream>
 Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
 }
@@ -104,6 +103,8 @@ Intersection Cube::getIntersection(Ray& input) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
+//    max of x, y, z and glm sine
+
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
     glm::vec4 point = transform * temp;
 
@@ -112,8 +113,10 @@ Intersection Cube::getIntersection(Ray& input) {
     // texture mapping
     float u = temp[0] + 0.5;
     float v = temp[1] + 0.5;
+    // not good- interpolate between corners
 
     // normal mapping
+//    float max = std::max(temp[0], std::max(temp[1], temp[2]));
 
     return Intersection(point, normal, glm::vec2(u, v), tn, this);
 }
