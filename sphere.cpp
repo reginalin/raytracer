@@ -1,13 +1,17 @@
 #include "sphere.h"
 #include <math.h>
+#include <iostream>
 
 const float PI = 3.14159265358979323846264338327950288419716939937510582;
 
 Sphere::Sphere(glm::mat4 transformMatrix) {
     transform = transformMatrix;
+    std::cout<<"Constructed a sphere"<< std::endl;
 }
 
 Intersection Sphere::getIntersection(Ray& input) {
+    std::cout<<"Checked sphere intersection"<< std::endl;
+
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 

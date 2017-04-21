@@ -14,7 +14,7 @@ public:
     // Intersection = the Intersection class
 
     Geometry();
-    virtual Intersection getIntersection(Ray& input) /*= 0*/ /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 
 
 };

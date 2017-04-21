@@ -1,5 +1,6 @@
 #include "geometry.h"
 #include <math.h>
+#include <iostream>
 
 Geometry::Geometry() {
 }

@@ -15,7 +15,7 @@ public:
 
     Sphere(glm::mat4 transformMatrix);
 
-    Intersection getIntersection(Ray& input) /*const*/;
+    virtual Intersection getIntersection(Ray& input) /*const*/;
 };
 
 #endif

@@ -118,5 +118,6 @@ Intersection Cube::getIntersection(Ray& input) {
     // normal mapping
 //    float max = std::max(temp[0], std::max(temp[1], temp[2]));
 
+
     return Intersection(point, normal, glm::vec2(u, v), tn, this);
 }

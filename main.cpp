@@ -8,17 +8,21 @@
 #include "ray.h"
 #include "geometry.h"
 #include "color.h"
+#include <iostream>
 
 Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
     Ray ray = cam->raycast(x, y);
     QList<Intersection> intersections = QList<Intersection>();
-    std::vector<Geometry> *geometryArray = &scene->geo_objs;
-    for (int i = 0; i < (int) geometryArray->size(); i++) {
-        Geometry *geometry = &geometryArray->at(i);
-        Intersection intersection = geometry->getIntersection(ray);
+    std::vector<Geometry> geometryArray = scene->geo_objs;
+    for (int i = 0; i < (int) geometryArray.size(); i++) {
+        std::cout<<"Checked sphere intersection"<< std::endl;
+        Geometry geometry = geometryArray.at(i);
+        Intersection intersection = geometry.getIntersection(ray);
         if (intersection.t != -1) intersections.append(intersection);
     }
     if (!intersections.empty()) {
+        std::cout<<"Render an intersection"<< std::endl;
+
         return Color(255,255,255);
     }
     else {
@@ -32,7 +36,7 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //            std::cout << i;
 //        }
         int x = i / img->w;
-        int y = i % img->w;
+        int y = i % img->h;
         Color color = traceAPix(x, y, img, scene, cam);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
@@ -66,7 +70,7 @@ int main(int argc, char *argv[])
     std::cout << "parsing scene";
     Scene scene = Scene("cube.json");
     Camera *cam = &scene.cam;
-    img_t *img = new_img(256, 256);
+    img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);
     write_ppm(img, "output.ppm");
     destroy_img(&img);
