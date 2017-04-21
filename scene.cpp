@@ -100,7 +100,7 @@ void Scene::parseGeometry() {
                 std::cout << "translate is here" << std::endl;
             }
         }
-        glm::mat4 transform_mat;
+        glm::mat4 transform_mat = glm::mat4();
         if (rot_mats.size() > 0) {
             glm::mat4 rot = rot_mats.front();
             transform_mat = scale_matrix * rot;
