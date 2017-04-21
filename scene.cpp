@@ -15,7 +15,14 @@ Scene::Scene(const char *filename) {
     fn.sprintf("%s", filename);
 
     QDir dir = QDir::currentPath();
-    QString path = QCoreApplication::applicationDirPath() + "/" + fn;
+
+    QString basePath =  QCoreApplication::applicationDirPath();
+//    std::cout<<basePath.toStdString()<<std::endl;
+
+    QString path = basePath + "/../raytracer/" + fn;
+
+//    std::cout<<path.toStdString()<<std::endl;
+//    std::cout<<"wanted: /raytracer/"<<fn.toStdString();
 
     QFile file(path);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
