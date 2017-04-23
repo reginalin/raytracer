@@ -50,10 +50,8 @@ Camera::Camera(glm::vec4 target, glm::vec4 eye, glm::vec3 worldUp, float fov, in
 }
 
 Ray Camera::raycast(int x, int y) {
-    //I think I did this wrong
-
-    float pixX = (x + 0.5)/width;
-    float pixY = (y + 0.5)/height;
+    float pixX = (x + 0.5)/((float)width);
+    float pixY = (y + 0.5)/((float)height);
     float pixNDCX = 2 * pixX - 1;
     float pixNDCY = 1 - 2 * pixY;
     glm::vec4 pixNDCCoords = glm::vec4(pixNDCX, pixNDCY, 1, 1);

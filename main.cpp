@@ -14,6 +14,11 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
     Ray ray = cam->raycast(x, y);
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
+    glm::mat4 transform = glm::mat4(glm::vec4(1, 0, 0, 0),
+                                    glm::vec4(0, 1, 0, 0),
+                                    glm::vec4(0, 0, 1, 0),
+                                    glm::vec4(0, 0.5, -30, 1));
+//    Sphere sphere = Sphere(transform);
     for (int i = 0; i < (int) geometryArray->size(); i++) {
         Geometry *geometry = geometryArray->at(i);
         Intersection intersection = geometry->getIntersection(ray);
@@ -21,7 +26,7 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
     }
 
     if (!intersections.empty()) {
-        std::cout<<"Render an intersection"<< std::endl;
+//        std::cout<<"Render an intersection"<< std::endl;
 
         return Color(255,255,255);
     }

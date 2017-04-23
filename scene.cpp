@@ -19,8 +19,8 @@ Scene::Scene(const char *filename) {
     QString basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-//    QString path = basePath + "/../../raytracer/" + fn;
-    QString path = basePath + "/../raytracer/" + fn;
+    QString path = basePath + "/../../raytracer/" + fn;
+//    QString path = basePath + "/../raytracer/" + fn;
 
 
    std::cout<<path.toStdString()<<std::endl;
@@ -48,9 +48,9 @@ void Scene::parseGeometry() {
         Geometry *object;
         QJsonArray scale, rotate, translate;
         QJsonObject geo_obj = v.toObject();
-        const char *material = geo_obj["material"].toString().toStdString().c_str();
-        const char *type = geo_obj["type"].toString().toStdString().c_str();
-        const char *name = geo_obj["name"].toString().toStdString().c_str();
+        QString material = geo_obj["material"].toString();
+        QString type = geo_obj["type"].toString();
+        QString name = geo_obj["name"].toString();
         glm::mat4 trans_matrix;
         glm::mat4 scale_matrix;
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
@@ -119,19 +119,19 @@ void Scene::parseGeometry() {
 
         //create geometry object
 
-        if (strcmp(type, "sphere") == 0) {
+        if (QString::compare(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
             this->geo_objs.push_back(object);
             std::cout << "sphere added" << std::endl;
-        } else if (strcmp(type, "cube") == 0) {
+        } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
-        } else if (strcmp(type, "square") == 0) {
+        } else if (QString::compare(type, "square") == 0) {
             object = new SquarePlane(transform_mat);
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
-        } else if (strcmp(type, "obj") == 0) {
+        } else if (QString::compare(type, "obj") == 0) {
             //Mesh *object = new Mesh(transform);
             //geo_objs.push_back(object);
         }

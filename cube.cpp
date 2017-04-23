@@ -114,7 +114,7 @@ Intersection Cube::getIntersection(Ray& input) {
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
 
-    std::cout<<temp[0]<<std::endl;
+//    std::cout<<temp[0]<<std::endl;
 
 
     glm::vec4 point = transform * temp;
