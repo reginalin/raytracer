@@ -19,6 +19,7 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
         Intersection intersection = geometry->getIntersection(ray);
         if (intersection.t != -1) intersections.append(intersection);
     }
+
     if (!intersections.empty()) {
         std::cout<<"Render an intersection"<< std::endl;
 
@@ -45,15 +46,19 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 
 void loadJpg() {
     QImage *textureJpg = new QImage;
-    QString file = "../../../../tex_nor_maps/154.jpg"; // or other file depending on json
+    QString file = "/tex_nor_maps/154.jpg"; // or other file depending on json
     textureJpg->load(file);
-
+    int nx = textureJpg->width();
+    int ny = textureJpg->height();
+    std::cout<<"width"<<nx<<std::endl;
     //    int nx = width of texture jpg
     //    int ny = height;
 
     // for each intersection
-    //    float u1 = u * nx - floor(u * nx);
-    //    float v1 = v * ny - floor(v * ny);
+//    float u = intersection.uv[0];
+//    float v = intersection.uv[1];
+//    float u1 = u * nx - floor(u * nx);
+//    float v1 = v * ny - floor(v * ny);
 
     //    indices for the pixel the intersection is mapped to
     //    int i = (int)floor(u * nx);
@@ -71,6 +76,7 @@ int main(int argc, char *argv[])
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);
+    loadJpg();
     write_ppm(img, "output.ppm");
     destroy_img(&img);
     //return a.exec();

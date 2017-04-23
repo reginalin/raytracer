@@ -24,8 +24,6 @@ Intersection Cube::getIntersection(Ray& input) {
     float tf = INFINITY; // t far
     float t0x, t1x, t0y, t1y, t0z, t1z;
 
-    std::cout<<tn<<std::endl;
-
     // x slab
     if (dir[0] == 0) {
         if (orig[0] < xmin || orig[0] > xmax) {
@@ -118,7 +116,6 @@ Intersection Cube::getIntersection(Ray& input) {
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
 
     std::cout<<temp[0]<<std::endl;
-    std::cout<<"HI"<<std::endl;
 
 
     glm::vec4 point = transform * temp;
