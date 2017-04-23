@@ -12,8 +12,9 @@ public:
 
     // if you cast a ray, will you hit - intersect function
     // Intersection = the Intersection class
-
     Geometry();
+    Geometry(glm::mat4 transform);
+    glm::mat4 transform;
     virtual Intersection getIntersection(Ray& input) /*const*/;
 
 

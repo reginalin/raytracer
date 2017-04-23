@@ -64,7 +64,9 @@ void Scene::parseGeometry() {
                 float y = scale.at(1).toDouble();
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
+                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
                 scale_matrix = glm::scale(scale_matrix, scalars);
+                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
                 std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
@@ -125,7 +127,9 @@ void Scene::parseGeometry() {
 
         if (QString::compare(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
+            std::cout << " TRANSFORM MAT " << glm::to_string(transform_mat) << endl;
             this->geo_objs.push_back(object);
+            std::cout << " TRANSFORM " << glm::to_string(object->transform) << endl;
             std::cout << "sphere added" << std::endl;
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
