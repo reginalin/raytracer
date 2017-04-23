@@ -129,7 +129,21 @@ Intersection Cube::getIntersection(Ray& input) {
 
     // normal mapping
 //    float max = std::max(temp[0], std::max(temp[1], temp[2]));
-
+    glm::vec3 newNormal;
+    // what if the values aren't exactly 0.5/-0.5???
+//    if (point[0] == 0.5) {
+//        newNormal = glm::vec3(0.5, 0, 1);
+//    } else if (point[0] == -0.5) {
+//        newNormal = glm::vec3(-0.5, 0, -1);
+//    } else if (point[1] == 0.5) {
+//        newNormal = glm::vec3();
+//    } else if (point[1] == -0.5) {
+//        newNormal = glm::vec3(0, 0, -1);
+//    } else if (point[2] == 0.5) {
+//        newNormal = glm::vec3(0, 0, -1);
+//    } else if (point[2] == -0.5) {
+//        newNormal = glm::vec3(0, 0, -1);
+//    }
 
     return Intersection(point, normal, glm::vec2(u, v), tn, this);
 }
