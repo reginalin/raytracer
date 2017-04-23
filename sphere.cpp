@@ -16,13 +16,17 @@ Intersection Sphere::getIntersection(Ray& input) {
     Ray objRay = input.getTransformedCopy(inverted);
 
 
-    glm::vec3 dir = glm::vec3(objRay.direction[0], objRay.direction[1], objRay.direction[2]); // vec3 to vec4
+//    glm::vec3 dir = glm::vec3(objRay.direction[0], objRay.direction[1], objRay.direction[2]); // vec3 to vec4
+    glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
     
-    glm::vec3 s = glm::vec3(orig - center);
-    float a = glm::dot(dir, dir);
-    float b = glm::dot(dir, s) * 2;
-    float c = glm::dot(s, s) + (radius * radius);
+    glm::vec3 s = glm::vec3(orig[0] - center[0], orig[1] - center[1], orig[2] - center[2]);
+//    float a = glm::dot(dir, dir);
+    float a = (dir[0] * dir[0]) + (dir[1] * dir[1]) + (dir[2] * dir[2]);
+//    float b = glm::dot(dir, s) * 2;
+    float b = 2 * ((dir[0] * s[0]) + (dir[1] * s[1]) + (dir[2] * s[2]));
+//    float c = glm::dot(s, s) + (radius * radius);
+    float c = (s[0] * s[0]) + (s[1] * s[1]) + (s[2] * s[2]) - (radius * radius);
 
     float disc = (b * b) - (4 * a * c);
     if (disc < 0) {
