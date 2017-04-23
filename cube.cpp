@@ -7,7 +7,7 @@ Cube::Cube(glm::mat4 transformMatrix) {
 }
 
 Intersection Cube::getIntersection(Ray& input) {
-    std::cout<<"Check intersection cube"<< std::endl;
+//    std::cout<<"Check intersection cube"<< std::endl;
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
@@ -51,7 +51,6 @@ Intersection Cube::getIntersection(Ray& input) {
         tf = t1x;
     }
 
-
     // y slab
     if (dir[1] == 0) {
         if (orig[1] < ymin || orig[1] > ymax) {
@@ -77,7 +76,6 @@ Intersection Cube::getIntersection(Ray& input) {
     if (t1y < tf) {
         tf = t1y;
     }
-
 
     // z slab
     if (dir[2] == 0) {
@@ -106,8 +104,9 @@ Intersection Cube::getIntersection(Ray& input) {
         tf = t1z;
     }
 
+
     if (tn > tf) {
-        std::cout<<"not on screen"<<std::endl;
+//        std::cout<<"not on screen"<<std::endl;
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
@@ -125,6 +124,8 @@ Intersection Cube::getIntersection(Ray& input) {
     // texture mapping
     float u = temp[0] + 0.5;
     float v = temp[1] + 0.5;
+
+
     // not good- interpolate between corners
 
     // normal mapping
