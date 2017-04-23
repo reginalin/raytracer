@@ -24,7 +24,6 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     glm::vec4 temp = objRay.origin + glm::vec4(t * dir, 0);
     glm::vec4 point = transform * temp;
 
-
     // texture mapping- change span from [-0.5, 0.5] to [0.0, 1.0]
     float u = temp[0] + 0.5;
     float v = temp[1] + 0.5;
