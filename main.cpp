@@ -51,8 +51,10 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 
 void loadJpg() {
     QImage *textureJpg = new QImage;
-    QString file = "/tex_nor_maps/154.jpg"; // or other file depending on json
+    QString file = "text_nor_maps/154.JPG"; // or other file depending on json
+
     textureJpg->load(file);
+    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
     int nx = textureJpg->width();
     int ny = textureJpg->height();
     std::cout<<"width"<<nx<<std::endl;
