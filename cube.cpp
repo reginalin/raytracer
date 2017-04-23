@@ -13,20 +13,24 @@ Intersection Cube::getIntersection(Ray& input) {
 
     glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
-    float xmin = radius;
+    float xmin = -radius;
     float xmax = radius;
-    float ymin = radius;
+    float ymin = -radius;
     float ymax = radius;
-    float zmin = radius;
+    float zmin = -radius;
     float zmax = radius;
 
     float tn = -INFINITY; // t near
     float tf = INFINITY; // t far
     float t0x, t1x, t0y, t1y, t0z, t1z;
 
+    std::cout<<tn<<std::endl;
+
     // x slab
     if (dir[0] == 0) {
         if (orig[0] < xmin || orig[0] > xmax) {
+            std::cout<<"X SLAB"<<std::endl;
+
             return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
@@ -53,6 +57,7 @@ Intersection Cube::getIntersection(Ray& input) {
     // y slab
     if (dir[1] == 0) {
         if (orig[1] < ymin || orig[1] > ymax) {
+            std::cout<<"Y SLAB"<<std::endl;
             return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
@@ -79,6 +84,8 @@ Intersection Cube::getIntersection(Ray& input) {
     // z slab
     if (dir[2] == 0) {
         if (orig[2] < zmin || orig[2] > zmax) {
+            std::cout<<"Z SLAB"<<std::endl;
+
             return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
         }
     }
@@ -102,12 +109,18 @@ Intersection Cube::getIntersection(Ray& input) {
     }
 
     if (tn > tf) {
+        std::cout<<"not on screen"<<std::endl;
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
 //    max of x, y, z and glm sine
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
+
+    std::cout<<temp[0]<<std::endl;
+    std::cout<<"HI"<<std::endl;
+
+
     glm::vec4 point = transform * temp;
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
