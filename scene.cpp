@@ -19,8 +19,8 @@ Scene::Scene(const char *filename) {
     QString basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-    QString path = basePath + "/../../raytracer/" + fn;
-//    QString path = basePath + "/../raytracer/" + fn;
+   // QString path = basePath + "/../../raytracer/" + fn;
+    QString path = basePath + "/../raytracer/" + fn;
 
 
    std::cout<<path.toStdString()<<std::endl;
@@ -64,7 +64,7 @@ void Scene::parseGeometry() {
                 float y = scale.at(1).toDouble();
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                glm::scale(scale_matrix, scalars);
+                scale_matrix = glm::scale(scale_matrix, scalars);
                 std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
@@ -75,30 +75,33 @@ void Scene::parseGeometry() {
                 float z = rotate.at(2).toDouble();
                 if (x != 0) {
                     glm::mat4 rot;
-                    glm::rotate(rot, x, glm::vec3(1, 0, 0));
+                    rot = glm::rotate(rot, x, glm::vec3(1, 0, 0));
                     rot_mats.push_back(rot);
                 }
                 if (y != 0) {
                     std::cout << " y ";
                     glm::mat4 rot;
-                    glm::rotate(rot, y, glm::vec3(0, 1, 0));
+                    rot = glm::rotate(rot, y, glm::vec3(0, 1, 0));
                     rot_mats.push_back(rot);
                 }
                 if (z != 0) {
                     glm::mat4 rot;
-                    glm::rotate(rot, z, glm::vec3(0, 0, 1));
+                    rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
                 std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
+                std::cout << "translate" << glm::to_string(trans_matrix);
                 translate = transform["translate"].toArray();
                 float x = translate.at(0).toDouble();
                 float y = translate.at(1).toDouble();
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                glm::translate(trans_matrix, scalars);
+                std::cout << glm::to_string(scalars);
+                trans_matrix = glm::translate(trans_matrix, scalars);
+                std::cout << "translate" << glm::to_string(trans_matrix);
                 std::cout << "translate is here" << std::endl;
             }
         }
@@ -115,6 +118,7 @@ void Scene::parseGeometry() {
             transform_mat = scale_matrix;
         }
         transform_mat = transform_mat * trans_matrix;
+        std::cout << "transform " << glm::to_string(transform_mat);
         std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
