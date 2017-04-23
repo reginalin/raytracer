@@ -58,8 +58,7 @@ void loadJpg() {
     int nx = textureJpg->width();
     int ny = textureJpg->height();
     std::cout<<"width"<<nx<<std::endl;
-    //    int nx = width of texture jpg
-    //    int ny = height;
+    std::cout<<"height"<<ny<<std::endl;
 
     // for each intersection
 //    float u = intersection.uv[0];
