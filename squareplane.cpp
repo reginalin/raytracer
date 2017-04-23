@@ -24,14 +24,14 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     glm::vec4 temp = objRay.origin + glm::vec4(t * dir, 0);
     glm::vec4 point = transform * temp;
 
-    glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
     // texture mapping- change span from [-0.5, 0.5] to [0.0, 1.0]
     float u = temp[0] + 0.5;
     float v = temp[1] + 0.5;
 
     // normal mapping
+    glm::vec4 normal = glm::vec4(0, 0, 1, 0);
+    glm::vec3 normal1 = glm::vec3(glm::transpose(inverted) * normal);
 
-
-    return Intersection(point, normal, glm::vec2(u, v), t, this);
+    return Intersection(point, normal1, glm::vec2(u, v), t, this);
 }
