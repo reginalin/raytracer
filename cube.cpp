@@ -119,32 +119,55 @@ Intersection Cube::getIntersection(Ray& input) {
 
     glm::vec4 point = transform * temp;
 
-    glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
+    glm::vec3 normal;
+    // texture and normal mapping
 
-    // texture mapping
-    float u = temp[0] + 0.5;
-    float v = temp[1] + 0.5;
+    float x = temp[0];
+    float y = temp[1];
+    float z = temp[2];
 
+    int coor = 0;
+    float u, v;
 
-    // not good- interpolate between corners
+    float max = std::max(std::abs(x), std::max(std::abs(y), std::abs(z)));
+    if (max == std::abs(x)) {
+        coor = 0;
+    } else if (max == std::abs(y)) {
+        coor = 1;
+    } else if (max == std::abs(z)) {
+        coor = 2;
+    }
 
-    // normal mapping
-//    float max = std::max(temp[0], std::max(temp[1], temp[2]));
-    glm::vec3 newNormal;
-    // what if the values aren't exactly 0.5/-0.5???
-//    if (point[0] == 0.5) {
-//        newNormal = glm::vec3(0.5, 0, 1);
-//    } else if (point[0] == -0.5) {
-//        newNormal = glm::vec3(-0.5, 0, -1);
-//    } else if (point[1] == 0.5) {
-//        newNormal = glm::vec3();
-//    } else if (point[1] == -0.5) {
-//        newNormal = glm::vec3(0, 0, -1);
-//    } else if (point[2] == 0.5) {
-//        newNormal = glm::vec3(0, 0, -1);
-//    } else if (point[2] == -0.5) {
-//        newNormal = glm::vec3(0, 0, -1);
-//    }
+    if (coor == 0) {
+        u = z + 0.5;
+        v = y + 0.5;
 
-    return Intersection(point, normal, glm::vec2(u, v), tn, this);
+        if (x < 0) {
+            normal = glm::vec3(-1, 0, 0);
+        } else if (x > 0) {
+            normal = glm::vec3(1, 0, 0);
+        }
+    } else if (coor == 1) {
+        u = x + 0.5;
+        v = z + 0.5;
+
+        if (y < 0) {
+            normal = glm::vec3(0, -1, 0);
+        } else if (y > 0) {
+            normal = glm::vec3(0, 1, 0);
+        }
+    } else if (coor == 2) {
+        u = x + 0.5;
+        v = y + 0.5;
+
+        if (z < 0) {
+            normal = glm::vec3(0, 0, -1);
+        } else if (z > 0) {
+            normal = glm::vec3(0, 0, 1);
+        }
+    }
+
+    glm::vec3 normal1 = glm::vec3(glm::transpose(inverted) * glm::vec4(normal, 0));
+
+    return Intersection(point, normal1, glm::vec2(u, v), tn, this);
 }
