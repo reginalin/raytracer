@@ -3,9 +3,11 @@
 #include <iostream>
 Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
+    std::cout<<"Constructed a cube"<< std::endl;
 }
 
 Intersection Cube::getIntersection(Ray& input) {
+    std::cout<<"Check intersection cube"<< std::endl;
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 

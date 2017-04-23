@@ -31,7 +31,7 @@ public:
     QJsonArray material;
     Camera cam;
 
-    std::vector<Geometry> geo_objs;
+    std::vector<Geometry *> geo_objs;
     std::map<std::string, Material> material_types;
 
     Scene();

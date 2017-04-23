@@ -10,7 +10,7 @@ Sphere::Sphere(glm::mat4 transformMatrix) {
 }
 
 Intersection Sphere::getIntersection(Ray& input) {
-    std::cout<<"Checked sphere intersection"<< std::endl;
+//    std::cout<<"Check intersection sphere"<< std::endl;
 
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);

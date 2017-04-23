@@ -9,7 +9,7 @@ Scene::Scene() { }
 
 Scene::Scene(const char *filename) {
     std::cout << "in scene" << std::endl;
-    this->geo_objs = std::vector<Geometry>();
+    this->geo_objs = std::vector<Geometry *>();
     QString contents;
     QString fn;
     fn.sprintf("%s", filename);
@@ -17,11 +17,11 @@ Scene::Scene(const char *filename) {
     QDir dir = QDir::currentPath();
 
     QString basePath =  QCoreApplication::applicationDirPath();
-//    std::cout<<basePath.toStdString()<<std::endl;
+    //std::cout<<basePath.toStdString()<<std::endl;
 
-    QString path = basePath + "/../raytracer/" + fn;
+    QString path = basePath + "/../../raytracer/" + fn;
 
-//    std::cout<<path.toStdString()<<std::endl;
+   std::cout<<path.toStdString()<<std::endl;
 //    std::cout<<"wanted: /raytracer/"<<fn.toStdString();
 
     QFile file(path);
@@ -119,15 +119,15 @@ void Scene::parseGeometry() {
 
         if (strcmp(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
-            this->geo_objs.push_back(*object);
+            this->geo_objs.push_back(object);
             std::cout << "sphere added" << std::endl;
         } else if (strcmp(type, "cube") == 0) {
             object = new Cube(transform_mat);
-            this->geo_objs.push_back(*object);
+            this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
         } else if (strcmp(type, "square") == 0) {
             object = new SquarePlane(transform_mat);
-            this->geo_objs.push_back(*object);
+            this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
         } else if (strcmp(type, "obj") == 0) {
             //Mesh *object = new Mesh(transform);

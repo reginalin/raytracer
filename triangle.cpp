@@ -1,6 +1,6 @@
 #include "triangle.h"
 #include <math.h>
-
+#include <iostream>
 
 Triangle::Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> uv, glm::mat4 transformMatrix) {
     P1 = p1;
@@ -19,6 +19,8 @@ glm::vec4 crossVec4(glm::vec4 v1, glm::vec4 v2){
 
 
 Intersection Triangle::getIntersection(Ray& input) {
+    std::cout <<"Check intersection triangle" << std::endl;
+
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
