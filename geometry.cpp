@@ -3,6 +3,11 @@
 #include <iostream>
 
 Geometry::Geometry() {
+
+}
+
+Geometry::Geometry(glm::mat4 transform) {
+    this->transform = transform;
 }
 
 Intersection Geometry::getIntersection(Ray& input) {

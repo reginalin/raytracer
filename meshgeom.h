@@ -13,7 +13,6 @@ class Mesh : public Geometry {
 public:
 //The Mesh class encapsulate and OBJ file.
 
-    glm::mat4 transform;
     Camera cam;
     std::vector<Triangle> triangles;
 
