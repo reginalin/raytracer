@@ -4,6 +4,7 @@
 #include "ray.h"
 #include "intersection.h"
 #include "la.h"
+#include "material.h"
 
 class Geometry {
 
@@ -13,6 +14,10 @@ public:
     // if you cast a ray, will you hit - intersect function
     // Intersection = the Intersection class
     Geometry();
+    QString name;
+    QString material;
+    QString type;
+    Material mat;
     Geometry(glm::mat4 transform);
     glm::mat4 transform;
     virtual Intersection getIntersection(Ray& input) /*const*/;

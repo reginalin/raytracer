@@ -79,12 +79,13 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
     Scene scene = Scene("cube.json");
-    Camera *cam = &scene.cam;
-    img_t *img = new_img(cam->width, cam->height);
-    traceEachPix(img, &scene, cam);
-    loadJpg();
-    write_ppm(img, "output.ppm");
-    destroy_img(&img);
+    std::cout << scene.geo_objs.size() << endl;
+//    Camera *cam = &scene.cam;
+//    img_t *img = new_img(cam->width, cam->height);
+//    traceEachPix(img, &scene, cam);
+//    loadJpg();
+//    write_ppm(img, "output.ppm");
+//    destroy_img(&img);
     //return a.exec();
 
 }
