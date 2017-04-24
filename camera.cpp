@@ -20,6 +20,7 @@ Camera::Camera(glm::vec4 target, glm::vec4 eye, glm::vec3 worldUp, float fov, in
     this->width = width;
     this->height = height;
     float aspectRatio = width/height;
+    std::cout << eye[0] << " " << eye[1] << " " << eye[2] << std::endl;
     projectionMat = glm::mat4(
                 glm::vec4((1 / aspectRatio * std::tan(fov/2)), 0, 0, 0),
                 glm::vec4(0, (1 / std::tan(fov/2)), 0, 0),

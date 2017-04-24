@@ -40,7 +40,7 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //        if (i % 20 == 0) {
 //            std::cout << i;
 //        }
-        int x = i / img->w;
+        int x = i / ((float)(img->w));
         int y = i % img->h;
         Color color = traceAPix(x, y, img, scene, cam);
         img->data[i].r = color.r;

@@ -142,9 +142,9 @@ void Scene::parseGeometry() {
 
 void Scene::parseCamera() {
     QJsonArray target = camera["target"].toArray();
-    glm::vec4 target_vec = glm::vec4(target[0].toDouble(), target[1].toDouble(), target[2].toDouble(), 0);
+    glm::vec4 target_vec = glm::vec4(target[0].toDouble(), target[1].toDouble(), target[2].toDouble(), 1);
     QJsonArray eye = camera["eye"].toArray();
-    glm::vec4 eye_vec = glm::vec4(eye[0].toDouble(), eye[1].toDouble(), eye[2].toDouble(), 0);
+    glm::vec4 eye_vec = glm::vec4(eye[0].toDouble(), eye[1].toDouble(), eye[2].toDouble(), 1);
     QJsonArray worldUp = camera["worldUp"].toArray();
     glm::vec3 up_vec = glm::vec3(worldUp[0].toDouble(), worldUp[1].toDouble(), worldUp[2].toDouble());
     float fov = camera["fov"].toDouble();
