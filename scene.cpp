@@ -51,8 +51,8 @@ void Scene::parseGeometry() {
         QString material = geo_obj["material"].toString();
         QString type = geo_obj["type"].toString();
         QString name = geo_obj["name"].toString();
-        glm::mat4 trans_matrix;
-        glm::mat4 scale_matrix;
+        glm::mat4 trans_matrix = glm::mat4();
+        glm::mat4 scale_matrix = glm::mat4();
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
 
         //these are optiona
@@ -103,8 +103,6 @@ void Scene::parseGeometry() {
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 std::cout << glm::to_string(scalars);
                 trans_matrix = glm::translate(trans_matrix, scalars);
-                std::cout << "translate" << glm::to_string(trans_matrix);
-                std::cout << "translate is here" << std::endl;
             }
         }
         glm::mat4 transform_mat = glm::mat4();
