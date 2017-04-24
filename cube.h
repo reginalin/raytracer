@@ -11,7 +11,6 @@ class Cube : public Geometry {
 public:
     glm::vec4 center = glm::vec4(0, 0, 0, 0);
     float radius = 0.5;
-    glm::mat4 transform;
 
     Cube(glm::mat4 transformMatrix);
 

@@ -14,7 +14,6 @@ public:
 //it may simply use its plane normal.
 
     glm::vec4 P1, P2, P3;
-    glm::mat4 transform;
     std::vector<glm::vec2> UV;
 
     Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> UV, glm::mat4 transformMatrix);

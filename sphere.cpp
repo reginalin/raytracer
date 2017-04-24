@@ -5,7 +5,7 @@
 const float PI = 3.14159265358979323846264338327950288419716939937510582;
 
 Sphere::Sphere(glm::mat4 transformMatrix) {
-    transform = transformMatrix;
+    this->transform = transformMatrix;
     std::cout<<"Constructed a sphere"<< std::endl;
 }
 
