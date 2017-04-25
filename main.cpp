@@ -24,11 +24,12 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
         Intersection intersection = geometry->getIntersection(ray);
         if (intersection.t != -1) intersections.append(intersection);
     }
-
     if (!intersections.empty()) {
-//        std::cout<<"Render an intersection"<< std::endl;
-
-        return Color(255,255,255);
+        Intersection closestIntersect = intersections[0];
+        for (int i = 0; i < intersections.size(); i++) {
+            if (intersections[i].t < closestIntersect.t) closestIntersect = intersections[i];
+        }
+        return closestIntersect.geometry->mat.baseColor;//Color(255,255,255);
     }
     else {
         return Color(0,0,0);
@@ -80,12 +81,12 @@ int main(int argc, char *argv[])
     std::cout << "parsing scene";
     Scene scene = Scene("cube.json");
     std::cout << scene.geo_objs.size() << endl;
-//    Camera *cam = &scene.cam;
-//    img_t *img = new_img(cam->width, cam->height);
-//    traceEachPix(img, &scene, cam);
+    Camera *cam = &scene.cam;
+    img_t *img = new_img(cam->width, cam->height);
+    traceEachPix(img, &scene, cam);
 //    loadJpg();
-//    write_ppm(img, "output.ppm");
-//    destroy_img(&img);
+    write_ppm(img, "output.ppm");
+    destroy_img(&img);
     //return a.exec();
 
 }

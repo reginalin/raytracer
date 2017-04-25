@@ -19,8 +19,8 @@ Scene::Scene(const char *filename) {
     QString basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-   // QString path = basePath + "/../../raytracer/" + fn;
-    QString path = basePath + "/../raytracer/" + fn;
+    QString path = basePath + "/../../raytracer/" + fn;
+//    QString path = basePath + "/../raytracer/" + fn;
 
 
    std::cout<<path.toStdString()<<std::endl;
@@ -181,7 +181,7 @@ void Scene::parseMaterial() {
         QString baseColor = submaterials["baseColor"].toString();
         mat.type = type.toStdString();
         mat.name = name.toStdString();
-        mat.baseColor = baseColor.toStdString();
+//        mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
             mat.texture = texture.toStdString();

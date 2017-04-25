@@ -3,17 +3,18 @@
 
 #include "string.h"
 #include <iostream>
+#include "color.h"
 
 class Material
 {
 public:
     Material();
-    Material(std::string type, std::string normalMap, std::string baseColor, bool emissive, bool reflective, std::string texture);
+    Material(std::string type, std::string normalMap, Color baseColor, bool emissive, bool reflective, std::string texture);
 
     std::string type;
     std::string name;
     std::string normalMap;
-    std::string baseColor;
+    Color baseColor;
     bool emissive;
     bool reflective;
     std::string texture;
