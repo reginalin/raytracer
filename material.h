@@ -10,15 +10,15 @@ class Material
 {
 public:
     Material();
-    Material(std::string type, std::string normalMap, Color baseColor, bool emissive, bool reflective, std::string texture);
+    Material(QString type, QString normalMap, Color baseColor, bool emissive, bool reflective, QString texture);
 
-    std::string type;
+    QString type;
     QString name;
-    std::string normalMap;
+    QString normalMap;
     Color baseColor;
     bool emissive;
     bool reflective;
-    std::string texture;
+    QString texture;
 
 };
 

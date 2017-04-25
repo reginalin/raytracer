@@ -19,8 +19,8 @@ Scene::Scene(const char *filename) {
     QString basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-    //QString path = basePath + "/../../raytracer/" + fn;
-    QString path = basePath + "/../raytracer/" + fn;
+    QString path = basePath + "/../../raytracer/" + fn;
+//    QString path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
@@ -173,16 +173,16 @@ void Scene::parseMaterial() {
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
-        mat.type = type.toStdString();
+        mat.type = type;
         mat.name = name;
        // mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
-            mat.texture = texture.toStdString();
+            mat.texture = texture;
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
-            mat.normalMap = normalMap.toStdString();
+            mat.normalMap = normalMap;
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
