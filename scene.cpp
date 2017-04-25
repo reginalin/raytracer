@@ -123,6 +123,7 @@ void Scene::parseGeometry() {
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
+            object->mat.baseColor = Color(0, 0, 255);
             object->type = type;
             this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
@@ -130,6 +131,7 @@ void Scene::parseGeometry() {
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
+            object->mat.baseColor = Color(255, 0, 0);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
