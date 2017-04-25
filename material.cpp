@@ -5,7 +5,7 @@ Material::Material()
 
 }
 
-Material::Material(std::string type, std::string normalMap, std::string baseColor, bool emissive, bool reflective, std::string texture) {
+Material::Material(std::string type, std::string normalMap, Color baseColor, bool emissive, bool reflective, std::string texture) {
     this->type = type;
     this->normalMap = normalMap;
     this->baseColor = baseColor;

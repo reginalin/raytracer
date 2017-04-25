@@ -19,11 +19,11 @@ Scene::Scene(const char *filename) {
     QString basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-   // QString path = basePath + "/../../raytracer/" + fn;
+    //QString path = basePath + "/../../raytracer/" + fn;
     QString path = basePath + "/../raytracer/" + fn;
 
 
-   std::cout<<path.toStdString()<<std::endl;
+   //std::cout<<path.toStdString()<<std::endl;
 //    std::cout<<"wanted: /raytracer/"<<fn.toStdString();
 
     QFile file(path);
@@ -64,13 +64,13 @@ void Scene::parseGeometry() {
                 float y = scale.at(1).toDouble();
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
                 scale_matrix = glm::scale(scale_matrix, scalars);
-                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
-                std::cout << "scale is here" << std::endl;
+//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+//                std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
-                std::cout << "rotate";
+//                std::cout << "rotate";
                 rotate = transform["rotate"].toArray();
                 float x = rotate.at(0).toDouble();
                 float y = rotate.at(1).toDouble();
@@ -91,17 +91,17 @@ void Scene::parseGeometry() {
                     rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
-                std::cout << "rotate is here" << std::endl;
+//                std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
-                std::cout << "translate" << glm::to_string(trans_matrix);
+//                std::cout << "translate" << glm::to_string(trans_matrix);
                 translate = transform["translate"].toArray();
                 float x = translate.at(0).toDouble();
                 float y = translate.at(1).toDouble();
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                std::cout << glm::to_string(scalars);
+//                std::cout << glm::to_string(scalars);
                 trans_matrix = glm::translate(trans_matrix, scalars);
             }
         }
@@ -117,8 +117,11 @@ void Scene::parseGeometry() {
         } else {
             transform_mat = scale_matrix;
         }
+        std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+        std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
+        std::cout << "before translate " << glm::to_string(transform_mat) << std::endl;
         transform_mat = transform_mat * trans_matrix;
-        std::cout << "transform " << glm::to_string(transform_mat);
+        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
         std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
@@ -180,7 +183,7 @@ void Scene::parseMaterial() {
         QString baseColor = submaterials["baseColor"].toString();
         mat.type = type.toStdString();
         mat.name = name;
-        mat.baseColor = baseColor.toStdString();
+       // mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
             mat.texture = texture.toStdString();
