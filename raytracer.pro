@@ -52,7 +52,11 @@ DISTFILES += \
     camera_wahoo.txt \
     helplog.txt \
     wahoo.mtl \
-    text_nor_maps/154.JPG
+    text_nor_maps/154.JPG \
+    transparent_containing_objects.json \
+    sphere.json \
+    mesh.json \
+    all_shapes_old.json
 
 HEADERS += \
     camera.h \

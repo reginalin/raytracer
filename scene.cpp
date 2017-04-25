@@ -128,11 +128,7 @@ void Scene::parseGeometry() {
             object->name = name;
             object->material = material;
             object->type = type;
-            std::cout << " TRANSFORM MAT " << glm::to_string(transform_mat) << std::endl;
             this->geo_objs.push_back(object);
-            //std::cout << " TRANSFORM " << glm::to_string(object->transform) << endl;
-            //std::cout << " NEXT ONE " << glm::to_string(geo_objs.at(geo_objs.size()-1)->transform);
-            //std::cout << "sphere added" << std::endl;
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;
