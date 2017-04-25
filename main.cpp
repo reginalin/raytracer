@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("sphere.json");
+    Scene scene = Scene("all_shapes.json");
     std::cout << scene.geo_objs.size() << endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);

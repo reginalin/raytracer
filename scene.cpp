@@ -53,9 +53,10 @@ void Scene::parseGeometry() {
         QString name = geo_obj["name"].toString();
         glm::mat4 trans_matrix = glm::mat4();
         glm::mat4 scale_matrix = glm::mat4();
+        glm::mat4 rotation_mat = glm::mat4();
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
 
-        //these are optiona
+        //these are optional
         if (geo_obj.contains("transform")) {
             QJsonObject transform = geo_obj["transform"].toObject();
             if (transform.contains("scale")) {
@@ -95,30 +96,22 @@ void Scene::parseGeometry() {
 
             }
             if (transform.contains("translate")) {
-                std::cout << "translate" << glm::to_string(trans_matrix);
                 translate = transform["translate"].toArray();
                 float x = translate.at(0).toDouble();
                 float y = translate.at(1).toDouble();
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                std::cout << glm::to_string(scalars);
                 trans_matrix = glm::translate(trans_matrix, scalars);
+                std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
-        glm::mat4 transform_mat = glm::mat4();
-        if (rot_mats.size() > 0) {
-            glm::mat4 rot = rot_mats.front();
-            transform_mat = scale_matrix * rot;
-            while (!rot_mats.empty()) {
-                rot = rot_mats.front();
-                transform_mat = transform_mat * rot;
-                rot_mats.erase(rot_mats.begin());
-            }
-        } else {
-            transform_mat = scale_matrix;
+        while (!rot_mats.empty()) {
+            glm::mat4 rot = rot_mats.back();
+            rotation_mat *= rot;
+            rot_mats.erase(rot_mats.end());
         }
-        transform_mat = transform_mat * trans_matrix;
-        std::cout << "transform " << glm::to_string(transform_mat);
+        glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
+        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
         std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
