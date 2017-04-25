@@ -48,7 +48,7 @@ Intersection Sphere::getIntersection(Ray& input) {
 
     // calculate u, v
     glm::vec3 norm = normal;
-    glm::normalize(norm);
+    norm = glm::normalize(norm);
 
     float psi = atan2f(norm[2], norm[0]);
     if (psi < 0) {
@@ -64,10 +64,10 @@ Intersection Sphere::getIntersection(Ray& input) {
 
     // normal mapping
     glm::vec3 tangent = glm::cross(normal, glm::vec3(0, 1, 0));
-    glm::normalize(tangent);
+    tangent = glm::normalize(tangent);
 
     glm::vec3 bitangent = glm::cross(normal, tangent);
-    glm::normalize(tangent); // should this be normalized?
+    tangent = glm::normalize(tangent); // should this be normalized?
 
     glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
                                  glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),

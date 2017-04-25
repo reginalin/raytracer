@@ -72,12 +72,13 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
 
 Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
     Ray ray = cam->raycast(x, y);
+//    if (x == 200 && y == 200) std::cout << "Origin: " << glm::to_string(ray.origin) << std::endl << "Direction " << glm::to_string(ray.direction) << std::endl;
+//    return Color(ray.direction[0] * 255, ray.direction[1] * 255, -ray.direction[2] * 255);
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
-    glm::mat4 transform = glm::mat4(glm::vec4(1, 0, 0, 0),
-                                    glm::vec4(0, 1, 0, 0),
-                                    glm::vec4(0, 0, 1, 0),
-                                    glm::vec4(0, 0.5, -30, 1));
+    glm::mat4 transform = glm::mat4();
+//    transform = glm::scale(transform, glm::vec3(5,5,5));
+    transform = glm::translate(transform, glm::vec3(0, 0, 0));
 //    Sphere sphere = Sphere(transform);
     for (int i = 0; i < (int) geometryArray->size(); i++) {
         Geometry *geometry = geometryArray->at(i);
@@ -107,7 +108,7 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //            std::cout << i;
 //        }
         int x = i / ((float)(img->w));
-        int y = i % img->h;
+        int y = i % img->w;
         Color color = traceAPix(x, y, img, scene, cam);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
