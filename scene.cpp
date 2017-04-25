@@ -127,12 +127,14 @@ void Scene::parseGeometry() {
             object = new Sphere(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
             object->type = type;
             this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
@@ -140,6 +142,7 @@ void Scene::parseGeometry() {
             object = new SquarePlane(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
@@ -176,7 +179,7 @@ void Scene::parseMaterial() {
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
         mat.type = type.toStdString();
-        mat.name = name.toStdString();
+        mat.name = name;
         mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
@@ -195,7 +198,7 @@ void Scene::parseMaterial() {
             mat.reflective = reflective;
         }
 
-        material_types.insert(std::pair<std::string, Material>(mat.name, mat));
+        material_types.insert(std::pair<QString, Material>(mat.name, mat));
     }
     std::cout << "Loaded material" << std::endl;
 }

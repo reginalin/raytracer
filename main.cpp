@@ -54,11 +54,11 @@ void loadJpg() {
     QString file = "text_nor_maps/154.JPG"; // or other file depending on json
 
     textureJpg->load(file);
-    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
+//    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
     int nx = textureJpg->width();
     int ny = textureJpg->height();
-    std::cout<<"width"<<nx<<std::endl;
-    std::cout<<"height"<<ny<<std::endl;
+//    std::cout<<"width"<<nx<<std::endl;
+//    std::cout<<"height"<<ny<<std::endl;
 
     // for each intersection
 //    float u = intersection.uv[0];
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
     Scene scene = Scene("sphere.json");
-    std::cout << scene.geo_objs.size() << endl;
+    std::cout << "size " << scene.geo_objs.size() << endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);
