@@ -3,6 +3,7 @@
 #include <iostream>
 Cube::Cube(glm::mat4 transformMatrix) {
     transform = transformMatrix;
+    mat.baseColor = Color(255,0,0);
     std::cout<<"Constructed a cube"<< std::endl;
 }
 
