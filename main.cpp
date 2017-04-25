@@ -2,6 +2,7 @@
 
 #include <QImage>
 #include <QString>
+#include <QColor>
 #include "scene.h"
 
 #include "ppm_example.h"
@@ -49,9 +50,9 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
     }
 }
 
-void loadJpg() {
+void texture() { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = new QImage;
-    QString file = "text_nor_maps/154.JPG"; // or other file depending on json
+    QString file = "text_nor_maps/154.JPG"; // or other file depending on the shape and the json
 
     textureJpg->load(file);
     std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
@@ -66,24 +67,55 @@ void loadJpg() {
 //    float u1 = u * nx - floor(u * nx);
 //    float v1 = v * ny - floor(v * ny);
 
-    //    indices for the pixel the intersection is mapped to
-    //    int i = (int)floor(u * nx);
-    //    int j = (int)floor(v * ny);
+//    // indices for the pixel the intersection is mapped to
+//    int i = (int)floor(u * nx);
+//    int j = (int)floor(v * ny);
 
-    //    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
-    //    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
+//    QColor first(textureJpg->pixel(i, j));
+//    QColor second(textureJpg->pixel(i + 1, j));
+//    QColor third(textureJpg->pixel(i, j + 1));
+//    QColor fourth(textureJpg->pixel(i + 1, j + 1));
+
+//    red at (u, v) = (1 - u1) * (1 - v1) * first.red() + u1 * (1 - v1) * second.red()
+//                    + (1 - u1) * v1 * third.red() + u1 * v1 * fourth.red();
+
+//    green at (u, v) = (1 - u1) * (1 - v1) * first.green() + u1 * (1 - v1) * second.green()
+//                    + (1 - u1) * v1 * third.green() + u1 * v1 * fourth.green();
+
+//    blue at (u, v) = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
+//                    + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
+
+//      return Color(red, green, blue);
+
+
+// JUST NOTES BELOW
+//    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
+//    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
+
+
+//    for ( int row = 1; row < img.height() + 1; ++row )
+//    for ( int col = 1; col < img.width() + 1; ++col )
+//    QColor clrCurrent(textureJpg->pixel(200,200)); // row, color
+
+//    std::cout /*<< "Pixel at [" << row << "," << col << "] contains color ("*/
+//             << clrCurrent.red() << ", "
+//             << clrCurrent.green() << ", "
+//             << clrCurrent.blue() << ", "
+//             << clrCurrent.alpha()
+//             << std::endl;
+
 }
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("cube.json");
+    Scene scene = Scene("sphere.json");
     std::cout << scene.geo_objs.size() << endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);
-    loadJpg();
+    texture();
     write_ppm(img, "output.ppm");
     destroy_img(&img);
     //return a.exec();
