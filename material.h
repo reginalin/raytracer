@@ -2,6 +2,7 @@
 #define MATERIAL_H
 
 #include "string.h"
+#include <QString>
 #include <iostream>
 #include "color.h"
 
@@ -12,7 +13,7 @@ public:
     Material(std::string type, std::string normalMap, Color baseColor, bool emissive, bool reflective, std::string texture);
 
     std::string type;
-    std::string name;
+    QString name;
     std::string normalMap;
     Color baseColor;
     bool emissive;

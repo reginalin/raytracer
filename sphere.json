@@ -19,7 +19,7 @@
         "name": "Light",
         "transform": {
           "translate": [0, 5, 30],
-          "scale": [1, 1, 1]
+          "scale": [2, 3, 6]
         },
         "material": "emissive_material"
       }
