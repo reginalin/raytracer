@@ -78,6 +78,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         Intersection intersection = geometry->getIntersection(ray);
         if (intersection.t != -1) intersections.append(intersection);
     }
+
     glm::vec3 color = glm::vec3(0,0,0);
     if (!intersections.empty()) {
         Intersection closestIntersect = intersections[0];
@@ -89,15 +90,14 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         Geometry *hitGeo = closestIntersect.geometry;
         color = hitGeo->mat.baseColor;
         if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
-//            Color texColor = texture(closestIntersect);
-//            int i = 0;
             color = texture(closestIntersect);
         }
-        if (hitGeo->mat.reflective && recursions < 10) {
+        if (hitGeo->mat.reflective && recursions < 4) {
             Ray newRay = Ray(closestIntersect.position, ray.direction - closestIntersect.normal * 2.0f * glm::dot(ray.direction, closestIntersect.normal));
             glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions++);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
+//        color = glm::vec3(closestIntersect.normal * 255.0f);
     }
     return color;
 }
@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json"); //Scene("all_shapes.json");
+    Scene scene = Scene("transparent_containing_objects.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);

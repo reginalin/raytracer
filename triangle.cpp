@@ -41,8 +41,8 @@ Intersection Triangle::getIntersection(Ray& input) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
-    glm::vec4 temp = orig + glm::vec4(t * dir, 0);
-    glm::vec4 point = transform * temp;
+    glm::vec4 temp = input.origin + glm::vec4(t * input.direction, 0);
+    glm::vec4 point = temp;
 
     glm::vec3 normal = glm::vec3(glm::transpose(inverted) * temp);
 
