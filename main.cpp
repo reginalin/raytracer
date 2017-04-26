@@ -70,8 +70,7 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
 
 }
 
-Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
-    Ray ray = cam->raycast(x, y);
+Color traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
 //    if (x == 200 && y == 200) std::cout << "Origin: " << glm::to_string(ray.origin) << std::endl << "Direction " << glm::to_string(ray.direction) << std::endl;
 //    return Color(ray.direction[0] * 255, ray.direction[1] * 255, -ray.direction[2] * 255);
     QList<Intersection> intersections = QList<Intersection>();
@@ -93,9 +92,13 @@ Color traceAPix(int x, int y, img_t *img, Scene *scene, Camera *cam) {
 //        if (closestIntersect.geometry->mat.texture != "") {
 //            return texture(closestIntersect);
 //        }
-//        else {
+        if (closestIntersect.geometry->mat.reflective && recursions < 3) {
+            Ray newRay = Ray(closestIntersect.position, ray.direction - closestIntersect.normal * 2.0f * glm::dot(ray.direction, closestIntersect.normal));
+            return traceAPix(newRay, scene, cam, recursions++);
+        }
+        else {
             return closestIntersect.geometry->mat.baseColor;
-//        }
+        }
     }
     else {
         return Color(0,0,0);
@@ -109,7 +112,8 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //        }
         int x = i / ((float)(img->w));
         int y = i % img->w;
-        Color color = traceAPix(x, y, img, scene, cam);
+        Ray ray = cam->raycast(x, y);
+        Color color = traceAPix(ray, scene, cam, 0);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
@@ -120,7 +124,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("all_shapes.json");
+    Scene scene = Scene("transparent_containing_objects.json");
     std::cout << "size " << scene.geo_objs.size() << endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
