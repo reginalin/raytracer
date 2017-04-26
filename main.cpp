@@ -12,7 +12,7 @@
 #include "color.h"
 #include <iostream>
 
-Color texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
+glm::vec3 texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = intersection.geometry->mat.textureImg;
 //    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
     int nx = textureJpg->width();
@@ -45,7 +45,7 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
         unsigned char blue = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
                         + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
 
-        return Color(red, green, blue);
+        return glm::vec3(red, green, blue);
 //    } else {
 //        return Color(0, 0, 0);
 
@@ -70,7 +70,7 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
 
 }
 
-Color traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
+glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
     for (int i = 0; i < (int) geometryArray->size(); i++) {
@@ -78,25 +78,28 @@ Color traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         Intersection intersection = geometry->getIntersection(ray);
         if (intersection.t != -1) intersections.append(intersection);
     }
+    glm::vec3 color = glm::vec3(0,0,0);
     if (!intersections.empty()) {
         Intersection closestIntersect = intersections[0];
         for (int i = 0; i < intersections.size(); i++) {
             if (intersections[i].t < closestIntersect.t) closestIntersect = intersections[i];
         }
-        if (closestIntersect.geometry->mat.texture != "" && closestIntersect.geometry->mat.textureImg != NULL) {
-            return texture(closestIntersect);
+
+        //Shading
+        Geometry *hitGeo = closestIntersect.geometry;
+        color = hitGeo->mat.baseColor;
+        if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
+//            Color texColor = texture(closestIntersect);
+//            int i = 0;
+            color = texture(closestIntersect);
         }
-        if (closestIntersect.geometry->mat.reflective && recursions < 3) {
+        if (hitGeo->mat.reflective && recursions < 10) {
             Ray newRay = Ray(closestIntersect.position, ray.direction - closestIntersect.normal * 2.0f * glm::dot(ray.direction, closestIntersect.normal));
-            return traceAPix(newRay, scene, cam, recursions++);
-        }
-        else {
-            return closestIntersect.geometry->mat.baseColor;
+            glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions++);
+            color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
     }
-    else {
-        return Color(0,0,0);
-    }
+    return color;
 }
 
 void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
@@ -107,7 +110,7 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         int x = i / ((float)(img->w));
         int y = i % img->w;
         Ray ray = cam->raycast(x, y);
-        Color color = traceAPix(ray, scene, cam, 0);
+        glm::vec3 color = traceAPix(ray, scene, cam, 0);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
@@ -118,8 +121,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("all_shapes.json");
-    std::cout << "size " << scene.geo_objs.size() << endl;
+    Scene scene = Scene("transparent_containing_objects.json"); //Scene("all_shapes.json");
+    std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);

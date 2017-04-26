@@ -178,13 +178,13 @@ void Scene::parseMaterial() {
         QString name = submaterials["name"].toString();
         if (submaterials.contains("baseColor")) {
             QJsonArray baseColor = submaterials["baseColor"].toArray();
-            unsigned char r = (unsigned char)std::floor(baseColor.at(0).toDouble() * 255);
-            unsigned char g = (unsigned char)std::floor(baseColor.at(1).toDouble() * 255);
-            unsigned char b = (unsigned char)std::floor(baseColor.at(2).toDouble() * 255);
-            mat.baseColor = Color(r, g, b);
+            float r = (unsigned char)std::floor(baseColor.at(0).toDouble() * 255);
+            float g = (unsigned char)std::floor(baseColor.at(1).toDouble() * 255);
+            float b = (unsigned char)std::floor(baseColor.at(2).toDouble() * 255);
+            mat.baseColor = glm::vec3(r, g, b);
         }
         else {
-            mat.baseColor = Color(255, 255, 255);
+            mat.baseColor = glm::vec3(255, 255, 255);
         }
         mat.type = type;
         mat.name = name;
@@ -217,9 +217,11 @@ void Scene::parseMaterial() {
             reflectivity = submaterials["reflectivity"].toDouble();
             reflective = true;
             mat.reflective = reflective;
+            mat.reflectivity = reflectivity;
         }
         else {
             mat.reflective = false;
+            mat.reflectivity = 0;
         }
 
         material_types.insert(std::pair<QString, Material>(mat.name, mat));
