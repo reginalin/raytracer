@@ -16,7 +16,7 @@ Camera::Camera(glm::vec4 target, glm::vec4 eye, glm::vec3 worldUp, float fov, in
     this->target = target;
     this->eye = eye;
     this->worldUp = worldUp;
-    this->fov = fov;
+    this->fov = glm::radians(fov);
     this->width = width;
     this->height = height;
     this->aspectRatio = width/height;
@@ -34,12 +34,13 @@ Camera::Camera(glm::vec4 target, glm::vec4 eye, glm::vec3 worldUp, float fov, in
                 glm::vec4(-eye.x, -eye.y, -eye.z, 1)
                 );
     zAxis = glm::vec3((target - eye));
-    glm::normalize(zAxis);
+    zAxis = glm::normalize(zAxis);
     yAxis = worldUp;
-    glm::normalize(yAxis);
+    yAxis = glm::normalize(yAxis);
     xAxis = glm::cross(zAxis, yAxis);
-    glm::normalize(xAxis);
+    xAxis = glm::normalize(xAxis);
     yAxis = glm::cross(xAxis, zAxis);
+    yAxis = glm::normalize(yAxis);
     glm::mat4 rotation = glm::mat4(
                 glm::vec4(xAxis[0], yAxis[0], zAxis[0], 0),
                 glm::vec4(xAxis[1], yAxis[1], zAxis[1], 0),
@@ -60,17 +61,19 @@ Ray Camera::raycast(int x, int y) {
 //    glm::vec4 pixWorldCoords = glm::inverse(transformMat) * pixNDCCoords;
 
     // alternative way of calculating (p is the same as pixWorldCoords)
+//    x = 200;
+//    y = 200;
     float sx = (2 * (x / (float)width)) - 1;
     float sy = 1 - (2 * (y / (float)height));
 
-    glm::vec3 ref = glm::vec3(eye) + zAxis;
-    float len = glm::length((ref - glm::vec3(eye)));
-    float a = fov / 2;
-    glm::vec3 V = yAxis * len * tanf(glm::radians(a));
-    glm::vec3 H = xAxis * len * aspectRatio * tanf(glm::radians(a));
-    glm::vec3 p = ref + (sx * H) + (sy * V);
+    glm::vec4 ref = eye + glm::vec4(zAxis, 0);
+    float len = glm::length(glm::vec3(ref - eye));
+    float a = fov / (float)2;
+    glm::vec3 V = yAxis * len * tanf(a);
+    glm::vec3 H = xAxis * len * aspectRatio * tanf(a);
+    glm::vec4 p = ref + glm::vec4(sx * H, 0) + glm::vec4(sy * V, 0);
 
-    glm::vec3 rayDir = glm::vec3(glm::normalize(glm::vec4(p, 1) - eye));
+    glm::vec3 rayDir = glm::normalize(glm::vec3(p - eye));
     return Ray(eye, rayDir);
 }
 

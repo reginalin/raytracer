@@ -23,7 +23,7 @@ Scene::Scene(const char *filename) {
     QString path = basePath + "/../raytracer/" + fn;
 
 
-   std::cout<<path.toStdString()<<std::endl;
+   //std::cout<<path.toStdString()<<std::endl;
 //    std::cout<<"wanted: /raytracer/"<<fn.toStdString();
 
     QFile file(path);
@@ -53,9 +53,10 @@ void Scene::parseGeometry() {
         QString name = geo_obj["name"].toString();
         glm::mat4 trans_matrix = glm::mat4();
         glm::mat4 scale_matrix = glm::mat4();
+        glm::mat4 rotation_mat = glm::mat4();
         std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
 
-        //these are optiona
+        //these are optional
         if (geo_obj.contains("transform")) {
             QJsonObject transform = geo_obj["transform"].toObject();
             if (transform.contains("scale")) {
@@ -64,13 +65,13 @@ void Scene::parseGeometry() {
                 float y = scale.at(1).toDouble();
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
                 scale_matrix = glm::scale(scale_matrix, scalars);
-                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
-                std::cout << "scale is here" << std::endl;
+//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+//                std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
-                std::cout << "rotate";
+//                std::cout << "rotate";
                 rotate = transform["rotate"].toArray();
                 float x = rotate.at(0).toDouble();
                 float y = rotate.at(1).toDouble();
@@ -91,34 +92,28 @@ void Scene::parseGeometry() {
                     rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
-                std::cout << "rotate is here" << std::endl;
+//                std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
-                std::cout << "translate" << glm::to_string(trans_matrix);
                 translate = transform["translate"].toArray();
                 float x = translate.at(0).toDouble();
                 float y = translate.at(1).toDouble();
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-                std::cout << glm::to_string(scalars);
                 trans_matrix = glm::translate(trans_matrix, scalars);
+                std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
-        glm::mat4 transform_mat = glm::mat4();
-        if (rot_mats.size() > 0) {
-            glm::mat4 rot = rot_mats.front();
-            transform_mat = scale_matrix * rot;
-            while (!rot_mats.empty()) {
-                rot = rot_mats.front();
-                transform_mat = transform_mat * rot;
-                rot_mats.erase(rot_mats.begin());
-            }
-        } else {
-            transform_mat = scale_matrix;
+        while (!rot_mats.empty()) {
+            glm::mat4 rot = rot_mats.back();
+            rotation_mat *= rot;
+            rot_mats.erase(rot_mats.end());
         }
-        transform_mat = transform_mat * trans_matrix;
-        std::cout << "transform " << glm::to_string(transform_mat);
+        glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
+        std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+        std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
+        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
         std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
@@ -127,12 +122,16 @@ void Scene::parseGeometry() {
             object = new Sphere(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
+            object->mat.baseColor = Color(0, 0, 255);
             object->type = type;
             this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
+            object->mat.baseColor = Color(255, 0, 0);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
@@ -140,6 +139,7 @@ void Scene::parseGeometry() {
             object = new SquarePlane(transform_mat);
             object->name = name;
             object->material = material;
+            object->mat = material_types.at(material);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
@@ -175,16 +175,16 @@ void Scene::parseMaterial() {
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
         QString baseColor = submaterials["baseColor"].toString();
-        mat.type = type.toStdString();
-        mat.name = name.toStdString();
-//        mat.baseColor = baseColor.toStdString();
+        mat.type = type;
+        mat.name = name;
+       // mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
-            mat.texture = texture.toStdString();
+            mat.texture = texture;
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
-            mat.normalMap = normalMap.toStdString();
+            mat.normalMap = normalMap;
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
@@ -195,7 +195,7 @@ void Scene::parseMaterial() {
             mat.reflective = reflective;
         }
 
-        material_types.insert(std::pair<std::string, Material>(mat.name, mat));
+        material_types.insert(std::pair<QString, Material>(mat.name, mat));
     }
     std::cout << "Loaded material" << std::endl;
 }
