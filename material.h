@@ -10,7 +10,7 @@ class Material
 {
 public:
     Material();
-    Material(QString type, QString normalMap, Color baseColor, bool emissive, bool reflective, QString texture);
+    Material(QString type, QString normalMap, Color baseColor, bool emissive, bool reflective, float reflectivity, QString texture);
 
     QString type;
     QString name;
@@ -18,6 +18,7 @@ public:
     Color baseColor;
     bool emissive;
     bool reflective;
+    float reflectivity;
     QString texture;
 
 };

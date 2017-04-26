@@ -106,9 +106,9 @@ void Scene::parseGeometry() {
             }
         }
         while (!rot_mats.empty()) {
-            glm::mat4 rot = rot_mats.back();
+            glm::mat4 rot = rot_mats.front();
             rotation_mat *= rot;
-            rot_mats.erase(rot_mats.end());
+            rot_mats.erase(rot_mats.begin());
         }
         glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
         std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
@@ -123,7 +123,6 @@ void Scene::parseGeometry() {
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
-            object->mat.baseColor = Color(0, 0, 255);
             object->type = type;
             this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
@@ -131,7 +130,6 @@ void Scene::parseGeometry() {
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
-            object->mat.baseColor = Color(255, 0, 0);
             object->type = type;
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
@@ -171,28 +169,50 @@ void Scene::parseMaterial() {
         Material mat = Material();
         QString texture, normalMap;
         bool emissive, reflective;
+        float reflectivity;
         QJsonObject submaterials = v.toObject();
         QString type = submaterials["type"].toString();
         QString name = submaterials["name"].toString();
-        QString baseColor = submaterials["baseColor"].toString();
+        if (submaterials.contains("baseColor")) {
+            QJsonArray baseColor = submaterials["baseColor"].toArray();
+            unsigned char r = (unsigned char)std::floor(baseColor.at(0).toDouble() * 255);
+            unsigned char g = (unsigned char)std::floor(baseColor.at(1).toDouble() * 255);
+            unsigned char b = (unsigned char)std::floor(baseColor.at(2).toDouble() * 255);
+            mat.baseColor = Color(r, g, b);
+        }
+        else {
+            mat.baseColor = Color(255, 255, 255);
+        }
         mat.type = type;
         mat.name = name;
-       // mat.baseColor = baseColor.toStdString();
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
             mat.texture = texture;
+        }
+        else {
+            mat.texture = "";
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
             mat.normalMap = normalMap;
         }
+        else {
+            mat.normalMap = "";
+        }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
             mat.emissive = emissive;
         }
-        if (submaterials.contains("reflective")) {
-            reflective = submaterials["reflective"].toBool();
+        else {
+            mat.emissive = false;
+        }
+        if (submaterials.contains("reflectivity")) {
+            reflectivity = submaterials["reflectivity"].toDouble();
+            reflective = true;
             mat.reflective = reflective;
+        }
+        else {
+            mat.reflective = false;
         }
 
         material_types.insert(std::pair<QString, Material>(mat.name, mat));

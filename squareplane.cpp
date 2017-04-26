@@ -30,7 +30,7 @@ Intersection SquarePlane::getIntersection(Ray& input) {
 
     // normal mapping
     glm::vec4 normal = glm::vec4(0, 0, 1, 0);
-    glm::vec3 normal1 = glm::vec3(glm::transpose(inverted) * normal);
+    glm::vec3 normal1 = glm::normalize(glm::vec3(glm::transpose(inverted) * normal));
 
     return Intersection(point, normal1, glm::vec2(u, v), t, this);
 }
