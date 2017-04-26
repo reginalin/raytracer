@@ -22,6 +22,7 @@
 #include <material.h>
 #include <map>
 #include <stdio.h>
+#include <QImage>
 
 class Scene
 {

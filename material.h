@@ -5,6 +5,7 @@
 #include <QString>
 #include <iostream>
 #include "color.h"
+#include <QImage>
 
 class Material
 {
@@ -15,11 +16,14 @@ public:
     QString type;
     QString name;
     QString normalMap;
+    QString texture;
+    QImage *textureImg;
+    QImage *normalImg;
+
     Color baseColor;
     bool emissive;
     bool reflective;
     float reflectivity;
-    QString texture;
 
 };
 

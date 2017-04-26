@@ -150,13 +150,6 @@ Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
 }
 
 Intersection Mesh::getIntersection(Ray& input) {
-    glm::mat4 inverted = glm::inverse(transform);
-    Ray objRay = input.getTransformedCopy(inverted);
-
-
-    glm::vec3 dir = objRay.direction;
-    glm::vec4 orig = objRay.origin;
-
     // initializing it as the first one
     std::vector<glm::vec2> vertexUV;
     vertexUV[0] = uvVecs[0].vertex1;

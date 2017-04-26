@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 
 #include <QImage>
+#include <QImageReader>
 #include <QString>
 #include <QColor>
 #include "scene.h"
@@ -12,10 +13,7 @@
 #include <iostream>
 
 Color texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
-    QImage *textureJpg = new QImage;
-    QString file = "text_nor_maps/154.JPG";//intersection.geometry->mat.texture; // or other file depending on the shape and the json
-
-    textureJpg->load(file);
+    QImage *textureJpg = intersection.geometry->mat.textureImg;
 //    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
     int nx = textureJpg->width();
     int ny = textureJpg->height();
@@ -27,10 +25,7 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
         float u1 = u * nx - floor(u * nx);
         float v1 = v * ny - floor(v * ny);
 
-//        std::cout<<"width "<<nx<<std::endl;
-//        std::cout<<"height "<<ny<<std::endl;
-//        std::cout<<"u "<<u<<std::endl;
-//        std::cout<<"v "<<v<<std::endl;
+//        std::cout << "(" << nx << ", " << ny << ")" << std::endl;
 
         // indices for the pixel the intersection is mapped to
         int i = (int)floor(u * (float)nx);
@@ -76,14 +71,8 @@ Color texture(Intersection intersection) { // input the shape (or the intersecti
 }
 
 Color traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
-//    if (x == 200 && y == 200) std::cout << "Origin: " << glm::to_string(ray.origin) << std::endl << "Direction " << glm::to_string(ray.direction) << std::endl;
-//    return Color(ray.direction[0] * 255, ray.direction[1] * 255, -ray.direction[2] * 255);
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
-    glm::mat4 transform = glm::mat4();
-//    transform = glm::scale(transform, glm::vec3(5,5,5));
-    transform = glm::translate(transform, glm::vec3(0, 0, 0));
-//    Sphere sphere = Sphere(transform);
     for (int i = 0; i < (int) geometryArray->size(); i++) {
         Geometry *geometry = geometryArray->at(i);
         Intersection intersection = geometry->getIntersection(ray);
@@ -94,7 +83,7 @@ Color traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         for (int i = 0; i < intersections.size(); i++) {
             if (intersections[i].t < closestIntersect.t) closestIntersect = intersections[i];
         }
-        if (closestIntersect.geometry->mat.texture != "") {
+        if (closestIntersect.geometry->mat.texture != "" && closestIntersect.geometry->mat.textureImg != NULL) {
             return texture(closestIntersect);
         }
         if (closestIntersect.geometry->mat.reflective && recursions < 3) {
@@ -129,7 +118,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json");
+    Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
@@ -137,5 +126,4 @@ int main(int argc, char *argv[])
     write_ppm(img, "output.ppm");
     destroy_img(&img);
     //return a.exec();
-
 }

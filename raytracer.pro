@@ -56,7 +56,14 @@ DISTFILES += \
     transparent_containing_objects.json \
     sphere.json \
     mesh.json \
-    all_shapes_old.json
+    all_shapes_old.json \
+    text_nor_maps/154_norm.JPG \
+    text_nor_maps/165.JPG \
+    text_nor_maps/165_norm.JPG \
+    text_nor_maps/171.JPG \
+    text_nor_maps/171_norm.JPG \
+    text_nor_maps/197.JPG \
+    text_nor_maps/197_norm.JPG
 
 HEADERS += \
     camera.h \

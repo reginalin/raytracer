@@ -5,6 +5,9 @@ using namespace glm;
 // b/c we need to store more information
 //right now we create geometry objects but all they contain is just the transform
 
+QString basePath;
+QString path;
+
 Scene::Scene() { }
 
 Scene::Scene(const char *filename) {
@@ -16,11 +19,11 @@ Scene::Scene(const char *filename) {
 
     QDir dir = QDir::currentPath();
 
-    QString basePath =  QCoreApplication::applicationDirPath();
+    basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-//    QString path = basePath + "/../../raytracer/" + fn;
-    QString path = basePath + "/../raytracer/" + fn;
+    path = basePath + "/../../raytracer/" + fn;
+//    QString path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
@@ -188,16 +191,20 @@ void Scene::parseMaterial() {
         if (submaterials.contains("texture")) {
             texture = submaterials["texture"].toString();
             mat.texture = texture;
+            mat.textureImg = new QImage(texture);
         }
         else {
             mat.texture = "";
+            mat.textureImg = NULL;
         }
         if (submaterials.contains("normalMap")) {
             normalMap = submaterials["normalMap"].toString();
             mat.normalMap = normalMap;
+            mat.normalImg = new QImage(texture);
         }
         else {
             mat.normalMap = "";
+            mat.normalImg = NULL;
         }
         if (submaterials.contains("emissive")) {
             emissive = submaterials["emissive"].toBool();
