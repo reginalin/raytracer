@@ -74,7 +74,7 @@ Intersection Sphere::getIntersection(Ray& input) {
                                  glm::vec4(normal[0], normal[1], normal[2], 0),
                                  glm::vec4(0, 0, 0, 1));
 
-    glm::vec3 newNormal = glm::vec3(glm::vec4(normal, 0) * matrix);
+    glm::vec3 newNormal = glm::normalize(glm::vec3(glm::vec4(normal, 0) * matrix));
 
     return Intersection(point, newNormal, uv, t0, this);
 }
