@@ -167,7 +167,7 @@ Intersection Cube::getIntersection(Ray& input) {
         }
     }
 
-    glm::vec3 normal1 = glm::vec3(glm::transpose(inverted) * glm::vec4(normal, 0));
+    glm::vec3 normal1 = glm::normalize(glm::vec3(glm::transpose(inverted) * glm::vec4(normal, 0)));
 
     return Intersection(point, normal1, glm::vec2(u, v), tn, this);
 }
