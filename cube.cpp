@@ -110,7 +110,6 @@ Intersection Cube::getIntersection(Ray& input) {
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
-//    max of x, y, z and glm sine
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
 

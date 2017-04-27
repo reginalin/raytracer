@@ -16,7 +16,7 @@ public:
     Camera cam;
     std::vector<Triangle> triangles;
 
-    Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam);
+    Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam);
 
     virtual Intersection getIntersection(Ray& input) /*const*/;
 

@@ -71,7 +71,8 @@ DISTFILES += \
     tex_nor_maps/171.jpg \
     tex_nor_maps/171_norm.jpg \
     tex_nor_maps/197.jpg \
-    tex_nor_maps/197_norm.jpg
+    tex_nor_maps/197_norm.jpg \
+    triangle.obj
 
 HEADERS += \
     camera.h \

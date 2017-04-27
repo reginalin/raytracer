@@ -15,11 +15,14 @@
 glm::vec3 texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = intersection.geometry->mat.textureImg;
 //    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
-    int nx = textureJpg->width();
-    int ny = textureJpg->height();
+    int nx = textureJpg->width() - 1;
+    int ny = textureJpg->height() - 1;
     float u = intersection.uv[0];
     float v = intersection.uv[1];
-    if (u >= 0 && v >= 0 && u <= 1 && v <= 1) {
+    if (u < 0 || v < 0 || u > 1 || v > 1) {
+        int i = 0;
+        return glm::vec3(0,0,0);
+    }
         // for each intersection
 
         float u1 = u * nx - floor(u * nx);
@@ -49,7 +52,6 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 //    } else {
 //        return Color(0, 0, 0);
 
-    }
 // JUST NOTES BELOW
 //    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
 //    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
@@ -69,11 +71,11 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 }
 
 float aoGather(Intersection intersection, int samplesPitch, int samplesYaw, float distance) {
-    glm::vec4 point = intersection.position;
-    for (int i = 0; i < samples; i++) {
-        float pitch = i * 180/(float)samplesPitch;
-        float yaw = i * 360/(float)samplesYaw;
-    }
+//    glm::vec4 point = intersection.position;
+//    for (int i = 0; i < samples; i++) {
+//        float pitch = i * 180/(float)samplesPitch;
+//        float yaw = i * 360/(float)samplesYaw;
+//    }
 }
 
 glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
@@ -98,6 +100,9 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
             color = texture(closestIntersect);
         }
+//        if (hitGeo->type == "sphere") color = glm::vec3(255, 0, 0);
+//        if (hitGeo->type == "cube") color = glm::vec3(0, 0, 255);
+//        if (hitGeo->type == "square") color = glm::vec3(0, 255, 0);
         if (hitGeo->mat.reflective && recursions < 4) {
             float c1 = -glm::dot(closestIntersect.normal, ray.direction);
             glm::vec3 newDir = ray.direction + (2.0f * closestIntersect.normal * c1);
@@ -106,10 +111,34 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions++);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
+        //lambert
+        //if emissive
+
 //        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
 //        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
     }
     return color;
+}
+
+//assume that every scene has a single light source
+//which is a sphere
+void lambert(Intersection intersection, Scene *scene, Camera *cam, glm::vec3 color) {
+//    Sphere *light;
+//    std::vector<Geometry *> lambert_objs = std::vector<Geometry *>();
+//    std::vector<Geometry *> objs = scene->geo_objs;
+//    for (int i = 0; i < objs.size(); i++) {
+//        if (QString::compare(objs[i]->material, "emissive_material") == 0) {
+//            light = objs[i];
+//        }
+//        if ( QString::compare(objs[i]->type, "lambert") == 0 ) {
+//            lambert_objs.push_back(objs[i]);
+//            Intersection intersection = objs[i]->getIntersection(ray);
+//            glm::vec4 light = (scene->light)->center;
+//            glm::vec3 norm = intersection.normal;
+//            glm::vec4 l = light - intersection.position;
+//            //float angle = cos(glm::dot(norm, l));
+//        }
+//    }
 }
 
 void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
@@ -121,11 +150,13 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         int y = i % img->w;
         Ray ray = cam->raycast(x, y);
         glm::vec3 color = traceAPix(ray, scene, cam, 0);
+        //color = lambert(ray, scene, cam, color);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
     }
 }
+
 
 int main(int argc, char *argv[])
 {

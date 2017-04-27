@@ -30,9 +30,10 @@ std::vector<float> indices;
 std::vector<glm::vec2> uv;
 std::vector<uvCoors> uvVecs;
 
-Mesh::Mesh(glm::mat4 transformMatrix, char* inputFile, Camera cam) {
+Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
     transform = transformMatrix;
-    tinyobj::LoadObj(shapes, materials, inputFile);
+    const char * fn = inputFile.toStdString().c_str();
+    tinyobj::LoadObj(shapes, materials, fn);
     this->cam = cam;
 
     // positions: vector of vertex coordinates
