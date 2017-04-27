@@ -116,19 +116,25 @@ void Scene::parseGeometry() {
         std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
-
         if (QString::compare(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
+            if (QString::compare(material, "emissive_material") == 0) {
+                this->light = object;
+            }
+            this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
+            if (QString::compare(material, "emissive_material") == 0) {
+                this->light = object;
+            }
             this->geo_objs.push_back(object);
             std::cout << "cube added" << std::endl;
         } else if (QString::compare(type, "square") == 0) {
@@ -137,6 +143,9 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
+            if (QString::compare(material, "emissive_material") == 0) {
+                this->light = object;
+            }
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
         } else if (QString::compare(type, "obj") == 0) {
@@ -146,6 +155,9 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
+            if (QString::compare(material, "emissive_material") == 0) {
+                this->light = object;
+            }
 //            this->geo_objs.push_back(object);
         }
         std::cout << "object made" << std::endl;

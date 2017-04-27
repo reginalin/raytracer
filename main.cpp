@@ -72,6 +72,32 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 
 }
 
+//assume that every scene has a single light source
+//which is a sphere
+void lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
+//    Geometry *light;
+//    std::vector<Geometry *> objs = scene->geo_objs;
+//    for (int i = 0; i < objs.size(); i++) {
+////        if (QString::compare(objs[i]->material, "emissive_material") == 0) {
+////            light = objs[i];
+////        }
+///
+//      Sphere light_source = *(scene->light);
+//      glm::vec4 light = light_source ->center;
+//      glm::vec3 norm = intersection.normal;
+//      glm::vec4 l = light - intersection.position;
+
+
+        //float angle = cos(glm::dot(norm, l));
+
+//        if ( QString::compare(objs[i]->type, "lambert") == 0 ) {
+//            lambert_objs.push_back(objs[i]);
+//            Intersection intersection = objs[i]->getIntersection(ray);
+//
+//        }
+//    }
+}
+
 glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
@@ -103,8 +129,8 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
-        if (hitGeo->mat.emissive) {
-            lambert(intersection, scene, camera, color);
+        if (QString::compare(hitGeo->type, "lambert") == 0) {
+            lambert(closestIntersect, scene, color);
         }
 
 //        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
@@ -113,28 +139,16 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
     return color;
 }
 
-//assume that every scene has a single light source
-//which is a sphere
-void lambert(Intersection intersection, Scene *scene, Camera *cam, glm::vec3 color) {
-    Sphere *light;
-//    std::vector<Geometry *> lambert_objs = std::vector<Geometry *>();
+void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
+    //get light source
+//    Geometry *light;
 //    std::vector<Geometry *> objs = scene->geo_objs;
 //    for (int i = 0; i < objs.size(); i++) {
 //        if (QString::compare(objs[i]->material, "emissive_material") == 0) {
 //            light = objs[i];
 //        }
-//        if ( QString::compare(objs[i]->type, "lambert") == 0 ) {
-//            lambert_objs.push_back(objs[i]);
-//            Intersection intersection = objs[i]->getIntersection(ray);
-//            glm::vec4 light = (scene->light)->center;
-//            glm::vec3 norm = intersection.normal;
-//            glm::vec4 l = light - intersection.position;
-//            //float angle = cos(glm::dot(norm, l));
-//        }
-//    }
-}
+//    glm::vec4 light = (scene->light)->center;
 
-void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
     for (int i = 0; i < img->h * img->w; i++) {
 //        if (i % 20 == 0) {
 //            std::cout << i;
