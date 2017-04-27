@@ -22,8 +22,8 @@ Scene::Scene(const char *filename) {
     basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-    path = basePath + "/../../raytracer/" + fn;
-//    path = basePath + "/../raytracer/" + fn;
+ //   path = basePath + "/../../raytracer/" + fn;
+    path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
@@ -92,7 +92,7 @@ void Scene::parseGeometry() {
                     rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
-//                std::cout << "rotate is here" << std::endl;
+//                //std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
@@ -102,7 +102,7 @@ void Scene::parseGeometry() {
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 trans_matrix = glm::translate(trans_matrix, scalars);
-                std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
+                //std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
         for (int i = 0; i < rot_mats.size(); i++) {
@@ -110,10 +110,10 @@ void Scene::parseGeometry() {
             rotation_mat *= rot;
         }
         glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
-        std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
-        std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
-        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
-        std::cout << "Trans matrix made" << std::endl;
+//        std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
+//        std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
+//        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
+//        std::cout << "Trans matrix made" << std::endl;
 
         //create geometry object
         if (QString::compare(type, "sphere") == 0) {
@@ -122,12 +122,9 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
-<<<<<<< HEAD
             if (QString::compare(material, "emissive_material") == 0) {
                 this->light = object;
             }
-=======
->>>>>>> e3d1ffd498f458589262be6e24dc92736540230b
             this->geo_objs.push_back(object);
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
@@ -139,7 +136,7 @@ void Scene::parseGeometry() {
                 this->light = object;
             }
             this->geo_objs.push_back(object);
-            std::cout << "cube added" << std::endl;
+            //std::cout << "cube added" << std::endl;
         } else if (QString::compare(type, "square") == 0) {
             object = new SquarePlane(transform_mat);
             object->name = name;
@@ -150,7 +147,7 @@ void Scene::parseGeometry() {
                 this->light = object;
             }
             this->geo_objs.push_back(object);
-            std::cout << "square added" << std::endl;
+            //std::cout << "square added" << std::endl;
         } else if (QString::compare(type, "obj") == 0) {
             QString filename = geo_obj["filename"].toString();
             Mesh *object = new Mesh(transform_mat, filename, this->cam);
@@ -163,9 +160,9 @@ void Scene::parseGeometry() {
             }
 //            this->geo_objs.push_back(object);
         }
-        std::cout << "object made" << std::endl;
+        //std::cout << "object made" << std::endl;
     }
-    std::cout << "objects made" << std::endl;
+    //std::cout << "objects made" << std::endl;
 }
 
 void Scene::parseCamera() {
