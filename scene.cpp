@@ -22,7 +22,7 @@ Scene::Scene(const char *filename) {
     basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
- //   path = basePath + "/../../raytracer/" + fn;
+//    path = basePath + "/../../raytracer/" + fn;
     path = basePath + "/../raytracer/" + fn;
 
 
@@ -115,7 +115,6 @@ void Scene::parseGeometry() {
 //        std::cout << "transform " << glm::to_string(transform_mat) << std::endl;
 //        std::cout << "Trans matrix made" << std::endl;
 
-        //create geometry object
         if (QString::compare(type, "sphere") == 0) {
             object = new Sphere(transform_mat);
             object->name = name;
