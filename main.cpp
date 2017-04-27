@@ -15,12 +15,13 @@
 glm::vec3 texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = intersection.geometry->mat.textureImg;
 //    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
-    int nx = textureJpg->width();
-    int ny = textureJpg->height();
+    int nx = textureJpg->width() - 1;
+    int ny = textureJpg->height() - 1;
     float u = intersection.uv[0];
     float v = intersection.uv[1];
     if (u < 0 || v < 0 || u > 1 || v > 1) {
         int i = 0;
+        return glm::vec3(0,0,0);
     }
         // for each intersection
 
@@ -51,9 +52,6 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 //    } else {
 //        return Color(0, 0, 0);
 
-
-
-
 // JUST NOTES BELOW
 //    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
 //    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
@@ -72,6 +70,7 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 
 }
 
+<<<<<<< HEAD
 //assume that every scene has a single light source
 //which is a sphere
 void lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
@@ -95,6 +94,13 @@ void lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
 //            Intersection intersection = objs[i]->getIntersection(ray);
 //
 //        }
+=======
+float aoGather(Intersection intersection, int samplesPitch, int samplesYaw, float distance) {
+//    glm::vec4 point = intersection.position;
+//    for (int i = 0; i < samples; i++) {
+//        float pitch = i * 180/(float)samplesPitch;
+//        float yaw = i * 360/(float)samplesYaw;
+>>>>>>> e3d1ffd498f458589262be6e24dc92736540230b
 //    }
 }
 
@@ -120,6 +126,9 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
             color = texture(closestIntersect);
         }
+//        if (hitGeo->type == "sphere") color = glm::vec3(255, 0, 0);
+//        if (hitGeo->type == "cube") color = glm::vec3(0, 0, 255);
+//        if (hitGeo->type == "square") color = glm::vec3(0, 255, 0);
         if (hitGeo->mat.reflective && recursions < 4) {
             float c1 = -glm::dot(closestIntersect.normal, ray.direction);
             glm::vec3 newDir = ray.direction + (2.0f * closestIntersect.normal * c1);
@@ -169,7 +178,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("all_shapes.json");
+    Scene scene = Scene("transparent_containing_objects.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
