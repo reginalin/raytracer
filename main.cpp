@@ -12,7 +12,7 @@
 #include "color.h"
 #include <iostream>
 
-const float M_PI = 3.14159265358979323846264338327950288419716939937510582;
+const float PI = 3.14159265358979323846264338327950288419716939937510582;
 
 glm::vec3 texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = intersection.geometry->mat.textureImg;
@@ -28,8 +28,6 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 
     float u1 = u * nx - floor(u * nx);
     float v1 = v * ny - floor(v * ny);
-
-//        std::cout << "(" << nx << ", " << ny << ")" << std::endl;
 
     // indices for the pixel the intersection is mapped to
     int i = (int)floor(u * (float)nx);
@@ -80,7 +78,7 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
     if (cosine == 1) {
         return glm::vec3(0, 0, 0);
     } else {
-        color[0] = color[0] / M_PI * cosine * color[0] * glm::dot(n, dir);
+        color[0] = color[0] / PI * cosine * color[0] * glm::dot(n, dir);
     }
 
 

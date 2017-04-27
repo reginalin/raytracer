@@ -3,8 +3,6 @@
 #include "camera.h"
 #include <math.h>
 
-//Triangle current;
-//float currT;
 float currT;
 
 struct face {
@@ -152,7 +150,7 @@ Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
 
 Intersection Mesh::getIntersection(Ray& input) {
     // initializing it as the first one
-    std::vector<glm::vec2> vertexUV;
+    std::vector<glm::vec2> vertexUV = std::vector<glm::vec2>();
     vertexUV[0] = uvVecs[0].vertex1;
     vertexUV[1] = uvVecs[0].vertex2;
     vertexUV[2] = uvVecs[0].vertex3;
