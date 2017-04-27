@@ -148,6 +148,45 @@ Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
     }
 }
 
+Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
+    this->transform = transformMatrix;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    tinyobj::LoadObj(shapes, materials, inputOBJ, NULL);
+
+    //Store positions as vector of "face"s
+    std::vector<face> triangles = vector<face>();
+    for (int i = 0; i < (int)shapes.size(); i++) {
+        std::vector<unsigned int> &indices = shapes[i].mesh.indices;
+        std::vector<float> &positions = shapes[i].mesh.positions;
+        std::vector<float> &normals = shapes[i].mesh.normals;
+        std::vector<int> &material_ids = shapes[i].mesh.material_ids;
+        std::vector<float> &texcoords = shapes[i].mesh.texcoords;
+        for (int j = 0; j < (int)indices.size(); j += 3) {
+            vec4 pos0 = vec4(positions[indices[j] * 3], positions[indices[j] * 3 + 1], positions[indices[j] * 3 + 2], 1);
+            vec4 pos1 = vec4(positions[indices[j + 1] * 3], positions[indices[j + 1] * 3 + 1], positions[indices[j + 1] * 3 + 2], 1);
+            vec4 pos2 = vec4(positions[indices[j + 2] * 3], positions[indices[j + 2] * 3 + 1], positions[indices[j + 2] * 3 + 2], 1);
+            vec4 normals0 = vec4(normals[indices[j] * 3], normals[indices[j] * 3 + 1], normals[indices[j] * 3 + 2], 0);
+            vec4 normals1 = vec4(normals[indices[j + 1] * 3], normals[indices[j + 1] * 3 + 1], normals[indices[j + 1] * 3 + 2], 0);
+            vec4 normals2 = vec4(normals[indices[j + 2] * 3], normals[indices[j + 2] * 3 + 1], normals[indices[j + 2] * 3 + 2], 0);
+            vec4 color = vec4(materials[material_ids[j/3]].diffuse[0], materials[material_ids[j/3]].diffuse[1], materials[material_ids[j/3]].diffuse[2], 0);
+            tinyobj::material_t mat = materials[material_ids[j/3]];
+            if (texcoords.empty()) {
+                triangles.push_back(face(vertex(pos0, normals0), vertex(pos1, normals1), vertex(pos2, normals2), color, mat));
+            }
+            else {
+                float u0 = texcoords[indices[j] * 2];
+                float v0 = texcoords[indices[j] * 2 + 1];
+                float u1 = texcoords[indices[j + 1] * 2];
+                float v1 = texcoords[indices[j + 1] * 2 + 1];
+                float u2 = texcoords[indices[j + 2] * 2];
+                float v2 = texcoords[indices[j + 2] * 2 + 1];
+                triangles.push_back(face(vertex(pos0, normals0, u0, v0), vertex(pos1, normals1, u1, v1), vertex(pos2, normals2, u2, v2), color, mat));
+            }
+        }
+    }
+}
+
 Intersection Mesh::getIntersection(Ray& input) {
     // initializing it as the first one
     std::vector<glm::vec2> vertexUV = std::vector<glm::vec2>();
