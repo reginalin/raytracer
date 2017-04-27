@@ -76,9 +76,9 @@ void Scene::parseGeometry() {
             if (transform.contains("rotate")) {
 //                std::cout << "rotate";
                 rotate = transform["rotate"].toArray();
-                float x = rotate.at(0).toDouble();
-                float y = rotate.at(1).toDouble();
-                float z = rotate.at(2).toDouble();
+                float x = glm::radians(rotate.at(0).toDouble());
+                float y = glm::radians(rotate.at(1).toDouble());
+                float z = glm::radians(rotate.at(2).toDouble());
                 if (x != 0) {
                     glm::mat4 rot;
                     rot = glm::rotate(rot, x, glm::vec3(1, 0, 0));
@@ -109,9 +109,9 @@ void Scene::parseGeometry() {
             }
         }
         while (!rot_mats.empty()) {
-            glm::mat4 rot = rot_mats.front();
+            glm::mat4 rot = rot_mats.back();
             rotation_mat *= rot;
-            rot_mats.erase(rot_mats.begin());
+            rot_mats.erase(rot_mats.end());
         }
         glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
         std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
