@@ -57,7 +57,7 @@ void Scene::parseGeometry() {
         glm::mat4 trans_matrix = glm::mat4();
         glm::mat4 scale_matrix = glm::mat4();
         glm::mat4 rotation_mat = glm::mat4();
-        std::vector<glm::mat4> rot_mats; //in case there are many rotation matrices
+        std::vector<glm::mat4> rot_mats = std::vector<glm::mat4>(); //in case there are many rotation matrices
 
         //these are optional
         if (geo_obj.contains("transform")) {
@@ -74,24 +74,22 @@ void Scene::parseGeometry() {
 //                std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
-//                std::cout << "rotate";
                 rotate = transform["rotate"].toArray();
                 float x = glm::radians(rotate.at(0).toDouble());
                 float y = glm::radians(rotate.at(1).toDouble());
                 float z = glm::radians(rotate.at(2).toDouble());
                 if (x != 0) {
-                    glm::mat4 rot;
+                    glm::mat4 rot = glm::mat4();
                     rot = glm::rotate(rot, x, glm::vec3(1, 0, 0));
                     rot_mats.push_back(rot);
                 }
                 if (y != 0) {
-                    std::cout << " y ";
-                    glm::mat4 rot;
+                    glm::mat4 rot = glm::mat4();
                     rot = glm::rotate(rot, y, glm::vec3(0, 1, 0));
                     rot_mats.push_back(rot);
                 }
                 if (z != 0) {
-                    glm::mat4 rot;
+                    glm::mat4 rot = glm::mat4();
                     rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
