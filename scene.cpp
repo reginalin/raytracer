@@ -102,7 +102,6 @@ void Scene::parseGeometry() {
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 trans_matrix = glm::translate(trans_matrix, scalars);
-                //std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
         for (int i = 0; i < rot_mats.size(); i++) {

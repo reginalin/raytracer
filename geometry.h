@@ -7,6 +7,8 @@
 #include "material.h"
 #include <QString>
 
+class Ray;
+
 class Geometry {
 
 public:

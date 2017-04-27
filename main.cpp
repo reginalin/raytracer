@@ -32,19 +32,21 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
     // indices for the pixel the intersection is mapped to
     int i = (int)floor(u * (float)nx);
     int j = (int)floor(v * (float)ny);
+    int i_ = i + 1;
+    int j_ = j + 1;
 
-    if (i + 1 >= nx) {
-        i--;
+    if (i_ >= nx) {
+        i_--;
     }
 
-    if (j + 1 >= ny) {
-        j--;
+    if (j_ >= ny) {
+        j_--;
     }
 
     QColor first(textureJpg->pixel(i, j));
-    QColor second(textureJpg->pixel(i + 1, j));
-    QColor third(textureJpg->pixel(i, j + 1));
-    QColor fourth(textureJpg->pixel(i + 1, j + 1));
+    QColor second(textureJpg->pixel(i_, j));
+    QColor third(textureJpg->pixel(i, j_));
+    QColor fourth(textureJpg->pixel(i_, j_));
 
     unsigned char red = (1 - u1) * (1 - v1) * first.red() + u1 * (1 - v1) * second.red()
                     + (1 - u1) * v1 * third.red() + u1 * v1 * fourth.red();
@@ -76,7 +78,7 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
     if (cosine == 1) {
         return glm::vec3(0, 0, 0);
     } else {
-        color[0] = color[0] / M_PI * cosine * color[0] * glm::dot(n, dir);
+        color[0] = color[0] / PI * cosine * color[0] * glm::dot(n, dir);
     }
 
 
@@ -90,21 +92,29 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
 //      glm::vec4 light = light_source ->center;
 }
 
-float aoGather(Intersection intersection, int samplesPitch, int samplesYaw, float distance) {
+float aoGather(Intersection intersection, int samples, float distance) {
 //    glm::vec4 point = intersection.position;
+//    float golden_angle = PI * (3 - std::sqrt(5));
 //    for (int i = 0; i < samples; i++) {
-//        float pitch = i * 180/(float)samplesPitch;
-//        float yaw = i * 360/(float)samplesYaw;
+//        float theta = golden_angle * i;
+//        float z = (1 - 1 / samples) * (1 - (2 * i) / (samples - 1));
+//        radius = numpy.sqrt(1 - z * z);
+
+//        points = numpy.zeros((n, 3))
+//        points[:,0] = radius * numpy.cos(theta)
+//        points[:,1] = radius * numpy.sin(theta)
+//        points[:,2] = z
 //    }
 }
 
 glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
+//    return (ray.direction * 255.0f + 255.0f)/2.f;
     QList<Intersection> intersections = QList<Intersection>();
     std::vector<Geometry *> *geometryArray = &scene->geo_objs;
     for (int i = 0; i < (int) geometryArray->size(); i++) {
         Geometry *geometry = geometryArray->at(i);
         Intersection intersection = geometry->getIntersection(ray);
-        if (intersection.t != -1) intersections.append(intersection);
+        if (intersection.t > 0 && intersection.geometry != ray.ignoreGeo) intersections.append(intersection);
     }
 
     glm::vec3 color = glm::vec3(0,0,0);
@@ -123,12 +133,11 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
 //        if (hitGeo->type == "sphere") color = glm::vec3(255, 0, 0);
 //        if (hitGeo->type == "cube") color = glm::vec3(0, 0, 255);
 //        if (hitGeo->type == "square") color = glm::vec3(0, 255, 0);
-        if (hitGeo->mat.reflective && recursions < 4) {
-            float c1 = -glm::dot(closestIntersect.normal, ray.direction);
-            glm::vec3 newDir = ray.direction + (2.0f * closestIntersect.normal * c1);
+        if (hitGeo->mat.reflective && recursions < 8) {
+            glm::vec3 newDir = glm::reflect(ray.direction, closestIntersect.normal);
 //            return (newDir * 255.0f + 255.0f)/2.0f;
-            Ray newRay = Ray(closestIntersect.position, newDir);
-            glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions++);
+            Ray newRay = Ray(closestIntersect.position, newDir, closestIntersect.geometry);
+            glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions + 1);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
@@ -213,8 +222,8 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //        if (i % 20 == 0) {
 //            std::cout << i;
 //        }
-        int x = i / ((float)(img->w));
-        int y = i % img->w;
+        int x = i % img->w;
+        int y = i / ((float)(img->w));
         Ray ray = cam->raycast(x, y);
         glm::vec3 color = traceAPix(ray, scene, cam, 0);
         //color = lambert(ray, scene, cam, color);
@@ -229,7 +238,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("sphere.json");
+    Scene scene = Scene("transparent_containing_objects.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
