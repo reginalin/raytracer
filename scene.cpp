@@ -22,8 +22,8 @@ Scene::Scene(const char *filename) {
     basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-    path = basePath + "/../../raytracer/" + fn;
-//    path = basePath + "/../raytracer/" + fn;
+//    path = basePath + "/../../raytracer/" + fn;
+    path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
