@@ -142,6 +142,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         }
         //lambert
         if (QString::compare((hitGeo->mat).type, "lambert") == 0) {
+//        if (false) {
             Geometry *light_source = scene->light;
             glm::vec4 light = light_source->transform[3];
             glm::vec4 dir = light - closestIntersect.position;
@@ -238,7 +239,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json");
+    Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);

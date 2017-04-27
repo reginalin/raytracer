@@ -157,7 +157,6 @@ void Scene::parseGeometry() {
             if (QString::compare(material, "emissive_material") == 0) {
                 this->light = object;
             }
-//            this->geo_objs.push_back(object);
         }
         //std::cout << "object made" << std::endl;
     }
