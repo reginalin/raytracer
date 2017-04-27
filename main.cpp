@@ -93,11 +93,15 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             color = texture(closestIntersect);
         }
         if (hitGeo->mat.reflective && recursions < 4) {
-            Ray newRay = Ray(closestIntersect.position, ray.direction - closestIntersect.normal * 2.0f * glm::dot(ray.direction, closestIntersect.normal));
+            float c1 = -glm::dot(closestIntersect.normal, ray.direction);
+            glm::vec3 newDir = ray.direction + (2.0f * closestIntersect.normal * c1);
+//            return (newDir * 255.0f + 255.0f)/2.0f;
+            Ray newRay = Ray(closestIntersect.position, newDir);
             glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions++);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
-//        color = glm::vec3(closestIntersect.normal * 255.0f);
+//        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
+//        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
     }
     return color;
 }

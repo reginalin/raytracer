@@ -41,8 +41,8 @@ Intersection Sphere::getIntersection(Ray& input) {
         // what if both are negative
     }
 
-    glm::vec4 temp = input.origin + glm::vec4(t0 * input.direction, 0);
-    glm::vec4 point = temp;
+    glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
+    glm::vec4 point = transform * temp;
 
     glm::vec3 normal = glm::normalize(glm::vec3(point - transform[3]));
 

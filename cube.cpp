@@ -112,12 +112,12 @@ Intersection Cube::getIntersection(Ray& input) {
 
 //    max of x, y, z and glm sine
 
-    glm::vec4 temp = input.origin + tn * glm::vec4(input.direction, 0);
+    glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
 
 //    std::cout<<temp[0]<<std::endl;
 
 
-    glm::vec4 point = temp;
+    glm::vec4 point = transform * temp;
 
     glm::vec3 normal;
     // texture and normal mapping
