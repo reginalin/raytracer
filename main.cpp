@@ -50,8 +50,6 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 //        return Color(0, 0, 0);
 
     }
-
-
 // JUST NOTES BELOW
 //    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
 //    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
@@ -68,6 +66,14 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 //             << clrCurrent.alpha()
 //             << std::endl;
 
+}
+
+float aoGather(Intersection intersection, int samplesPitch, int samplesYaw, float distance) {
+    glm::vec4 point = intersection.position;
+    for (int i = 0; i < samples; i++) {
+        float pitch = i * 180/(float)samplesPitch;
+        float yaw = i * 360/(float)samplesYaw;
+    }
 }
 
 glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
