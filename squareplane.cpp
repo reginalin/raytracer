@@ -16,12 +16,17 @@ Intersection SquarePlane::getIntersection(Ray& input) {
     glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
 
-    if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
-        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
-    }
+//    if (orig[0] < -0.5 || orig[0] > 0.5 || orig[1] < -0.5 || orig[1] > 0.5) {
+//        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
+//    }
 
     float t = glm::dot(planeNormal, glm::vec3(planePoint - orig)) / glm::dot(planeNormal, dir);
     glm::vec4 temp = orig + glm::vec4(t * dir, 0);
+
+    if (temp[0] < -0.5 || temp[0] > 0.5 || temp[1] < -0.5 || temp[1] > 0.5) {
+        return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
+    }
+
     glm::vec4 point = transform * temp;
 
     // texture mapping- change span from [-0.5, 0.5] to [0.0, 1.0]
