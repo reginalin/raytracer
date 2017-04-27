@@ -145,8 +145,8 @@ void Scene::parseGeometry() {
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
         } else if (QString::compare(type, "obj") == 0) {
-            //Mesh *object = new Mesh(transform);
-            //geo_objs.push_back(object);
+//            Mesh *object = new Mesh(transform);
+//            geo_objs.push_back(object);
         }
         std::cout << "object made" << std::endl;
     }

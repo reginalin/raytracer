@@ -63,7 +63,15 @@ DISTFILES += \
     text_nor_maps/171.JPG \
     text_nor_maps/171_norm.JPG \
     text_nor_maps/197.JPG \
-    text_nor_maps/197_norm.JPG
+    text_nor_maps/197_norm.JPG \
+    tex_nor_maps/154.jpg \
+    tex_nor_maps/154_norm.jpg \
+    tex_nor_maps/165.jpg \
+    tex_nor_maps/165_norm.jpg \
+    tex_nor_maps/171.jpg \
+    tex_nor_maps/171_norm.jpg \
+    tex_nor_maps/197.jpg \
+    tex_nor_maps/197_norm.jpg
 
 HEADERS += \
     camera.h \
