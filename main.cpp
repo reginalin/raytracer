@@ -101,7 +101,9 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
-        //if emissive
+        if (hitGeo->mat.emissive) {
+            lambert(intersection, scene, camera, color);
+        }
 
 //        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
 //        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
@@ -112,7 +114,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
 //assume that every scene has a single light source
 //which is a sphere
 void lambert(Intersection intersection, Scene *scene, Camera *cam, glm::vec3 color) {
-//    Sphere *light;
+    Sphere *light;
 //    std::vector<Geometry *> lambert_objs = std::vector<Geometry *>();
 //    std::vector<Geometry *> objs = scene->geo_objs;
 //    for (int i = 0; i < objs.size(); i++) {
