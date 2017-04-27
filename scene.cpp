@@ -22,8 +22,8 @@ Scene::Scene(const char *filename) {
     basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-//    path = basePath + "/../../raytracer/" + fn;
-    path = basePath + "/../raytracer/" + fn;
+    path = basePath + "/../../raytracer/" + fn;
+//    path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
@@ -102,7 +102,6 @@ void Scene::parseGeometry() {
                 float z = translate.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
                 trans_matrix = glm::translate(trans_matrix, scalars);
-                //std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
         for (int i = 0; i < rot_mats.size(); i++) {
@@ -154,6 +153,7 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
+//            this->geo_objs.push_back(object);
             if (QString::compare(material, "emissive_material") == 0) {
                 this->light = object;
             }
