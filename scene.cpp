@@ -125,11 +125,6 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
-            if (QString::compare(material, "emissive_material") == 0) {
-                this->light = object;
-            } else {
-                this->geo_objs.push_back(object);
-            }
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;

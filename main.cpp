@@ -109,9 +109,13 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
 //assume that every scene has a single light source
 //which is a sphere
 void lambert(Ray ray, Scene *scene, Camera *cam, glm::vec3 color) {
+    Sphere *light;
     std::vector<Geometry *> lambert_objs = std::vector<Geometry *>();
     std::vector<Geometry *> objs = scene->geo_objs;
     for (int i = 0; i < objs.size(); i++) {
+        if (QString::compare(objs[i]->material, "emissive_material") == 0) {
+            light = objs[i];
+        }
         if ( QString::compare(objs[i]->type, "lambert") == 0 ) {
             lambert_objs.push_back(objs[i]);
             Intersection intersection = objs[i]->getIntersection(ray);
