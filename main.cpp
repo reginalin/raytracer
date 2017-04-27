@@ -66,30 +66,21 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
     Geometry *light_source = scene->light;
     glm::vec4 light = light_source->transform[3];
-    glm::vec4 dir = light - intersection.position;
+    glm::vec3 dir = glm::normalize(glm::vec3(light - intersection.position));
     glm::vec3 norm = intersection.normal;
-    glm::vec4 n = glm::vec4(norm, 1);
 
-    float cosine = cos(glm::dot(n, dir));
-    std::cout << "cos " << cosine;
+    float cosine = glm::dot(norm, dir);
     // float albedo;
     // albedo is color
-
     if (cosine == 1) {
         return glm::vec3(0, 0, 0);
     } else {
-        color[0] = color[0] / PI * cosine * color[0] * glm::dot(n, dir);
+        color[0] = color[0] / M_PI * cosine;
+        color[1] = color[1] / M_PI * cosine;
+        color[2] = color[2] / M_PI * cosine;
     }
 
-
-//    std::vector<Geometry *> objs = scene->geo_objs;
-//    for (int i = 0; i < objs.size(); i++) {
-////        if (QString::compare(objs[i]->material, "emissive_material") == 0) {
-////            light = objs[i];
-////        }
-///
-//      Sphere light_source = *(scene->light);
-//      glm::vec4 light = light_source ->center;
+    return color;
 }
 
 float aoGather(Intersection intersection, int samples, float distance) {
@@ -136,26 +127,24 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         if (hitGeo->mat.reflective && recursions < 8) {
             glm::vec3 newDir = glm::reflect(ray.direction, closestIntersect.normal);
 //            return (newDir * 255.0f + 255.0f)/2.0f;
-            Ray newRay = Ray(closestIntersect.position, newDir, closestIntersect.geometry);
+            Ray newRay = Ray(closestIntersect.position, newDir, hitGeo);
             glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions + 1);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
-        if (QString::compare((hitGeo->mat).type, "lambert") == 0) {
-//        if (false) {
+        if (/*QString::compare((hitGeo->mat).type, "lambert") == 0*/ 1) {
             Geometry *light_source = scene->light;
-            glm::vec4 light = light_source->transform[3];
-            glm::vec4 dir = light - closestIntersect.position;
-            glm::vec3 direction(dir);
-            Ray lightRay = Ray(closestIntersect.position, direction);
+            glm::vec4 lightPos = light_source->transform[3];
+            glm::vec3 dir = glm::normalize(glm::vec3(lightPos - closestIntersect.position));
+            Ray lightRay = Ray(closestIntersect.position, dir, hitGeo);
 
-            Intersection checkLit = hitGeo->getIntersection(lightRay);
+            Intersection checkLit = light_source->getIntersection(lightRay);
             QList<Intersection> inter = QList<Intersection>();
 
             for (int k = 0; k < (int) geometryArray->size(); k++) {
                 Geometry *geo = geometryArray->at(k);
                 Intersection intersect = geo->getIntersection(lightRay);
-                if (intersect.t != -1) inter.append(intersect);
+                if (intersect.t > 0 && intersect.geometry != lightRay.ignoreGeo) inter.append(intersect);
             }
             if (!inter.empty()) {
                 Intersection closest = inter[0];
@@ -163,44 +152,14 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                     if (inter[k].t < closest.t) closest = inter[k];
                 }
                 //Geometry *close = closestIntersect.geometry;
-                if (closest.t < checkLit.t && closest.t > 0) {
-                    return color * 0.1f;
+                if (closest.t < checkLit.t) {
+                    color *= 0.1f;
                 } else {
-                    std::cout << "lambert";
-                    color = lambert(closest, scene, color);
+                    color = lambert(closestIntersect, scene, color);
                 }
             } else {
-                color = lambert(checkLit, scene, color);
-            }
-
-           /* if (inter[0].t == checkLit.t) {
-                std::cout << "no intersection " << std::endl;
                 color = lambert(closestIntersect, scene, color);
-            } else {
-                std::cout << "something else";
-                return color * 0.1f;
-            }*/
-//            if (!intersections.empty()) {
-//                Intersection closestIntersect = intersections[0];
-//                std::cout << "no intersection " << std::endl;
-
-//                color = lambert(closestIntersect, scene, color);
-//            }
-//            if (!intersections.empty()) {
-//                Intersection closestIntersect = intersections[0];
-//                for (int i = 0; i < intersections.size(); i++) {
-//                    if (intersections[i].t < closestIntersect.t) closestIntersect = intersections[i];
-//                }
-            //
-
-//            Intersection checkLit = hitGeo->getIntersection(lightRay);
-//            std::cout << "position " << glm::to_string(checkLit.uv) << std::endl;
-//            if (checkLit.t == -1) {
-//                std::cout << "no intersection " << std::endl;
-//                color = lambert(closestIntersect, scene, color);
-//            } else {
-//                return color * 0.1f;
-//            }
+            }
         }
 
 //        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;

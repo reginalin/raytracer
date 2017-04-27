@@ -34,6 +34,7 @@ Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
     tinyobj::LoadObj(shapes, materials, fn);
     this->cam = cam;
 
+
     // positions: vector of vertex coordinates
     std::vector<float> positions = std::vector<float>();
 
@@ -151,17 +152,17 @@ Mesh::Mesh(glm::mat4 transformMatrix, QString inputFile, Camera cam) {
 Intersection Mesh::getIntersection(Ray& input) {
     // initializing it as the first one
     std::vector<glm::vec2> vertexUV = std::vector<glm::vec2>();
-    vertexUV[0] = uvVecs[0].vertex1;
-    vertexUV[1] = uvVecs[0].vertex2;
-    vertexUV[2] = uvVecs[0].vertex3;
+//    vertexUV[0] = uvVecs[0].vertex1;
+//    vertexUV[1] = uvVecs[0].vertex2;
+//    vertexUV[2] = uvVecs[0].vertex3;
 
     Triangle closest = Triangle(faceVecs[0].vertex1, faceVecs[0].vertex2, faceVecs[0].vertex3, vertexUV, transform);
     float currT;
 
     for (int i = 0; i < static_cast<int>(faceVecs.size()); i++) {
-        vertexUV[0] = uvVecs[i].vertex1;
-        vertexUV[1] = uvVecs[i].vertex2;
-        vertexUV[2] = uvVecs[i].vertex3;
+//        vertexUV[0] = uvVecs[i].vertex1;
+//        vertexUV[1] = uvVecs[i].vertex2;
+//        vertexUV[2] = uvVecs[i].vertex3;
         Triangle current = Triangle(faceVecs[i].vertex1, faceVecs[i].vertex2, faceVecs[i].vertex3, vertexUV, transform);
         triangles.push_back(current);
         float t = current.getIntersection(input).t;
