@@ -20,54 +20,42 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
     float u = intersection.uv[0];
     float v = intersection.uv[1];
     if (u < 0 || v < 0 || u > 1 || v > 1) {
-        int i = 0;
         return glm::vec3(0,0,0);
     }
-        // for each intersection
+    // for each intersection
 
-        float u1 = u * nx - floor(u * nx);
-        float v1 = v * ny - floor(v * ny);
+    float u1 = u * nx - floor(u * nx);
+    float v1 = v * ny - floor(v * ny);
 
 //        std::cout << "(" << nx << ", " << ny << ")" << std::endl;
 
-        // indices for the pixel the intersection is mapped to
-        int i = (int)floor(u * (float)nx);
-        int j = (int)floor(v * (float)ny);
+    // indices for the pixel the intersection is mapped to
+    int i = (int)floor(u * (float)nx);
+    int j = (int)floor(v * (float)ny);
 
-        QColor first(textureJpg->pixel(i, j));
-        QColor second(textureJpg->pixel(i + 1, j));
-        QColor third(textureJpg->pixel(i, j + 1));
-        QColor fourth(textureJpg->pixel(i + 1, j + 1));
+    if (i + 1 >= nx) {
+        i--;
+    }
 
-        unsigned char red = (1 - u1) * (1 - v1) * first.red() + u1 * (1 - v1) * second.red()
-                        + (1 - u1) * v1 * third.red() + u1 * v1 * fourth.red();
+    if (j + 1 >= ny) {
+        j--;
+    }
 
-        unsigned char green = (1 - u1) * (1 - v1) * first.green() + u1 * (1 - v1) * second.green()
-                        + (1 - u1) * v1 * third.green() + u1 * v1 * fourth.green();
+    QColor first(textureJpg->pixel(i, j));
+    QColor second(textureJpg->pixel(i + 1, j));
+    QColor third(textureJpg->pixel(i, j + 1));
+    QColor fourth(textureJpg->pixel(i + 1, j + 1));
 
-        unsigned char blue = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
-                        + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
+    unsigned char red = (1 - u1) * (1 - v1) * first.red() + u1 * (1 - v1) * second.red()
+                    + (1 - u1) * v1 * third.red() + u1 * v1 * fourth.red();
 
-        return glm::vec3(red, green, blue);
-//    } else {
-//        return Color(0, 0, 0);
+    unsigned char green = (1 - u1) * (1 - v1) * first.green() + u1 * (1 - v1) * second.green()
+                    + (1 - u1) * v1 * third.green() + u1 * v1 * fourth.green();
 
-// JUST NOTES BELOW
-//    color at (u, v) = (1 - u1) * (1 - v1) * c_ij + u1 * (1 - v1) * c_(i+1)j
-//    + (1 - u1) * v1 * c_i(j+1) + u1 * v1 * c(i+1)(j+1)
+    unsigned char blue = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
+                    + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
 
-
-//    for ( int row = 1; row < img.height() + 1; ++row )
-//    for ( int col = 1; col < img.width() + 1; ++col )
-//    QColor clrCurrent(textureJpg->pixel(200,200)); // row, color
-
-//    std::cout /*<< "Pixel at [" << row << "," << col << "] contains color ("*/
-//             << clrCurrent.red() << ", "
-//             << clrCurrent.green() << ", "
-//             << clrCurrent.blue() << ", "
-//             << clrCurrent.alpha()
-//             << std::endl;
-
+    return glm::vec3(red, green, blue);
 }
 
 float aoGather(Intersection intersection, int samplesPitch, int samplesYaw, float distance) {
@@ -114,7 +102,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         //lambert
         //if emissive
 
-//        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
+        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
 //        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
     }
     return color;
@@ -162,7 +150,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json");
+    Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
