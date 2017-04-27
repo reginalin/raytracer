@@ -19,7 +19,9 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
     int ny = textureJpg->height();
     float u = intersection.uv[0];
     float v = intersection.uv[1];
-    if (u >= 0 && v >= 0 && u <= 1 && v <= 1) {
+    if (u < 0 || v < 0 || u > 1 || v > 1) {
+        int i = 0;
+    }
         // for each intersection
 
         float u1 = u * nx - floor(u * nx);
@@ -49,7 +51,7 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
 //    } else {
 //        return Color(0, 0, 0);
 
-    }
+
 
 
 // JUST NOTES BELOW
@@ -153,7 +155,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("mesh.json");
+    Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);

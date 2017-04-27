@@ -20,11 +20,8 @@ Intersection Sphere::getIntersection(Ray& input) {
     glm::vec4 orig = objRay.origin;
     
     glm::vec3 s = glm::vec3(orig[0] - center[0], orig[1] - center[1], orig[2] - center[2]);
-//    float a = glm::dot(dir, dir);
     float a = (dir[0] * dir[0]) + (dir[1] * dir[1]) + (dir[2] * dir[2]);
-//    float b = glm::dot(dir, s) * 2;
     float b = 2 * ((dir[0] * s[0]) + (dir[1] * s[1]) + (dir[2] * s[2]));
-//    float c = glm::dot(s, s) + (radius * radius);
     float c = (s[0] * s[0]) + (s[1] * s[1]) + (s[2] * s[2]) - (radius * radius);
 
     float disc = (b * b) - (4 * a * c);
@@ -38,7 +35,6 @@ Intersection Sphere::getIntersection(Ray& input) {
     if (t0 < 0) {
         t1 = (-b + (sqrtf(disc))) / (2 * a);
         t0 = t1;
-        // what if both are negative
     }
 
     glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
