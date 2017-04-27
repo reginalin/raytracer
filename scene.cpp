@@ -105,10 +105,9 @@ void Scene::parseGeometry() {
                 std::cout << "translate" << glm::to_string(trans_matrix) << std::endl;
             }
         }
-        while (!rot_mats.empty()) {
-            glm::mat4 rot = rot_mats.back();
+        for (int i = 0; i < rot_mats.size(); i++) {
+            glm::mat4 rot = rot_mats.at(i);
             rotation_mat *= rot;
-            rot_mats.erase(rot_mats.end());
         }
         glm::mat4 transform_mat = trans_matrix * rotation_mat * scale_matrix;
         std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
@@ -147,7 +146,7 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
-            this->geo_objs.push_back(object);
+//            this->geo_objs.push_back(object);
         }
         std::cout << "object made" << std::endl;
     }
