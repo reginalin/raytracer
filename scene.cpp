@@ -22,8 +22,8 @@ Scene::Scene(const char *filename) {
     basePath =  QCoreApplication::applicationDirPath();
     //std::cout<<basePath.toStdString()<<std::endl;
 
-    path = basePath + "/../../raytracer/" + fn;
-//    QString path = basePath + "/../raytracer/" + fn;
+//    path = basePath + "/../../raytracer/" + fn;
+    QString path = basePath + "/../raytracer/" + fn;
 
 
    //std::cout<<path.toStdString()<<std::endl;
@@ -127,7 +127,11 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
-            this->geo_objs.push_back(object);
+            if (QString::compare(material, "emissive_material") == 0) {
+                this->light = object;
+            } else {
+                this->geo_objs.push_back(object);
+            }
         } else if (QString::compare(type, "cube") == 0) {
             object = new Cube(transform_mat);
             object->name = name;

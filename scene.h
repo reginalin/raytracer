@@ -31,6 +31,7 @@ public:
     QJsonArray geometry;
     QJsonArray material;
     Camera cam;
+    Sphere *light;
 
     std::vector<Geometry *> geo_objs;
     std::map<QString, Material> material_types;

@@ -106,6 +106,23 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
     return color;
 }
 
+//assume that every scene has a single light source
+//which is a sphere
+void lambert(Ray ray, Scene *scene, Camera *cam, glm::vec3 color) {
+    std::vector<Geometry *> lambert_objs = std::vector<Geometry *>();
+    std::vector<Geometry *> objs = scene->geo_objs;
+    for (int i = 0; i < objs.size(); i++) {
+        if ( QString::compare(objs[i]->type, "lambert") == 0 ) {
+            lambert_objs.push_back(objs[i]);
+            Intersection intersection = objs[i]->getIntersection(ray);
+            glm::vec4 light = (scene->light)->center;
+            glm::vec3 norm = intersection.normal;
+            glm::vec4 l = light - intersection.position;
+            //float angle = cos(glm::dot(norm, l));
+        }
+    }
+}
+
 void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
     for (int i = 0; i < img->h * img->w; i++) {
 //        if (i % 20 == 0) {
@@ -115,17 +132,19 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         int y = i % img->w;
         Ray ray = cam->raycast(x, y);
         glm::vec3 color = traceAPix(ray, scene, cam, 0);
+        //color = lambert(ray, scene, cam, color);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
     }
 }
 
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json");
+    Scene scene = Scene("sphere.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
