@@ -27,8 +27,6 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
     float u1 = u * nx - floor(u * nx);
     float v1 = v * ny - floor(v * ny);
 
-//        std::cout << "(" << nx << ", " << ny << ")" << std::endl;
-
     // indices for the pixel the intersection is mapped to
     int i = (int)floor(u * (float)nx);
     int j = (int)floor(v * (float)ny);
@@ -102,7 +100,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         //lambert
         //if emissive
 
-        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
+//        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
 //        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
     }
     return color;

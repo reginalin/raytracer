@@ -147,7 +147,7 @@ void Scene::parseGeometry() {
             object->material = material;
             object->mat = material_types.at(material);
             object->type = type;
-//            this->geo_objs.push_back(object);
+            this->geo_objs.push_back(object);
         }
         std::cout << "object made" << std::endl;
     }
