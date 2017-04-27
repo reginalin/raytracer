@@ -5,6 +5,7 @@
 #include "intersection.h"
 #include "la.h"
 #include "material.h"
+#include <QString>
 
 class Geometry {
 

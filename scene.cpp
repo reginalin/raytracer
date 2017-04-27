@@ -58,7 +58,6 @@ void Scene::parseGeometry() {
         glm::mat4 scale_matrix = glm::mat4();
         glm::mat4 rotation_mat = glm::mat4();
         std::vector<glm::mat4> rot_mats = std::vector<glm::mat4>(); //in case there are many rotation matrices
-
         //these are optional
         if (geo_obj.contains("transform")) {
             QJsonObject transform = geo_obj["transform"].toObject();
@@ -142,8 +141,13 @@ void Scene::parseGeometry() {
             this->geo_objs.push_back(object);
             std::cout << "square added" << std::endl;
         } else if (QString::compare(type, "obj") == 0) {
-//            Mesh *object = new Mesh(transform);
-//            geo_objs.push_back(object);
+            QString filename = geo_obj["filename"].toString();
+            Mesh *object = new Mesh(transform_mat, filename, this->cam);
+            object->name = name;
+            object->material = material;
+            object->mat = material_types.at(material);
+            object->type = type;
+            this->geo_objs.push_back(object);
         }
         std::cout << "object made" << std::endl;
     }
