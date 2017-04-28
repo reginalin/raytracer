@@ -4,6 +4,9 @@
 #include "geometry.h"
 #include "intersection.h"
 #include "ray.h"
+#include "meshgeom.h"
+
+class Mesh;
 
 class Triangle : public Geometry {
 
@@ -15,8 +18,9 @@ public:
 
     glm::vec4 P1, P2, P3;
     std::vector<glm::vec2> UV;
+    Mesh *obj;
 
-    Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> UV, glm::mat4 transformMatrix);
+    Triangle(glm::vec4 p1, glm::vec4 p2, glm::vec4 p3, std::vector<glm::vec2> UV, glm::mat4 transformMatrix, Mesh *obj);
 
     virtual Intersection getIntersection(Ray& input) /*const*/;
 

@@ -61,8 +61,6 @@ Ray Camera::raycast(int x, int y) {
 //    glm::vec4 pixWorldCoords = glm::inverse(transformMat) * pixNDCCoords;
 
     // alternative way of calculating (p is the same as pixWorldCoords)
-//    x = 200;
-//    y = 200;
     float sx = (2 * (x / (float)width)) - 1;
     float sy = 1 - (2 * (y / (float)height));
 

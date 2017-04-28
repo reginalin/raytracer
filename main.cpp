@@ -69,17 +69,20 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
     glm::vec3 dir = glm::normalize(glm::vec3(light - intersection.position));
     glm::vec3 norm = intersection.normal;
 
-    float cosine = glm::dot(norm, dir);
+    float cosine = std::abs(glm::dot(norm, dir));
     // float albedo;
     // albedo is color
     if (cosine == 1) {
         return glm::vec3(0, 0, 0);
     } else {
-        color[0] = color[0] / M_PI * cosine;
-        color[1] = color[1] / M_PI * cosine;
-        color[2] = color[2] / M_PI * cosine;
+        float lightIntensity = 3.5;
+//        color[0] = std::min(std::max(color[0] / PI * cosine * lightIntensity, 0.f), 255.f);
+//        color[1] = std::min(std::max(color[1] / PI * cosine * lightIntensity, 0.f), 255.f);
+//        color[2] = std::min(std::max(color[2] / PI * cosine * lightIntensity, 0.f), 255.f);
+        color[0] = std::min(std::max(color[0] * cosine, 0.f), 255.f);
+        color[1] = std::min(std::max(color[1] * cosine, 0.f), 255.f);
+        color[2] = std::min(std::max(color[2] * cosine , 0.f), 255.f);
     }
-
     return color;
 }
 
@@ -132,7 +135,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
-        if (/*QString::compare((hitGeo->mat).type, "lambert") == 0*/ 1) {
+        if (1) {
             Geometry *light_source = scene->light;
             glm::vec4 lightPos = light_source->transform[3];
             glm::vec3 dir = glm::normalize(glm::vec3(lightPos - closestIntersect.position));
@@ -153,7 +156,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                 }
                 //Geometry *close = closestIntersect.geometry;
                 if (closest.t < checkLit.t) {
-                    color *= 0.1f;
+                    color *= 0.12f;
                 } else {
                     color = lambert(closestIntersect, scene, color);
                 }
@@ -198,6 +201,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
+
+    // CHANGE JSONS HERE
     Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
