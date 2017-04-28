@@ -171,7 +171,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                     if (inter[k].t < closest.t) closest = inter[k];
                 }
                 if (closest.t < checkLit.t) {
-                    color *= 0.12f;
+             color *= 0.12f;
                 } else {
                     color = lambert(closestIntersect, scene, color);
                 }
@@ -205,7 +205,6 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         int y = i / ((float)(img->w));
         Ray ray = cam->raycast(x, y);
         glm::vec3 color = traceAPix(ray, scene, cam, 0);
-        //color = lambert(ray, scene, cam, color);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
