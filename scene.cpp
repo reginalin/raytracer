@@ -1,9 +1,6 @@
 #include "scene.h"
 using namespace glm;
 
-//changes: probably need to change constructors of geometry subclasses
-// b/c we need to store more information
-//right now we create geometry objects but all they contain is just the transform
 
 QString basePath;
 QString path;
@@ -20,14 +17,11 @@ Scene::Scene(const char *filename) {
     QDir dir = QDir::currentPath();
 
     basePath =  QCoreApplication::applicationDirPath();
-    //std::cout<<basePath.toStdString()<<std::endl;
 
+    // MAKE SURE BASEPATH IS CORRECT
 //    path = basePath + "/../../raytracer/" + fn;
     path = basePath + "/../raytracer/" + fn;
 
-
-   //std::cout<<path.toStdString()<<std::endl;
-//    std::cout<<"wanted: /raytracer/"<<fn.toStdString();
 
     QFile file(path);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -67,10 +61,7 @@ void Scene::parseGeometry() {
                 float y = scale.at(1).toDouble();
                 float z = scale.at(2).toDouble();
                 glm::vec3 scalars = glm::vec3(x, y, z);
-//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
                 scale_matrix = glm::scale(scale_matrix, scalars);
-//                std::cout << "scale " << glm::to_string(scale_matrix) << std::endl;
-//                std::cout << "scale is here" << std::endl;
             }
             if (transform.contains("rotate")) {
                 rotate = transform["rotate"].toArray();
@@ -92,7 +83,6 @@ void Scene::parseGeometry() {
                     rot = glm::rotate(rot, z, glm::vec3(0, 0, 1));
                     rot_mats.push_back(rot);
                 }
-//                //std::cout << "rotate is here" << std::endl;
 
             }
             if (transform.contains("translate")) {
@@ -134,7 +124,6 @@ void Scene::parseGeometry() {
                 this->light = object;
             }
             this->geo_objs.push_back(object);
-            //std::cout << "cube added" << std::endl;
         } else if (QString::compare(type, "square") == 0) {
             object = new SquarePlane(transform_mat);
             object->name = name;
@@ -145,7 +134,6 @@ void Scene::parseGeometry() {
                 this->light = object;
             }
             this->geo_objs.push_back(object);
-            //std::cout << "square added" << std::endl;
         } else if (QString::compare(type, "obj") == 0) {
             QString filename = geo_obj["filename"].toString();
             Mesh *object = new Mesh(transform_mat, filename, this->cam);
@@ -158,9 +146,7 @@ void Scene::parseGeometry() {
                 this->light = object;
             }
         }
-        //std::cout << "object made" << std::endl;
     }
-    //std::cout << "objects made" << std::endl;
 }
 
 void Scene::parseCamera() {

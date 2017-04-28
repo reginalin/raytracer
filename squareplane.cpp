@@ -84,7 +84,7 @@ Intersection SquarePlane::getIntersection(Ray& input) {
         tangent = glm::normalize(tangent);
 
         glm::vec3 bitangent = glm::cross(normal1, tangent);
-        bitangent = glm::normalize(bitangent); // should this be normalized?
+        bitangent = glm::normalize(bitangent);
 
         glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
                                      glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),

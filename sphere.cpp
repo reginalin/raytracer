@@ -16,7 +16,6 @@ Intersection Sphere::getIntersection(Ray& input) {
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
-//    glm::vec3 dir = glm::vec3(objRay.direction[0], objRay.direction[1], objRay.direction[2]); // vec3 to vec4
     glm::vec3 dir = objRay.direction;
     glm::vec4 orig = objRay.origin;
     
@@ -41,7 +40,6 @@ Intersection Sphere::getIntersection(Ray& input) {
     glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
     glm::vec4 point = transform * temp;
 
-//    glm::vec3 normal = glm::normalize(glm::vec3(point - transform[3]));
     glm::vec3 normal = glm::vec3(temp);
     normal = glm::normalize(normal);
 
