@@ -166,6 +166,7 @@ Intersection Cube::getIntersection(Ray& input) {
     }
 
     glm::vec2 uv = glm::vec2(u, v);
+    normal = glm::normalize(normal);
 
     glm::vec3 normal1 = glm::normalize(glm::vec3(glm::transpose(inverted) * glm::vec4(normal, 0)));
 
@@ -203,26 +204,33 @@ Intersection Cube::getIntersection(Ray& input) {
         unsigned char blue = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
                         + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
 
-        glm::vec3 rgb = glm::vec3(red, green, blue);
+        float x = ((red / 255.f) * 2.f) - 1.f;
+        float y = ((green / 255.f) * 2.f) - 1.f;
+        float z = ((blue / 255.f) * 2.f) - 1.f;
+
+        glm::vec3 rgb = glm::vec3(x, y, z);
 
         // calculate orientation matrix
-        glm::vec3 tangent = glm::cross(normal1, glm::vec3(0, 1, 0));
+        glm::vec3 tangent = glm::cross(glm::vec3(0, 1, 0), normal1);
         tangent = glm::normalize(tangent);
 
         glm::vec3 bitangent = glm::cross(normal1, tangent);
-        tangent = glm::normalize(tangent); // should this be normalized?
+        bitangent = glm::normalize(bitangent);
 
         glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
                                      glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),
                                      glm::vec4(normal1[0], normal1[1], normal1[2], 0),
                                      glm::vec4(0, 0, 0, 1));
 
-        glm::vec3 newNormal = glm::normalize(glm::vec3(glm::vec4(rgb, 0) * matrix));
+        glm::vec3 newNormal = glm::normalize(glm::vec3(matrix * glm::vec4(rgb, 0)));
+
+        newNormal = glm::vec3(glm::transpose(inverted) * glm::vec4(newNormal, 0));
+        newNormal = glm::normalize(newNormal);
 
         return Intersection(point, newNormal, uv, tn, this);
     } else {
+        normal1 = glm::vec3(glm::transpose(inverted) * temp);
+        normal1 = glm::normalize(normal1);
         return Intersection(point, normal1, uv, tn, this);
     }
-
-
 }

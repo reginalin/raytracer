@@ -69,33 +69,58 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
     glm::vec3 dir = glm::normalize(glm::vec3(light - intersection.position));
     glm::vec3 norm = intersection.normal;
 
-    float cosine = glm::dot(norm, dir);
+    float cosine = std::abs(glm::dot(norm, dir));
     // float albedo;
     // albedo is color
     if (cosine == 1) {
         return glm::vec3(0, 0, 0);
     } else {
-        color[0] = color[0] / M_PI * cosine;
-        color[1] = color[1] / M_PI * cosine;
-        color[2] = color[2] / M_PI * cosine;
+        float lightIntensity = 3.5;
+//        color[0] = std::min(std::max(color[0] / PI * cosine * lightIntensity, 0.f), 255.f);
+//        color[1] = std::min(std::max(color[1] / PI * cosine * lightIntensity, 0.f), 255.f);
+//        color[2] = std::min(std::max(color[2] / PI * cosine * lightIntensity, 0.f), 255.f);
+        color[0] = std::min(std::max(color[0] * cosine, 0.f), 255.f);
+        color[1] = std::min(std::max(color[1] * cosine, 0.f), 255.f);
+        color[2] = std::min(std::max(color[2] * cosine , 0.f), 255.f);
     }
-
     return color;
 }
 
-float aoGather(Intersection intersection, int samples, float distance) {
-//    glm::vec4 point = intersection.position;
-//    float golden_angle = PI * (3 - std::sqrt(5));
-//    for (int i = 0; i < samples; i++) {
-//        float theta = golden_angle * i;
-//        float z = (1 - 1 / samples) * (1 - (2 * i) / (samples - 1));
-//        radius = numpy.sqrt(1 - z * z);
+float aoGather(Intersection intersection, Scene *scene, int samples, float distance) {
+    glm::vec4 point = intersection.position;
+    glm::vec3 normal = intersection.normal;
+    glm::vec3 rotationHelper = normal + glm::vec3(0.3f, 0, 0);
+    glm::vec3 tangent = glm::cross(normal, rotationHelper);
+    glm::vec3 bitangent = glm::cross(tangent, bitangent);
 
-//        points = numpy.zeros((n, 3))
-//        points[:,0] = radius * numpy.cos(theta)
-//        points[:,1] = radius * numpy.sin(theta)
-//        points[:,2] = z
-//    }
+    int intersectionCount = 0;
+    for (int i = 0; i < samples; i++) {
+        float z = ((float) std::rand() / (RAND_MAX));
+        float u = ((float) std::rand() / (RAND_MAX));
+        float r = std::sqrt(std::max((float)0.f, (float)1.f - z * z));
+        float phi = 2 * PI * u;
+
+        glm::vec4 castThroughPoint = glm::vec4(r * std::cos(phi), r * std::sin(phi), z, 1);
+        glm::mat4 toWorldSpace = glm::mat4(
+                    glm::vec4(tangent, 0),
+                    glm::vec4(bitangent, 0),
+                    glm::vec4(normal, 0),
+                    glm::vec4(0, 0, 0, 1)
+                    );
+        castThroughPoint = castThroughPoint * toWorldSpace;
+        glm::vec3 aoCastDir = normal + glm::vec3(castThroughPoint - point);
+        Ray aoCastRay = Ray(point, aoCastDir, intersection.geometry);
+
+        QList<Intersection> intersections = QList<Intersection>();
+        std::vector<Geometry *> *geometryArray = &scene->geo_objs;
+        for (int i = 0; i < (int) geometryArray->size(); i++) {
+            Geometry *geometry = geometryArray->at(i);
+            Intersection intersection = geometry->getIntersection(aoCastRay);
+            if (intersection.t > 0 && intersection.t <= distance && intersection.geometry != aoCastRay.ignoreGeo) intersections.append(intersection);
+        }
+        if (!intersections.isEmpty()) intersectionCount++;
+    }
+    return 1 - (intersectionCount/(float)samples)*0.5;
 }
 
 glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
@@ -118,6 +143,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         //Shading
         Geometry *hitGeo = closestIntersect.geometry;
         color = hitGeo->mat.baseColor;
+        if (hitGeo->mat.emissive) return glm::vec3(255, 255, 255);
         if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
             color = texture(closestIntersect);
         }
@@ -132,7 +158,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
         }
         //lambert
-        if (/*QString::compare((hitGeo->mat).type, "lambert") == 0*/ 1) {
+        if (1) {
             Geometry *light_source = scene->light;
             glm::vec4 lightPos = light_source->transform[3];
             glm::vec3 dir = glm::normalize(glm::vec3(lightPos - closestIntersect.position));
@@ -151,14 +177,17 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                 for (int k = 0; k < inter.size(); k++) {
                     if (inter[k].t < closest.t) closest = inter[k];
                 }
-                //Geometry *close = closestIntersect.geometry;
                 if (closest.t < checkLit.t) {
-                    color *= 0.1f;
+             color *= 0.12f;
+                } else {
+                    color = lambert(closestIntersect, scene, color);
                 }
             } else {
                 color = lambert(closestIntersect, scene, color);
             }
         }
+        float ambientOcclusion = aoGather(closestIntersect, scene, 8, 0.2);
+        color *= ambientOcclusion;
 
 //        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
 //        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
@@ -184,10 +213,11 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         int y = i / ((float)(img->w));
         Ray ray = cam->raycast(x, y);
         glm::vec3 color = traceAPix(ray, scene, cam, 0);
-        //color = lambert(ray, scene, cam, color);
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
+        int completionPrcnt = ((float)i / (float)(img->h * img->w - 1)) * 100;
+        std::cout << '\r' << completionPrcnt << "% done";
     }
 }
 
@@ -196,7 +226,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::cout << "parsing scene";
-    Scene scene = Scene("transparent_containing_objects.json");
+
+    // CHANGE JSONS HERE
+    Scene scene = Scene("all_shapes.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);

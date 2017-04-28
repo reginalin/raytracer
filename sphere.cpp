@@ -41,7 +41,9 @@ Intersection Sphere::getIntersection(Ray& input) {
     glm::vec4 temp = orig + glm::vec4(t0 * dir, 0);
     glm::vec4 point = transform * temp;
 
-    glm::vec3 normal = glm::normalize(glm::vec3(point - transform[3]));
+//    glm::vec3 normal = glm::normalize(glm::vec3(point - transform[3]));
+    glm::vec3 normal = glm::vec3(temp);
+    normal = glm::normalize(normal);
 
     // calculate u, v
     float psi = atan2f(normal[2], normal[0]);
@@ -91,27 +93,35 @@ Intersection Sphere::getIntersection(Ray& input) {
         unsigned char blue = (1 - u1) * (1 - v1) * first.blue() + u1 * (1 - v1) * second.blue()
                         + (1 - u1) * v1 * third.blue() + u1 * v1 * fourth.blue();
 
-        glm::vec3 rgb = glm::vec3(red, green, blue);
+        float x = ((red / 255.f) * 2.f) - 1.f;
+        float y = ((green / 255.f) * 2.f) - 1.f;
+        float z = ((blue / 255.f) * 2.f) - 1.f;
+
+        glm::vec3 rgb = glm::vec3(x, y, z);
 
         // calculate orientation matrix
-        glm::vec3 tangent = glm::cross(normal, glm::vec3(0, 1, 0));
+        glm::vec3 tangent = glm::cross(glm::vec3(0, 1, 0), normal);
         tangent = glm::normalize(tangent);
 
         glm::vec3 bitangent = glm::cross(normal, tangent);
-        tangent = glm::normalize(tangent); // should this be normalized?
+        bitangent = glm::normalize(bitangent);
 
         glm::mat4 matrix = glm::mat4(glm::vec4(tangent[0], tangent[1], tangent[2], 0),
                                      glm::vec4(bitangent[0], bitangent[1], bitangent[2], 0),
                                      glm::vec4(normal[0], normal[1], normal[2], 0),
                                      glm::vec4(0, 0, 0, 1));
 
-        glm::vec3 newNormal = glm::normalize(glm::vec3(glm::vec4(rgb, 0) * matrix));
+        glm::vec3 newNormal = glm::normalize(glm::vec3(matrix * glm::vec4(rgb, 0)));
+
+        newNormal = glm::vec3(glm::transpose(inverted) * glm::vec4(newNormal, 0));
+        newNormal = glm::normalize(newNormal);
 
         return Intersection(point, newNormal, uv, t0, this);
     } else {
+        normal = glm::vec3(glm::transpose(inverted) * temp);
+        normal = glm::normalize(normal);
         return Intersection(point, normal, uv, t0, this);
     }
-
 }
 
 

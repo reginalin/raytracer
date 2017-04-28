@@ -8,6 +8,8 @@
 #include "stdio.h"
 #include "triangle.h"
 
+class Triangle;
+
 class Mesh : public Geometry {
 
 public:
