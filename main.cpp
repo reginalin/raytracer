@@ -154,8 +154,6 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                 //Geometry *close = closestIntersect.geometry;
                 if (closest.t < checkLit.t) {
                     color *= 0.1f;
-                } else {
-                    color = lambert(closestIntersect, scene, color);
                 }
             } else {
                 color = lambert(closestIntersect, scene, color);
