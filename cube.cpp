@@ -9,7 +9,6 @@ Cube::Cube(glm::mat4 transformMatrix) {
 }
 
 Intersection Cube::getIntersection(Ray& input) {
-//    std::cout<<"Check intersection cube"<< std::endl;
     glm::mat4 inverted = glm::inverse(transform);
     Ray objRay = input.getTransformedCopy(inverted);
 
@@ -108,14 +107,12 @@ Intersection Cube::getIntersection(Ray& input) {
 
 
     if (tn > tf) {
-//        std::cout<<"not on screen"<<std::endl;
         return Intersection(glm::vec4(0, 0, 0, 0), glm::vec3(0, 0, 0), glm::vec2(0, 0), -1, this);
     }
 
 
     glm::vec4 temp = orig + tn * glm::vec4(dir, 0);
     glm::vec4 point = transform * temp;
-//    glm::vec3 normal = glm::normalize(glm::vec3(point - transform[3]));
 
     glm::vec3 normal;
 

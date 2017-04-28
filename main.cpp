@@ -16,7 +16,6 @@ const float PI = 3.14159265358979323846264338327950288419716939937510582;
 
 glm::vec3 texture(Intersection intersection) { // input the shape (or the intersection? and the texture file, output color? or draw directly from here
     QImage *textureJpg = intersection.geometry->mat.textureImg;
-//    std::cout<<"NULL"<<textureJpg->isNull()<<std::endl;
     int nx = textureJpg->width() - 1;
     int ny = textureJpg->height() - 1;
     float u = intersection.uv[0];
@@ -24,8 +23,8 @@ glm::vec3 texture(Intersection intersection) { // input the shape (or the inters
     if (u < 0 || v < 0 || u > 1 || v > 1) {
         return glm::vec3(0,0,0);
     }
-    // for each intersection
 
+    // for each intersection
     float u1 = u * nx - floor(u * nx);
     float v1 = v * ny - floor(v * ny);
 
@@ -76,9 +75,6 @@ glm::vec3 lambert(Intersection intersection, Scene *scene, glm::vec3 color) {
         return glm::vec3(0, 0, 0);
     } else {
         float lightIntensity = 3.5;
-//        color[0] = std::min(std::max(color[0] / PI * cosine * lightIntensity, 0.f), 255.f);
-//        color[1] = std::min(std::max(color[1] / PI * cosine * lightIntensity, 0.f), 255.f);
-//        color[2] = std::min(std::max(color[2] / PI * cosine * lightIntensity, 0.f), 255.f);
         color[0] = std::min(std::max(color[0] * cosine, 0.f), 255.f);
         color[1] = std::min(std::max(color[1] * cosine, 0.f), 255.f);
         color[2] = std::min(std::max(color[2] * cosine , 0.f), 255.f);
@@ -147,12 +143,9 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
         if (hitGeo->mat.texture != "" && hitGeo->mat.textureImg != NULL) {
             color = texture(closestIntersect);
         }
-//        if (hitGeo->type == "sphere") color = glm::vec3(255, 0, 0);
-//        if (hitGeo->type == "cube") color = glm::vec3(0, 0, 255);
-//        if (hitGeo->type == "square") color = glm::vec3(0, 255, 0);
+
         if (hitGeo->mat.reflective && recursions < 8) {
             glm::vec3 newDir = glm::reflect(ray.direction, closestIntersect.normal);
-//            return (newDir * 255.0f + 255.0f)/2.0f;
             Ray newRay = Ray(closestIntersect.position, newDir, hitGeo);
             glm::vec3 reflectColor = traceAPix(newRay, scene, cam, recursions + 1);
             color = color * (1 - hitGeo->mat.reflectivity) + reflectColor * hitGeo->mat.reflectivity;
@@ -186,11 +179,12 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                 color = lambert(closestIntersect, scene, color);
             }
         }
-        float ambientOcclusion = aoGather(closestIntersect, scene, 8, 0.2);
-        color *= ambientOcclusion;
 
-//        color = (glm::vec3(closestIntersect.normal * 255.0f) + 255.0f)/2.0f;
-//        color = (glm::vec3(closestIntersect.position/10.0f * 255.0f) + 255.0f)/2.0f;
+        // uncomment to turn on AMBIENT OCCLUSION
+//        float ambientOcclusion = aoGather(closestIntersect, scene, 8, 0.2);
+
+//        color *= ambientOcclusion;
+
     }
     return color;
 }
@@ -206,9 +200,7 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
 //    glm::vec4 light = (scene->light)->center;
 
     for (int i = 0; i < img->h * img->w; i++) {
-//        if (i % 20 == 0) {
-//            std::cout << i;
-//        }
+
         int x = i % img->w;
         int y = i / ((float)(img->w));
         Ray ray = cam->raycast(x, y);
@@ -216,8 +208,8 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
         img->data[i].r = color.r;
         img->data[i].g = color.g;
         img->data[i].b = color.b;
-        int completionPrcnt = ((float)i / (float)(img->h * img->w - 1)) * 100;
-        std::cout << '\r' << completionPrcnt << "% done";
+//        int completionPrcnt = ((float)i / (float)(img->h * img->w - 1)) * 100;
+//        std::cout << '\r' << completionPrcnt << "% done";
     }
 }
 
@@ -229,15 +221,13 @@ void refraction(Scene scene, Intersection intersection) {
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    std::cout << "parsing scene";
 
     // CHANGE JSONS HERE
-    Scene scene = Scene("sphere.json");
-    std::cout << "size " << scene.geo_objs.size() << std::endl;
+    Scene scene = Scene("transparent_containing_objects.json");
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
     traceEachPix(img, &scene, cam);
     write_ppm(img, "output.ppm");
     destroy_img(&img);
-    //return a.exec();
+//    return a.exec();
 }
