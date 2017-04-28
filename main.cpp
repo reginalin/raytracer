@@ -178,7 +178,7 @@ glm::vec3 traceAPix(Ray ray, Scene *scene, Camera *cam, int recursions) {
                     if (inter[k].t < closest.t) closest = inter[k];
                 }
                 if (closest.t < checkLit.t) {
-             color *= 0.12f;
+                    color *= 0.12f;
                 } else {
                     color = lambert(closestIntersect, scene, color);
                 }
@@ -221,6 +221,10 @@ void traceEachPix(img_t *img, Scene *scene, Camera *cam) {
     }
 }
 
+void refraction(Scene scene, Intersection intersection) {
+    glm::vec4 position = intersection.position;
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -228,7 +232,7 @@ int main(int argc, char *argv[])
     std::cout << "parsing scene";
 
     // CHANGE JSONS HERE
-    Scene scene = Scene("all_shapes.json");
+    Scene scene = Scene("sphere.json");
     std::cout << "size " << scene.geo_objs.size() << std::endl;
     Camera *cam = &scene.cam;
     img_t *img = new_img(cam->width, cam->height);
